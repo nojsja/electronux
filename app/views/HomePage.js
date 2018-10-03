@@ -2,12 +2,25 @@
  * Created by eatong on 17-3-13.
  */
 import React, {PropTypes, Component} from 'react';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { Container, Menu, Grid } from 'semantic-ui-react';
+
+import StartupPage from './startup/StartupPage';
+import InstallPage from './install/InstallPage';
+import CleanPage from './clean/CleanPage';
+import InfoPage from './info/InfoPage';
 
 class HomePage extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {activeItem: 'install'};
+    this.total = ['install', 'startup', 'clean', 'info']
+    this.componentMap = {
+      clean: CleanPage,
+      startup: StartupPage,
+      install: InstallPage,
+      info: InfoPage
+    };
   }
 
   componentWillMount() {
@@ -17,12 +30,49 @@ class HomePage extends Component {
 
   }
 
-  render() {
+  handleItemClick = (ev, {name}) => {
+    this.setState({
+      activeItem: name
+    })
+  }
+
+  activateComponent = (name) => {
+    let _compolent = this.componentMap[name];
     return (
-      <div className="">
-        This is home page...
-        <br/>
-        <Link to='/todo'>todo....</Link>
+      <_compolent />
+    )
+  }
+
+  buildSubItem = (name, activeItem) => {
+    return (
+      <Menu.Item
+        name={name}
+        active={activeItem === name}
+        onClick={this.handleItemClick}
+      />
+    )
+  }
+
+  render() {
+    let {activeItem} = this.state;
+    return (
+      <div className='container-router'>
+        <div className='container-router-left'>
+           <Menu pointing vertical tabular>
+            {
+              this.total.map( (name)=> {
+                return this.buildSubItem(name, activeItem);
+              } )
+            }
+          </Menu>
+        </div>
+        <div className='container-router-right'>
+          <div className='router-right-wrapper shadow-normal'>
+          {
+            this.activateComponent(activeItem)
+          }
+          </div>
+        </div>
       </div>
     );
   }
