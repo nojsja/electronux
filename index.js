@@ -33,7 +33,12 @@ app.on('activate', () => {
 
 function createWindow() {
   const {width, height} = electron.screen.getPrimaryDisplay().workAreaSize;
-   win = new BrowserWindow({width, height});
+  console.log(width, height);
+   win = new BrowserWindow({
+     width: width*(3/6),
+     height: height*(4/6),
+     title: 'electronux'
+   });
 
   if (nodeEnv === 'development') {
     //delay 1000ms to wait for webpack-dev-server start

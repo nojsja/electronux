@@ -5,9 +5,6 @@ import React, {Component}from 'react';
 import {HashRouter, Route, Link} from 'react-router-dom';
 import {Provider} from 'mobx-react';
 
-import 'semantic-ui-css/semantic.min.css';
-import './styles/public.css';
-
 import InstallState from './stores/Install';
 import CleanState from './stores/Clean';
 import InfoState from './stores/Info';

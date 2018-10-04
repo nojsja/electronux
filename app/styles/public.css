@@ -1,3 +1,9 @@
+body {
+  background-color: #ffffff;
+}
+
+/*  container
+============================================================================= */
 .container-router {
   position: absolute;
   width: 100%;

@@ -43,9 +43,10 @@ class HomePage extends Component {
     )
   }
 
-  buildSubItem = (name, activeItem) => {
+  buildSubItem = (name, i, activeItem) => {
     return (
       <Menu.Item
+        key={name+i+'subitem'}
         name={name}
         active={activeItem === name}
         onClick={this.handleItemClick}
@@ -60,8 +61,8 @@ class HomePage extends Component {
         <div className='container-router-left'>
            <Menu pointing vertical tabular>
             {
-              this.total.map( (name)=> {
-                return this.buildSubItem(name, activeItem);
+              this.total.map( (name, i)=> {
+                return this.buildSubItem(name, i, activeItem);
               } )
             }
           </Menu>
