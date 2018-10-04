@@ -4,7 +4,7 @@
 
 # 所有需要安装的
 all_install=()
-all_available=(oh-my-zsh node atom vscode chrome wechat peek deepin-capture deepin-terminal easeMusic QQ albert)
+all_available=(oh-my-zsh node atom whatever vscode chrome wechat peek deepin-capture deepin-terminal easeMusic QQ albert)
 whoami="`whoami`"
 
 # -------- env install ---------- #
@@ -52,6 +52,12 @@ u_node() {
 u_atom() {
   echo ">>> uninstall atom editor ..."
   sudo pacman -R --noconfirm atom
+}
+
+# whatever
+u_whatever() {
+  echo ">>> uninstall whatever ..."
+  pacman -R --noconfirm whatever
 }
 
 # 安装vscode编辑器

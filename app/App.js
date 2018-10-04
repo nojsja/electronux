@@ -17,10 +17,10 @@ import StartupPage from './views/startup/StartupPage';
 import InstallPage from './views/install/InstallPage';
 
 const stores = {
-  install: InstallState,
-  startup: StartupState,
-  info: InfoState,
-  clean: CleanState
+  install: new InstallState(),
+  startup: new StartupState(),
+  info: new InfoState(),
+  clean: new CleanState()
 };
 
 

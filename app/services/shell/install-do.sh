@@ -4,13 +4,13 @@
 
 # 所有需要安装的
 all_install=()
-all_available=(oh-my-zsh node atom vscode chrome wechat peek deepin-capture deepin-terminal easeMusic QQ albert)
+all_available=(oh-my-zsh node atom vscode chrome wechat peek deepin-capture deepin-terminal easeMusic QQ albert whatever)
 
 # -------- env install ---------- #
 
 # 安装初始化环境
 init_install() {
-  local all=(curl wget axel aria2 gcc make patch)
+  local all=(curl wget axel git aria2 gcc make patch)
   local allStr=''
   for item in "${all[@]}"; do
     if [ -z "`pacman -Qs $item`" ]; then
@@ -46,6 +46,12 @@ i_node() {
   echo ">>> install node env ... "
   curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.1/install.sh | bash
   nvm install v10
+}
+
+# 安装印象笔记
+i_whatever() {
+  echo ">>> install node env ... "
+  yaourt -S --noconfirm whatever
 }
 
 # 安装atom编辑器

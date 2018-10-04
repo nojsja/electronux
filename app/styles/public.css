@@ -38,4 +38,6 @@ body {
   left: 1rem;
   right: 0rem;
   bottom: 0rem;
+  padding: .5rem;
+  overflow-y: scroll;
 }

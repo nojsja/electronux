@@ -5,18 +5,22 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 
+import InstallItem from './InstallItem';
+
 @inject('install') @observer
 class InstallPage extends React.Component {
 
-  toggleInstall(index) {
-    this.props.todo.toggle(index);
+  toggleInstall(item) {
+    this.props.install.toggle(item);
   }
 
   render() {
     const {install} = this.props;
     return (
-      <div >
-        install
+      <div className='install-wrapper'>
+        {install.total.map((item) => {
+          return (<InstallItem key={'install-page'+item.label} item={item} onToggle={install.toggle}/>)
+        })}
       </div>
     );
   }

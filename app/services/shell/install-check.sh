@@ -5,7 +5,7 @@
 all_installed='' # 已安装
 all_uninstalled='' # 未安装
 all_check=() # 所有检查项
-all_available=(oh-my-zsh node atom vscode chrome wechat peek deepin-capture deepin-terminal easeMusic QQ albert) # 所有可获取
+all_available=(oh-my-zsh node atom vscode chrome whatever wechat peek deepin-capture deepin-terminal easeMusic QQ albert) # 所有可获取
 
 whoami="`whoami`"
 
@@ -57,6 +57,18 @@ c_atom() {
   local isInstalled=0
 
   if [ -e "`which atom`" ]; then
+    isInstalled=1
+  fi
+
+  return $isInstalled
+}
+
+# whatever
+c_whatever() {
+  echo ">>> check whatever ..."
+  local isInstalled=0
+
+  if [ -n "`yaourt -Qs whatever`" ]; then
     isInstalled=1
   fi
 
