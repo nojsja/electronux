@@ -1,5 +1,5 @@
 /**
- * Created by eatong on 17-3-13.
+ * Created by nojsja on 17-3-13.
  */
 import {observable, action, computed, toJS} from 'mobx';
 import { remote } from 'electron';

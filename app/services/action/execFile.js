@@ -4,8 +4,8 @@ const { execFile } = require('child_process');
 /**
  * [_execFile description]
  * @param       {[String]}   path     [执行文件路径]
- * @param       {[Array]}   params   [执行携带参数]
- * @param       {Function} callback [执行结果会回调函数]
+ * @param       {[Array]}    params   [执行携带参数]
+ * @param       {Function}   callback [执行结果会回调函数]
  * @return      {[Object]}            [返回结果对象]
  */
 function _execFile(path, params, callback) {
