@@ -19,16 +19,14 @@ do_check() {
       all_uninstalled="$item $all_uninstalled"
     fi
   done
-  echo
-  echo "installed: ${all_installed[@]}"
-  echo "uninstalled: ${all_uninstalled[@]}"
+  echo "${all_installed[@]} | ${all_uninstalled[@]}"
 }
 
 # -------- software install ---------- #
 
 # 安装oh-my-zsh
 c_oh-my-zsh() {
-  echo ">>> check on-my-zsh ... "
+  # echo ">>> check on-my-zsh ... "
   local isInstalled=0
   if [ -n "`pacman -Qs zsh`" ]; then
     if [ -e "/home/$whoami/.oh-my-zsh" ]; then
@@ -41,7 +39,7 @@ c_oh-my-zsh() {
 
 # 安装node环境
 c_node() {
-  echo ">>> check node env ... "
+  # echo ">>> check node env ... "
   local isInstalled=0
 
   if [ -e "`which node`" ]; then
@@ -53,7 +51,7 @@ c_node() {
 
 # 安装atom编辑器
 c_atom() {
-  echo ">>> check atom editor ..."
+  # echo ">>> check atom editor ..."
   local isInstalled=0
 
   if [ -e "`which atom`" ]; then
@@ -65,7 +63,7 @@ c_atom() {
 
 # whatever
 c_whatever() {
-  echo ">>> check whatever ..."
+  # echo ">>> check whatever ..."
   local isInstalled=0
 
   if [ -n "`yaourt -Qs whatever`" ]; then
@@ -77,7 +75,7 @@ c_whatever() {
 
 # 安装vscode编辑器
 c_vscode() {
-  echo ">>> check vscode ... "
+  # echo ">>> check vscode ... "
   local isInstalled=0
 
   if [ -e "`which code`" ]; then
@@ -89,7 +87,7 @@ c_vscode() {
 
 # 安装chrome浏览器
 c_chrome() {
-  echo ">>> check google-chrome ... "
+  # echo ">>> check google-chrome ... "
   local isInstalled=0
   if [ -e "`which google-chrome`" -o -e "`which google-chrome-stable`" ]; then
     isInstalled=1
@@ -100,7 +98,7 @@ c_chrome() {
 
 # 安装微信``
 c_wechat() {
-  echo ">>> check wechat ..."
+  # echo ">>> check wechat ..."
   local isInstalled=0
 
   if [ -e "`which electronic-wechat`" ]; then
@@ -113,7 +111,7 @@ c_wechat() {
 
 # 安装Peek
 c_peek() {
-  echo ">>> check peek ..."
+  # echo ">>> check peek ..."
   local isInstalled=0
   if [ -n "`yaourt -Qs peek`" ]; then
       isInstalled=1
@@ -124,7 +122,7 @@ c_peek() {
 
 # 安装深度截图
 c_deepin-capture() {
-  echo ">>> check deepin-capture ... "
+  # echo ">>> check deepin-capture ... "
   local isInstalled=0
   if [ -n "`yaourt -Qs deepin-screenshot`" ]; then
       isInstalled=1
@@ -135,7 +133,7 @@ c_deepin-capture() {
 
 # 安装深度终端
 c_deepin-terminal() {
-  echo ">>> check deepin-terminal ... "
+  # echo ">>> check deepin-terminal ... "
   local isInstalled=0
   if [ -n "`yaourt -Qs deepin-terminal`" ]; then
       isInstalled=1
@@ -146,7 +144,7 @@ c_deepin-terminal() {
 
 # 安装ieaseMusic
 c_easeMusic() {
-  echo ">>> check ieaseMusic ... "
+  # echo ">>> check ieaseMusic ... "
   local isInstalled=0
   if [ -n "`yaourt -Qs iease-music`" ]; then
       isInstalled=1
@@ -157,7 +155,7 @@ c_easeMusic() {
 
 # 安装QQ
 c_QQ() {
-  echo ">>> check deepin-qq ... "
+  # echo ">>> check deepin-qq ... "
   local isInstalled=0
   if [ -n "`yaourt -Qs deepin.com.qq.im`" ]; then
       isInstalled=1
@@ -168,7 +166,7 @@ c_QQ() {
 
 # 安装albert
 c_albert() {
-  echo ">>> check albert ... "
+  # echo ">>> check albert ... "
   local isInstalled=0
   if [ -n "`pacman -Qs albert`" ]; then
       isInstalled=1
@@ -179,7 +177,7 @@ c_albert() {
 
 # 安装stacer
 c_stacer() {
-  echo ">>> check stacer ... "
+  # echo ">>> check stacer ... "
   local isInstalled=0
   if [ -n "`yaourt -Qs stacer`" ]; then
       isInstalled=1

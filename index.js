@@ -6,6 +6,11 @@ const {app, BrowserWindow} = require('electron');
 const path = require('path');
 const url = require('url');
 const nodeEnv = process.env.NODE_ENV;
+const { ipcMain } = require('electron');
+
+global.pathLocator = require('./app/utils/path-locator.js');
+
+const ipcMainListener = require('./app/services/middle/ipcMainListener')
 
 let win;
 
@@ -25,11 +30,13 @@ app.on('window-all-closed', () => {
 });
 
 app.on('activate', () => {
-  console.log(nodeEnv);
   if (win === null) {
     createWindow();
   }
 });
+
+/* ------------------- ipcMain ------------------- */
+ipcMainListener(ipcMain);
 
 function createWindow() {
   const {width, height} = electron.screen.getPrimaryDisplay().workAreaSize;

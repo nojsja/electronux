@@ -14,6 +14,10 @@ class InstallPage extends React.Component {
     this.props.install.toggle(item);
   }
 
+  componentDidMount() {
+    this.props.install.refresh();
+  }
+
   render() {
     const {install} = this.props;
     return (
