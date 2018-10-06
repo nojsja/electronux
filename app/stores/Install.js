@@ -1,7 +1,7 @@
 /**
  * Created by nojsja on 17-3-13.
  */
-import {observable, action, computed, toJS} from 'mobx';
+import {observable, action, computed, autorun, toJS} from 'mobx';
 import { remote } from 'electron';
 const path = require('path');
 
@@ -27,6 +27,10 @@ class Install {
   };
 
   @observable loadingMain = true;  // 主界面加载
+  @observable queue = { // 任务执行队列
+    install: [],
+    uninstall: []
+  }
 
   constructor() {
     const that = this;
@@ -39,6 +43,7 @@ class Install {
       if (rsp.error) {
         console.log(rsp.error);
       }else {
+        consoleLog('install.check: ', rsp.result);
         let all = rsp.result.split('|');
         let installed = all.shift().split(' ');
         let uninstalled = all.shift().split(' ');
@@ -48,7 +53,10 @@ class Install {
 
     // 安装脚本文件事件 //
     ipcRenderer.on('install_exec-file_reply.do', (event, rsp) => {
-      this.loadingMain = false;
+      // this.loadingMain = false;
+      rsp.params.forEach( (item) => {
+        this.outqueue(item, 'install');
+      });
       if (rsp.error) {
         console.log(rsp.error);
       }else {
@@ -61,7 +69,10 @@ class Install {
 
     // 卸载脚本文件事件 //
     ipcRenderer.on('install_exec-file_reply.undo', (event, rsp) => {
-      this.loadingMain = false;
+      // this.loadingMain = false;
+      rsp.params.forEach( (item) => {
+        this.outqueue(item, 'uninstall');
+      });
       if (rsp.error) {
         console.log(rsp.error);
       }else {
@@ -107,6 +118,34 @@ class Install {
     });
   }
 
+  /* ------------------- auto run ------------------- */
+
+  /* ------------------- action ------------------- */
+
+  // 将一个toggle动作移出队列 //
+  @action outqueue = (item, action) => {
+    if (action && this.queue[action]) {
+      let index = this.queue[action].indexOf(item);
+      if (index !== -1) {
+        this.queue[action].splice(index, 1);
+      }
+      // 出队列的同时执行下一个toggle动作
+      (this.queue[action].length) && ( this.toggle(this.queue[action].pop()) );
+    }
+  }
+
+  // 将一个toggle动作放入队列 //
+  @action intoqueue = (item, status) => {
+    let action = status ? 'uninstall' : 'install';
+    if (action && this.queue[action]) {
+      if (this.queue[action].indexOf(item) === -1) {
+        (this.queue[action].push(item));
+        // 队列中没有任务则直接执行toggle动作
+        (this.queue[action].length === 1) && ( this.toggle(item) );
+      }
+    }
+  }
+
   // 改变一项的安装状态 //
   @action toggle = (item) => {
     if ( this.items[item] !== undefined ) {
@@ -114,7 +153,7 @@ class Install {
       let target = this.items[item] ? 'install-undo.sh' : 'install-do.sh';
       let signal = this.items[item] ? 'install_exec-file.undo' : 'install_exec-file.do';
 
-      this.loadingMain = true;
+      // this.loadingMain = true;
       ipcRenderer.send(signal, {
         dir: 'shell',
         target,
@@ -123,7 +162,6 @@ class Install {
     }
   }
 
-  /* ------------------- action ------------------- */
 
   // 获取最新的安装状态 //
   @action refresh = () => {

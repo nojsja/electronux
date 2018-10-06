@@ -22,16 +22,46 @@ class InstallPage extends React.Component {
     this.props.install.refresh();
   }
 
+  // 获取loading状态信息 //
+  getLoadingStatus = (name, queue) => {
+    let loading = false;
+    let loadingLable = null;
+
+    if (queue.install.indexOf(name) !== -1) {
+      loading = true;
+      loadingLable = 'installing';
+    }else if (queue.uninstall.indexOf(name) !== -1) {
+      loading = true;
+      loadingLable = 'uninstalling';
+    }
+
+    return [loading, loadingLable];
+  }
+
   render() {
     const { install } = this.props;
-    const { loadingMain, toggle } = install;
+    const { loadingMain, queue, intoqueue } = install;
+    let loading = false;
+    let loadingLable = null;
+
     return (
       <div className='install-wrapper'>
         <Dimmer active={loadingMain} inverted >
           <Loader size='small'>Loading</Loader>
         </Dimmer>
         {install.total.map((item) => {
-          return (<InstallItem key={'install-page'+item.label} item={item} onToggle={toggle}/>)
+          loading = false;
+          loadingLable = null;
+          [loading, loadingLable] = this.getLoadingStatus(item.label, queue);
+          return (
+            <InstallItem
+              key={'install-page'+item.label}
+              loading={loading}
+              loadingLable={loadingLable}
+              item={item}
+              onToggle={intoqueue}
+            />
+          )
         })}
       </div>
     );

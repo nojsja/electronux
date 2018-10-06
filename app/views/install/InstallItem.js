@@ -3,14 +3,24 @@
  */
 import React from 'react';
 import { Checkbox } from 'semantic-ui-react';
+import { Dimmer, Loader } from 'semantic-ui-react';
 import './install.css';
 
 class InstallItem extends React.Component {
 
   render() {
-    const { item, onToggle } = this.props;
+    const {
+      item, onToggle,
+      loading, loadingLable
+    } = this.props;
+
     return (
       <div className='install-item-wrapper'>
+
+        <Dimmer active={loading} inverted >
+          <Loader size='tiny'>{ loadingLable || 'Loading'}</Loader>
+        </Dimmer>
+
         <div className='install-item-image'>
           <img src={item.url}/>
         </div>
@@ -20,7 +30,7 @@ class InstallItem extends React.Component {
         }
         </div>
         <div className='install-item-switch'>
-          <Checkbox checked={item.status} slider onClick={() => {onToggle(item.label)}}/>
+          <Checkbox checked={item.status} slider onClick={() => {onToggle(item.label, item.status)}}/>
         </div>
       </div>
     );
