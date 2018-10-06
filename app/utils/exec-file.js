@@ -31,6 +31,7 @@ function _execFile(path, params, callback) {
 
   } catch (e) {
     console.error(e);
+    throw new Error(`exec file -> ${path} error !`);
   }
 }
 

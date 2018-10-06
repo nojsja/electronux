@@ -10,7 +10,7 @@ const { ipcMain } = require('electron');
 
 /* ------------------- self module ------------------- */
 global.pathLocator = require('./app/utils/path-locator.js');
-const ipcMainListener = require('./app/services/middle/ipcMainListener')
+const ipcMainListener = require('./app/services/middleware/ipcMainListener')
 
 /* ------------------- var ------------------- */
 let win;

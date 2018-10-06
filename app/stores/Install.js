@@ -11,7 +11,7 @@ const { ipcRenderer } = require('electron');  // 渲染进程
 const path = require('path');
 
 class Install {
-  @observable items = {
+  @observable items = {  // 所有安装项
     'oh-my-zsh': false,
     'node': false,
     'atom': false,
@@ -27,11 +27,16 @@ class Install {
     'whatever': false,
   };
 
+  @observable loadingMain = true;  // 主界面加载
+
   constructor() {
     const that = this;
 
-    // 执行脚本返回事件
-    ipcRenderer.on('install_exec-file-reply', (event, rsp) => {
+    /* ------------------- ipc render ------------------- */
+
+    // 检查脚本文件事件 //
+    ipcRenderer.on('install_exec-file_reply.check', (event, rsp) => {
+      this.loadingMain = false;
       if (rsp.error) {
         console.log(rsp.error);
       }else {
@@ -42,14 +47,40 @@ class Install {
       }
     });
 
+    // 安装脚本文件事件 //
+    ipcRenderer.on('install_exec-file_reply.do', (event, rsp) => {
+      if (rsp.error) {
+        console.log(rsp.error);
+      }else {
+        console.log('install.do: ', rsp.result);
+        rsp.params.forEach(function (name) {
+          that.updateOne(name, true);
+        });
+      }
+    });
+
+    // 卸载脚本文件事件 //
+    ipcRenderer.on('install_exec-file_reply.undo', (event, rsp) => {
+      if (rsp.error) {
+        console.log(rsp.error);
+      }else {
+        console.log('install.undo: ', rsp.result);
+        rsp.params.forEach(function (name) {
+          that.updateOne(name, false);
+        });
+      }
+    });
+
   }
 
-  // 安装项数组
+  /* ------------------- computed ------------------- */
+
+  // 安装项数组 //
   @computed get totalArray() {
     return Object.keys(this.items).map( item => item )
   }
 
-  // 获取所有安装项
+  // 获取所有安装项 //
   @computed get total() {
     let items = this.items;
     let _dir = 'resources/install';
@@ -61,29 +92,42 @@ class Install {
     }) );
   }
 
-  // 获取所有已安装项
+  // 获取所有已安装项 //
   @computed get installed() {
     return Object.keys(this.items).filter((item) => {
       return this.items[item];
     });
   }
 
-  // 获取所有未安装项
+  // 获取所有未安装项 //
   @computed get uninstalled() {
     return Object.keys(this.items).filter((item) => {
       return !this.items[item];
     });
   }
 
-  // 改变一项的安装状态
+  // 改变一项的安装状态 //
   @action toggle = (item) => {
-    ( this.items[item] !== undefined ) && ( this.items[item] = !this.items[item] );
+    if ( this.items[item] !== undefined ) {
+
+      let target = this.items[item] ? 'install-undo.sh' : 'install-do.sh';
+      let signal = this.items[item] ? 'install_exec-file.undo' : 'install_exec-file.do';
+
+      ipcRenderer.send(signal, {
+        dir: 'shell',
+        target,
+        params: [item]
+      })
+    }
   }
 
-  // 获取最新的安装状态
+  /* ------------------- action ------------------- */
+
+  // 获取最新的安装状态 //
   @action refresh = () => {
     console.log('refresh');
-    ipcRenderer.send('install_exec-file', {
+    this.loadingMain = true;
+    ipcRenderer.send('install_exec-file.check', {
       dir: 'shell',
       target: 'install-check.sh',
       params: this.totalArray
@@ -91,7 +135,7 @@ class Install {
 
   }
 
-  // 更新最新的安装状态
+  // 更新最新的安装状态 //
   @action update = (installed, uninstalled) => {
     installed && installed.length && installed.forEach( (item) => {
       item && (this.items[item] !== undefined) && (this.items[item] = true);
@@ -99,6 +143,12 @@ class Install {
     uninstalled && uninstalled.length && uninstalled.forEach( (item) => {
       item && (this.items[item] !== undefined) && (this.items[item] = false);
     });
+  }
+
+  // 更新一项的安装状态 //
+  @action updateOne = (name, status) => {
+    status = status ? true : false;
+    ( this.items[item] !== undefined ) && ( this.items[item] = status );
   }
 }
 
