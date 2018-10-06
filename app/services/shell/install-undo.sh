@@ -9,24 +9,8 @@ whoami="`whoami`"
 
 # -------- env install ---------- #
 
-# 安装初始化环境
-init_uninstall() {
-  local all=(curl wget axel aria2 gcc make patch)
-  local allStr=''
-  for item in "${all[@]}"; do
-    if [ -n "`pacman -Qs $item`" ]; then
-      allStr="$allStr $item"
-    fi
-  done
-  if [ -n "$allStr" ]; then
-    echo ">>> init env uninstall ... "
-    sudo pacman -R --noconfirm "$allStr"
-  fi
-}
-
 # 开始逐个安装
 do_uninstall() {
-  init_install
   for (( i = 0; i < ${#all_install[@]}; i++ )); do
     u_${all_install[$i]};
   done
@@ -63,14 +47,13 @@ u_whatever() {
 # 安装vscode编辑器
 u_vscode() {
   echo ">>> uninstall vscode ... "
-  sudo pacman -R --noconfirm code
+  sudo pacman -R --noconfirm visual-studio-code-bin
 }
 
 # 安装chrome浏览器
 u_chrome() {
   echo ">>> uninstall google-chrome ... "
   sudo pacman -R --noconfirm google-chrome
-  sudo pacman -R --noconfirm google-chrome-stable
 }
 
 # 安装微信

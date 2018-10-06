@@ -1,5 +1,5 @@
 /**
- * Created by nojsja on 17-3-14.
+ * Created by nojsja on 2018
  */
 const electron = require('electron');
 const {app, BrowserWindow} = require('electron');
@@ -10,6 +10,7 @@ const { ipcMain } = require('electron');
 
 /* ------------------- self module ------------------- */
 global.pathLocator = require('./app/utils/path-locator.js');
+global.consoleLog = require('./app/utils/console-log.js');
 const ipcMainListener = require('./app/services/middleware/ipcMainListener')
 
 /* ------------------- var ------------------- */
