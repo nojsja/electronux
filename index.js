@@ -1,13 +1,21 @@
 /**
- * Created by eatong on 17-3-14.
+ * Created by nojsja on 17-3-14.
  */
 const electron = require('electron');
 const {app, BrowserWindow} = require('electron');
 const path = require('path');
 const url = require('url');
 const nodeEnv = process.env.NODE_ENV;
+const { ipcMain } = require('electron');
 
+/* ------------------- self module ------------------- */
+global.pathLocator = require('./app/utils/path-locator.js');
+const ipcMainListener = require('./app/services/middleware/ipcMainListener')
+
+/* ------------------- var ------------------- */
 let win;
+
+/* ------------------- electron event ------------------- */
 
 app.on('ready', () => {
 
@@ -25,15 +33,23 @@ app.on('window-all-closed', () => {
 });
 
 app.on('activate', () => {
-  console.log(nodeEnv);
   if (win === null) {
     createWindow();
   }
 });
 
+/* ------------------- ipcMain ------------------- */
+ipcMainListener(ipcMain);
+
+/* ------------------- main window ------------------- */
 function createWindow() {
   const {width, height} = electron.screen.getPrimaryDisplay().workAreaSize;
-   win = new BrowserWindow({width, height});
+  console.log(width, height);
+   win = new BrowserWindow({
+     width: width*(3/6),
+     height: height*(4/6),
+     title: 'electronux'
+   });
 
   if (nodeEnv === 'development') {
     //delay 1000ms to wait for webpack-dev-server start

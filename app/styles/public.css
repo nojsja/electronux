@@ -1,0 +1,43 @@
+body {
+  background-color: #ffffff;
+}
+
+/*  container
+============================================================================= */
+.container-router {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  padding: 1rem;
+}
+
+.shadow-normal {
+  box-shadow: 0 0 5px grey;
+}
+
+.container-router-left {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 17rem;
+  height: 100%;
+  padding: 1rem;
+}
+
+.container-router-right {
+  position: absolute;
+  left: 17rem;
+  top: 0;
+  right: 0;
+  height: 100%;
+}
+
+.router-right-wrapper {
+  position: absolute;
+  top: 0rem;
+  left: 1rem;
+  right: 0rem;
+  bottom: 0rem;
+  padding: .5rem;
+  overflow-y: scroll;
+}

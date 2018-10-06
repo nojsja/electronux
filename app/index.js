@@ -1,10 +1,13 @@
 /**
- * Created by eatong on 17-3-12.
+ * Created by nojsja on 17-3-12.
  */
 import React from 'react';
 import {render} from 'react-dom';
 import {AppContainer} from 'react-hot-loader'
-import './styles/app.css';
+
+import 'semantic-ui-css/semantic.min.css';
+import './styles/public.css';
+
 import App from './App';
 
 render(

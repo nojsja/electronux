@@ -1,5 +1,5 @@
 /**
- * Created by eatong on 17-3-12.
+ * Created by nojsja on 17-3-12.
  */
 const path = require('path');
 const webpack = require('webpack');
@@ -27,6 +27,12 @@ module.exports = {
       {
         test: /\.css$/,
         use: ['style-loader', 'css-loader']
+      },
+      {
+        test: /\.(png|jpg|gif|svg|woff|eot|ttf|woff2)$/,
+        use: [
+          'file-loader',
+        ]
       }
     ]
   },

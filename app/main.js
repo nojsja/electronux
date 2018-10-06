@@ -1,5 +1,5 @@
 /**
- * Created by eatong on 17-3-13.
+ * Created by nojsja on 17-3-13.
  */
 const electron = require('electron');
 const {app, BrowserWindow} = require('electron');
@@ -46,8 +46,13 @@ app.on('activate', () => {
 });
 
 function createWindow() {
-  const {width, height} = electron.screen.getPrimaryDisplay().workAreaSize;
-  const win = new BrowserWindow({width, height});
+  const { width, height } = electron.screen.getPrimaryDisplay().workAreaSize;
+  console.log(width, height);
+  const win = new BrowserWindow({
+    width: width*(3/6),
+    height: height*(4/6),
+    title: 'electronux'
+  });
 
   if (nodeEnv === 'development') {
     win.loadURL(url.format({
