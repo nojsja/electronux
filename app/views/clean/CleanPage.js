@@ -9,10 +9,12 @@ class CleanPage extends React.Component {
   }
 
   render() {
-    const { clean } = this.props;
+    const { clean, animation } = this.props;
     return (
-      <div >
-        clean
+      <div className={`router-right-wrapper ${animation}`}>
+        <div>
+          clean
+        </div>
       </div>
     );
   }

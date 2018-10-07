@@ -13,10 +13,15 @@ import install from './install/InstallPage';
 import clean from './clean/CleanPage';
 import info from './info/InfoPage';
 
+import ScrollIndicator from './public/ScrollIndicator';
+
 @inject('pub') @observer
 class HomePage extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+    };
+    this.lastActiveItem = null;
     this.componentMap = {
       clean,
       startup,
@@ -25,12 +30,17 @@ class HomePage extends Component {
     };
   }
 
-  componentWillMount() {
-  }
+  /* ------------------- react event ------------------- */
+
 
   componentDidMount() {
+  }
+
+  componentWillUnmount() {
 
   }
+
+  /* ------------------- page event ------------------- */
 
   openExternalLink = (link) => {
     const { pub } = this.props;
@@ -47,13 +57,17 @@ class HomePage extends Component {
     pub.setActiveItem(name);
   }
 
-  activateComponent = (name) => {
+  /* ------------------- element builder ------------------- */
+
+  /* 获取当前激活组件 */
+  activateComponent = (name, animation) => {
     const Compolent = this.componentMap[name];
     return (
-      <Compolent />
+      <Compolent animation={animation} />
     );
   }
 
+  /* 子菜单组件组件 */
   buildSubItem = (name, i, activeItem) => (
     <Menu.Item
       key={`${name}-${i}-subitem`}
@@ -63,6 +77,7 @@ class HomePage extends Component {
     />
   )
 
+  /* 根据导航菜单显示状态选择样式类 */
   getToggleState = navActivate => ({
     toggleIcon: navActivate ? faArrowCircleLeft : faArrowCircleRight,
     toggleClass: navActivate ? 'router-left-toggle' : 'router-left-toggle toggle-hidden',
@@ -70,9 +85,31 @@ class HomePage extends Component {
     leftToggleClass: navActivate ? '' : 'toggle-hidden',
   })
 
+  /* 根据组件位置获取计算动画类型 */
+  getAnimation = (activeItem, total) => {
+    let animationClass = 'right-left-show-animation';
+
+    if (this.lastActiveItem) {
+      const lastIndex = total.indexOf(this.lastActiveItem);
+      const nowIndex = total.indexOf(activeItem);
+      if (nowIndex > lastIndex) {
+        animationClass = 'right-left-show-animation';
+      } else {
+        animationClass = 'left-right-show-animation';
+      }
+    }
+    this.lastActiveItem = activeItem;
+    return {
+      animation: animationClass,
+    };
+  }
+
+  /* ------------------- page render ------------------- */
+
   render() {
     const { pub } = this.props;
     const { activeItem, navActivate, total } = pub.state;
+    const { animation } = this.getAnimation(activeItem, total);
     const {
       toggleIcon, toggleClass, rightToggleClass, leftToggleClass,
     } = this.getToggleState(navActivate);
@@ -95,11 +132,14 @@ class HomePage extends Component {
           </div>
         </div>
         <div className={`container-router-right ${rightToggleClass}`}>
-          <div className="router-right-wrapper">
-            {
-              this.activateComponent(activeItem)
-            }
-          </div>
+          {
+            this.activateComponent(activeItem, animation)
+          }
+          <ScrollIndicator
+            total={total}
+            activeItem={activeItem}
+            handleItemClick={this.handleItemClick}
+          />
         </div>
       </div>
     );

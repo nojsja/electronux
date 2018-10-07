@@ -2,6 +2,50 @@ body {
   background-color: #ffffff;
 }
 
+
+/*  Keyframes
+============================================================================= */
+/* 从左到右显示动画 */
+@keyframes leftRightShow {
+  0% {
+    transform: translateX(-5rem);
+    opacity: .5;
+  }
+
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* 从左到右显示动画 */
+@keyframes rightLeftShow {
+  0% {
+    transform: translateX(5rem);
+    opacity: .5;
+  }
+
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/*  animation class
+============================================================================= */
+.left-right-show-animation {
+  animation: leftRightShow;
+  animation-duration: .25s;
+  animation-timing-function: ease-in-out;
+}
+
+.right-left-show-animation {
+  animation: rightLeftShow;
+  animation-duration: .25s;
+  animation-timing-function: ease-in-out;
+}
+
+
 /*  container
 ============================================================================= */
 .container-router {
@@ -22,6 +66,8 @@ body {
 .shadow-normal {
   box-shadow: 0 0 7px black;
 }
+
+/* LEFT */
 
 .container-router-left {
   position: absolute;
@@ -102,6 +148,8 @@ body {
   text-shadow: -1px 1px 1px grey;
 }
 
+/* RIGHT */
+
 .container-router-right {
   position: absolute;
   left: 17rem;
@@ -120,4 +168,33 @@ body {
   bottom: 0rem;
   padding: .5rem;
   overflow-y: scroll;
+}
+
+/* ScrollIndicator */
+.router-scroll-indicator {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2rem;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.router-scroll-indicator > .indicator-dot {
+  display: flex;
+  width: .9rem;
+  height: .9rem;
+  margin: 0 1.2rem;
+  border-radius: 50%;
+}
+
+.router-scroll-indicator > .dot-active {
+  background-color: grey;
+}
+
+.router-scroll-indicator > .dot-inactive {
+  background-color: white;
 }

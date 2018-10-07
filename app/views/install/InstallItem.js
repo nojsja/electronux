@@ -19,15 +19,15 @@ function InstallItem({ ...props }) {
       <div className="install-item-image">
         <img alt="error" src={item.url} />
       </div>
-      <div className="install-item-label" title={item.label}>
-        {item.label}
-      </div>
       <div className="install-item-switch">
         <Checkbox
           checked={item.status}
           slider
           onClick={() => { onToggle(item.label, item.status); }}
         />
+      </div>
+      <div className="install-item-label" title={item.label}>
+        {item.label}
       </div>
     </div>
   );

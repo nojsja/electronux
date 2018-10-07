@@ -34,28 +34,30 @@ class InstallPage extends React.Component {
   }
 
   render() {
-    const { install } = this.props;
+    const { install, animation } = this.props;
     const { loadingMain, queue, intoqueue } = install;
     let loading = false;
     let loadingLable = null;
 
     return (
-      <div className="install-wrapper">
-        <Dimmer active={loadingMain} inverted>
-          <Loader size="small">Loading</Loader>
-        </Dimmer>
-        {install.total.map((item) => {
-          [loading = false, loadingLable = null] = this.getLoadingStatus(item.label, queue);
-          return (
-            <InstallItem
-              key={`install-page-${item.label}`}
-              loading={loading}
-              loadingLable={loadingLable}
-              item={item}
-              onToggle={intoqueue}
-            />
-          );
-        })}
+      <div className={`router-right-wrapper ${animation}`}>
+        <div className="install-wrapper">
+          <Dimmer active={loadingMain} inverted>
+            <Loader size="small">Loading</Loader>
+          </Dimmer>
+          {install.total.map((item) => {
+            [loading = false, loadingLable = null] = this.getLoadingStatus(item.label, queue);
+            return (
+              <InstallItem
+                key={`install-page-${item.label}`}
+                loading={loading}
+                loadingLable={loadingLable}
+                item={item}
+                onToggle={intoqueue}
+              />
+            );
+          })}
+        </div>
       </div>
     );
   }

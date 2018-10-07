@@ -9,10 +9,12 @@ class InfoPage extends React.Component {
   }
 
   render() {
-    const { info } = this.props;
+    const { info, animation } = this.props;
     return (
-      <div >
-        info
+      <div className={`router-right-wrapper ${animation}`}>
+        <div>
+          info
+        </div>
       </div>
     );
   }
