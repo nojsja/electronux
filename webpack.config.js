@@ -2,36 +2,36 @@ const path = require('path');
 const webpack = require('webpack');
 
 module.exports = {
-  devtool:'source-map',
+  devtool: 'source-map',
   entry: [
     'react-hot-loader/patch',
     'webpack-dev-server/client?http://localhost:3000',
     'webpack/hot/only-dev-server',
     './app/index'
   ],
-  mode:'development',
+  mode: 'development',
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist'),
-    publicPath: '/'
+    publicPath: '/',
   },
   module: {
     rules: [
       {
         test: /\.js$/,
-        use: ['babel-loader']
+        use: ['babel-loader'],
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader']
+        use: ['style-loader', 'css-loader'],
       },
       {
         test: /\.(png|jpg|gif|svg|woff|eot|ttf|woff2)$/,
         use: [
           'file-loader',
-        ]
-      }
-    ]
+        ],
+      },
+    ],
   },
 
   plugins: [

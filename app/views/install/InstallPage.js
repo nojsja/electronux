@@ -45,9 +45,7 @@ class InstallPage extends React.Component {
           <Loader size="small">Loading</Loader>
         </Dimmer>
         {install.total.map((item) => {
-          loading = false;
-          loadingLable = null;
-          [loading, loadingLable] = this.getLoadingStatus(item.label, queue);
+          [loading = false, loadingLable = null] = this.getLoadingStatus(item.label, queue);
           return (
             <InstallItem
               key={`install-page-${item.label}`}

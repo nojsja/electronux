@@ -11,8 +11,16 @@ body {
   padding: 1rem;
 }
 
+.container-router > .container-router-left.toggle-hidden {
+  transform: translateX(-100%);
+}
+
+.container-router > .container-router-right.toggle-hidden {
+  left: 0;
+}
+
 .shadow-normal {
-  box-shadow: 0 0 5px grey;
+  box-shadow: 0 0 7px black;
 }
 
 .container-router-left {
@@ -22,6 +30,76 @@ body {
   width: 17rem;
   height: 100%;
   padding: 1rem;
+  /* border-top-right-radius: 1rem; */
+  /* border-bottom-right-radius: 1rem; */
+  z-index: 50;
+  transition: .2s;
+}
+
+.router-left-mask {
+  position: absolute;
+  top:  0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: white;
+  opacity: .1;
+}
+
+.router-left-background {
+  background-image: url("../../resources/public/gohome.jpg"); /* The image used */
+  background-color: #f6f6f6; /* Used if the image is unavailable */
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Do not repeat the image */
+  background-size: cover; /* cover size */
+}
+
+.router-left-menu {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2rem;
+  color: white;
+  text-align: center;
+  background-color: rgba(1,1,1, 0.5);
+  z-index: 50;
+}
+
+.router-left-menu > .router-left-toggle {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  right: 0;
+  bottom: 0;
+  height: 2rem;
+  width: 3rem;
+  color: white;
+  z-index: 50;
+}
+
+.router-left-menu > span:hover  {
+  color: blue;
+  cursor: pointer;
+}
+
+.router-left-menu > .toggle-hidden {
+  background-color: rgba(1,1,1, 0.5);
+  right: -3rem;
+}
+
+/* >>> force cover semantic */
+.container-router-left > .ui.pointing.vertical.menu {
+  background-color:rgba(255,255,255,0.75);
+}
+
+.text-white-shadow {
+  font-size: 1.1rem;
+  text-shadow: -1px 1px 1px grey;
 }
 
 .container-router-right {
@@ -30,6 +108,8 @@ body {
   top: 0;
   right: 0;
   height: 100%;
+  z-index: 40;
+  transition: .2s;
 }
 
 .router-right-wrapper {

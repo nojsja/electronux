@@ -6,6 +6,7 @@ import InstallState from './stores/Install';
 import CleanState from './stores/Clean';
 import InfoState from './stores/Info';
 import StartupState from './stores/Startup';
+import PublicState from './stores/Public';
 
 import HomePage from './views/HomePage';
 import InfoPage from './views/info/InfoPage';
@@ -18,6 +19,7 @@ const stores = {
   startup: new StartupState(),
   info: new InfoState(),
   clean: new CleanState(),
+  pub: new PublicState(),
 };
 
 
