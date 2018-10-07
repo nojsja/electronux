@@ -1,6 +1,3 @@
-/**
- * Created by nojsja on 17-3-13.
- */
 import React, {PropTypes, Component} from 'react';
 import { Link } from 'react-router-dom';
 import { Container, Menu, Grid } from 'semantic-ui-react';

@@ -1,6 +1,3 @@
-/**
- * Created by nojsja on 2018
- */
 const electron = require('electron');
 const {app, BrowserWindow} = require('electron');
 const path = require('path');

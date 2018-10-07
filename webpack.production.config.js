@@ -1,7 +1,3 @@
-/**
- * Created by nojsja on 17-3-13.
- */
-
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');

@@ -9,60 +9,53 @@ const SudoPrompt = require(pathLocator('utils', 'sudo-prompt.js'));
 const sudo = new SudoPrompt();
 
 function ipcMain(ipc) {
-
   // 安装项检查 //
-  ipc.on('install_exec-file.check', function (event, args) {
-
-    const _path = pathLocator(args.dir, args.target);
-    execFile(_path, args.params, function (rsp) {
+  ipc.on('install_exec-file.check', (event, args) => {
+    const path = pathLocator(args.dir, args.target);
+    execFile(path, args.params, (rsp) => {
       event.sender.send('install_exec-file_reply.check', rsp);
     });
   });
 
   // 安装项安装 //
-  ipc.on('install_exec-file.do', function (event, args) {
+  ipc.on('install_exec-file.do', (event, args) => {
 
-    const _path = pathLocator(args.dir, args.target);
+    const path = pathLocator(args.dir, args.target);
 
-    sudo.execFile(_path, args.params).then(function (result) {
+    sudo.execFile(path, args.params).then((result) => {
       event.sender.send('install_exec-file_reply.do', {
         error: null,
         params: args.params,
-        result
+        result,
       });
-
-    }, function (err) {
+    }, (err) => {
       console.error(err);
       event.sender.send('install_exec-file_reply.do', {
         error: err,
         params: args.params,
-        result: err
+        result: err,
       });
     });
   });
 
   // 安装项卸载 //
-  ipc.on('install_exec-file.undo', function (event, args) {
-
-    const _path = pathLocator(args.dir, args.target);
-
-    sudo.execFile(_path, args.params).then(function (result) {
+  ipc.on('install_exec-file.undo', (event, args) => {
+    const path = pathLocator(args.dir, args.target);
+    sudo.execFile(path, args.params).then((result) => {
       event.sender.send('install_exec-file_reply.undo', {
         error: null,
         params: args.params,
-        result
+        result,
       });
-
-    }, function (err) {
+    }, (err) => {
       console.error(err);
       event.sender.send('install_exec-file_reply.undo', {
         error: err,
         params: args.params,
-        result: err
+        result: err,
       });
     });
   });
-
-};
+}
 
 module.exports = ipcMain;

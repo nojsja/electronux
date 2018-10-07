@@ -1,9 +1,6 @@
-/**
- * Created by nojsja on 17-3-13.
- */
-import React, {Component}from 'react';
-import {HashRouter, Route, Link} from 'react-router-dom';
-import {Provider} from 'mobx-react';
+import React from 'react';
+import { HashRouter, Route } from 'react-router-dom';
+import { Provider } from 'mobx-react';
 
 import InstallState from './stores/Install';
 import CleanState from './stores/Clean';
@@ -20,24 +17,24 @@ const stores = {
   install: new InstallState(),
   startup: new StartupState(),
   info: new InfoState(),
-  clean: new CleanState()
+  clean: new CleanState(),
 };
 
 
-export default  class App extends Component {
-  render() {
-    return (
-      <Provider {...stores}>
-        <HashRouter>
-          <div>
-            <Route exact path="/info" component={InfoPage}/>
-            <Route exact path="/startup" component={StartupPage}/>
-            <Route exact path="/clean" component={CleanPage}/>
-            <Route exact path="/install" component={InstallPage}/>
-            <Route exact path="/" component={HomePage}/>
-          </div>
-        </HashRouter>
-      </Provider>
-    )
-  }
+function App() {
+  return (
+    <Provider {...stores}>
+      <HashRouter>
+        <div>
+          <Route exact path="/info" component={InfoPage} />
+          <Route exact path="/startup" component={StartupPage} />
+          <Route exact path="/clean" component={CleanPage} />
+          <Route exact path="/install" component={InstallPage} />
+          <Route exact path="/" component={HomePage} />
+        </div>
+      </HashRouter>
+    </Provider>
+  );
 }
+
+export default App;

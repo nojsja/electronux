@@ -1,29 +1,23 @@
-/**
- * Created by nojsja on 17-3-13.
- */
-import {observable, action, computed, toJS} from 'mobx';
-import { remote } from 'electron';
+
+import { observable, action, computed } from 'mobx';
 
 class Clean {
   @observable items = {
     'oh-my-zsh': false,
-    'git': false,
-    'svn': false,
-    'Whatever': false,
-    'chrome': false,
-    'QQ': false,
-    'wechat': false
+    git: false,
+    svn: false,
+    Whatever: false,
+    chrome: false,
+    QQ: false,
+    wechat: false,
   };
-
-  constructor() {
-  }
 
   @computed get installs() {
     return this.items;
   }
 
   @action addInstall(title) {
-    this.items[tiel] = false;
+    this.items[title] = false;
   }
 
   @action toggleInstall(index) {

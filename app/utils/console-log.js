@@ -5,8 +5,8 @@
 const nodeEnv = process.env.NODE_ENV;
 
 function consoleLog(item) {
-  if (nodeEnv == 'development') {
-    console.log(item);
+  if (nodeEnv === 'development') {
+    console.trace(item);
   }
 }
 

@@ -1,6 +1,3 @@
-/**
- * Created by nojsja on 17-3-12.
- */
 const path = require('path');
 const webpack = require('webpack');
 

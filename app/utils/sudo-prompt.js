@@ -7,7 +7,7 @@ const child = require('child_process');
 const fs = require('fs');
 
 class SudoPrompt {
-  constructor(){
+  constructor() {
     this.bins = [
       '/usr/bin/pkexec',
       '/usr/bin/gksu',
@@ -19,11 +19,11 @@ class SudoPrompt {
   getBin() {
     if (this.bin) return this.bin;
 
-    for (let i = 0; i < this.bins.length; i++) {
-        if (fs.existsSync(this.bins[i])) {
-          this.bin = this.bins[i];
-          break;
-        }
+    for (let i = 0; i < this.bins.length; i += 1) {
+      if (fs.existsSync(this.bins[i])) {
+        this.bin = this.bins[i];
+        break;
+      }
     }
     return this.bin;
   }
@@ -35,20 +35,20 @@ class SudoPrompt {
    * @param  { [Object] }  options [exec可定制的参数]
    * @return { Promise }           [返回Promise对象]
    */
-  async exec(command, params, options) {
-    let self = this;
+  async exec(_command, _params, _options) {
+    const self = this;
     self.getBin();
-    params = Array.isArray(params) ? params.join(' ') : params;
-    options = (typeof(options) === 'object') ? options : {};
-    command = `${command} ${params}`;
+    const params = Array.isArray(_params) ? _params.join(' ') : _params;
+    const options = (typeof (_options) === 'object') ? _options : {};
+    const command = `${_command} ${params}`;
 
     return new Promise(async (resolve, reject) => {
-      child.exec(command, options, (err, stdout, stderr) => {
-        if (err || stderr) {
-          err = err ? err : stderr;
+      child.exec(command, options, (_err, _stdout, _stderr) => {
+        if (_err || _stderr) {
+          const err = !_err ? _stderr : _err;
           reject(err);
-        }else {
-          resolve(stdout);
+        } else {
+          resolve(_stdout);
         }
       });
     });
@@ -61,20 +61,20 @@ class SudoPrompt {
    * @param  { [Object] }  options [exec可定制的参数]
    * @return { Promise }           [返回Promise对象]
    */
-  async execFile(path, params, options) {
-    let self = this;
+  async execFile(_path, _params, _options) {
+    const self = this;
     self.getBin();
-    params = Array.isArray(params) ? params.join(' ') : params;
-    options = (typeof(options) === 'object') ? options : {};
-    let command = `${self.bin} ${path} ${params}`;
+    const params = Array.isArray(_params) ? _params.join(' ') : _params;
+    const options = (typeof (_options) === 'object') ? _options : {};
+    const command = `${self.bin} ${_path} ${params}`;
 
     return new Promise(async (resolve, reject) => {
-      child.exec(command, options, (err, stdout, stderr) => {
-        if (err || stderr) {
-          err = err ? err : stderr;
+      child.exec(command, options, (_err, _stdout, _stderr) => {
+        if (_err || _stderr) {
+          const err = !_err ? _stderr : _err;
           reject(err);
-        }else {
-          resolve(stdout);
+        } else {
+          resolve(_stdout);
         }
       });
     });

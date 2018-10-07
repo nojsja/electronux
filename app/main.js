@@ -1,16 +1,13 @@
-/**
- * Created by nojsja on 17-3-13.
- */
 const electron = require('electron');
-const {app, BrowserWindow} = require('electron');
+const { app, BrowserWindow } = require('electron');
 const path = require('path');
 const url = require('url');
+
 const nodeEnv = process.env.NODE_ENV;
 
 app.on('ready', () => {
-
   if (nodeEnv === 'development') {
-    const webpack = require("webpack");
+    const webpack = require('webpack');
     const WebpackDevServer = require('webpack-dev-server');
     const webpackConfig = require('../webpack.config');
 
@@ -22,8 +19,8 @@ app.on('ready', () => {
       }
     });
 
-    server.listen(3000, "127.0.0.1", function () {
-      console.log("Starting server on http://localhost:3000");
+    server.listen(3000, '127.0.0.1', () => {
+      console.log('Starting server on http://localhost:3000');
       createWindow();
     });
 
@@ -49,23 +46,23 @@ function createWindow() {
   const { width, height } = electron.screen.getPrimaryDisplay().workAreaSize;
   console.log(width, height);
   const win = new BrowserWindow({
-    width: width*(3/6),
-    height: height*(4/6),
-    title: 'electronux'
+    width: width * (3 / 6),
+    height: height * (4 / 6),
+    title: 'electronux',
   });
 
   if (nodeEnv === 'development') {
     win.loadURL(url.format({
-      pathname: "localhost:3000",
+      pathname: 'localhost:3000',
       protocol: 'http:',
-      slashes: true
+      slashes: true,
     }));
     win.webContents.openDevTools();
   } else {
     win.loadURL(url.format({
       pathname: path.join(path.resolve(__dirname, '../dist'), 'index.html'),
       protocol: 'file:',
-      slashes: true
+      slashes: true,
     }));
     win.webContents.openDevTools();
   }
