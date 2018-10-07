@@ -1,9 +1,6 @@
-/**
- * Created by nojsja on 17-3-12.
- */
 import React from 'react';
-import {render} from 'react-dom';
-import {AppContainer} from 'react-hot-loader'
+import { render } from 'react-dom';
+import { AppContainer } from 'react-hot-loader';
 
 import 'semantic-ui-css/semantic.min.css';
 import './styles/public.css';

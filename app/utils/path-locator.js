@@ -1,19 +1,18 @@
-const nodeEnv = process.env.NODE_ENV;
 const path = require('path');
 
-const pathLocator = function (module, name) {
-  const _path = {
+function pathLocator(module, name) {
+  const paths = {
     stores: 'app/stores',
     services: 'app/services',
     shell: 'app/services/shell',
     styles: 'app/styles',
     utils: 'app/utils',
     views: 'app/views',
-    resources: 'resources'
+    resources: 'resources',
   };
-  let abpath = _path[module] ? (_path[module]+`/${name}`) : '';
+  const abpath = paths[module] ? (`${paths[module]}/${name}`) : '';
 
   return path.resolve(abpath);
-};
+}
 
 module.exports = pathLocator;

@@ -2,17 +2,18 @@
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: space-around;
+  justify-content: flex-start;
 }
 
 .install-item-wrapper {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
+  border: solid 1px #dddddd;
   width: 6rem;
   height: auto;
   margin: .5rem .5rem;
-  border: solid 1px #dddddd;
 }
 
 .install-item-wrapper:hover {
@@ -22,9 +23,9 @@
 
 .install-item-image {
   display: inline-block;
+  padding: 5px;
   width: 6rem;
   height: 6rem;
-  padding: 5px;
 }
 .install-item-image > img {
   width: 100%;
