@@ -7,7 +7,7 @@ module.exports = {
     'react-hot-loader/patch',
     'webpack-dev-server/client?http://localhost:3000',
     'webpack/hot/only-dev-server',
-    './app/index'
+    './app/index',
   ],
   mode: 'development',
   output: {
@@ -46,5 +46,5 @@ module.exports = {
     historyApiFallback: true,
     hot: true,
   },
-  target: 'electron-renderer'
+  target: 'electron-renderer',
 };

@@ -5,10 +5,22 @@
 
 const execFile = require(pathLocator('utils', 'exec-file.js'));
 const SudoPrompt = require(pathLocator('utils', 'sudo-prompt.js'));
+const notifySend = require(pathLocator('utils', 'notify-send.js'));
 
 const sudo = new SudoPrompt();
 
 function ipcMain(ipc) {
+
+  // 桌面通知发送 //
+  ipc.on('notify-send', (event, args) => {
+    notifySend({
+      delay: args.delay || 0,
+      title: args.title || 'electron',
+      body: args.body || 'electron notification',
+      icon: (args.icon && args.iconDir) ? pathLocator(args.iconDir, args.icon) : undefined,
+    });
+  });
+
   // 安装项检查 //
   ipc.on('install_exec-file.check', (event, args) => {
     const path = pathLocator(args.dir, args.target);

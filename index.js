@@ -15,6 +15,9 @@ const viewConf = require('./app/configure/view-conf');
 const nodeEnv = process.env.NODE_ENV;
 let win;
 
+/* ------------------- ipcMain ------------------- */
+ipcMainListener(ipcMain);
+
 /* ------------------- func  ------------------- */
 
 // 读取应用设置 //
@@ -110,6 +113,3 @@ app.on('activate', () => {
     createWindow();
   }
 });
-
-/* ------------------- ipcMain ------------------- */
-ipcMainListener(ipcMain);

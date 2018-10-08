@@ -17,6 +17,7 @@ function ScrollIndicator({ total, activeItem, handleItemClick }) {
       {
         total.map(item => (
           <span
+            key={`scroll-indicator-${item}`}
             className={ getActiveClass(item === activeItem) }
             onClick={ () => { handleItemClick({}, {name: item}); } }
           />

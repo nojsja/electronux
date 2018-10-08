@@ -1,6 +1,7 @@
 import { observable, action, computed } from 'mobx';
 
 import consoleLog from '../utils/console-log';
+import codeMessage from '../configure/code-message';
 
 const { ipcRenderer } = require('electron'); // 渲染进程
 
@@ -38,6 +39,12 @@ class Install {
       this.loadingMain = false;
       if (rsp.error) {
         console.log(rsp.error);
+        ipcRenderer.send('notify-send', {
+          title: codeMessage('shell', rsp.error.code),
+          body: `ERROR: " ${rsp.error.cmd} "`,
+          icon: 'public/electronux.png',
+          iconDir: 'resources',
+        });
       } else {
         consoleLog('install.check: ', rsp.result);
         const all = rsp.result.split('|');
@@ -55,6 +62,12 @@ class Install {
       });
       if (rsp.error) {
         console.log(rsp.error);
+        ipcRenderer.send('notify-send', {
+          title: codeMessage('shell', rsp.error.code),
+          body: `ERROR: " ${rsp.error.cmd} "`,
+          icon: 'public/electronux.png',
+          iconDir: 'resources',
+        });
       } else {
         consoleLog('install.do: ', rsp.result);
         rsp.params.forEach((name) => {
@@ -71,6 +84,12 @@ class Install {
       });
       if (rsp.error) {
         console.log(rsp.error);
+        ipcRenderer.send('notify-send', {
+          title: codeMessage('shell', rsp.error.code),
+          body: `ERROR: " ${rsp.error.cmd} "`,
+          icon: 'public/electronux.png',
+          iconDir: 'resources',
+        });
       } else {
         consoleLog('install.undo: ', rsp.result);
         rsp.params.forEach((name) => {
