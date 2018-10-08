@@ -53,19 +53,58 @@ function ipcMain(ipc) {
   // 安装项卸载 //
   ipc.on('install_exec-file.undo', (event, args) => {
     const path = pathLocator(args.dir, args.target);
-    sudo.execFile(path, args.params).then((result) => {
-      event.sender.send('install_exec-file_reply.undo', {
+    // sudo.execFile(path, args.params).then((result) => {
+    //   event.sender.send('install_exec-file_reply.undo', {
+    //     error: null,
+    //     params: args.params,
+    //     result,
+    //   });
+    // }, (err) => {
+    //   console.error(err);
+    //   event.sender.send('install_exec-file_reply.undo', {
+    //     error: err,
+    //     params: args.params,
+    //     result: err,
+    //   });
+    // });
+
+    const stdout = (data) => {
+      event.sender.send('install_terminal-info_reply.undo', {
         error: null,
         params: args.params,
-        result,
+        result: data,
       });
-    }, (err) => {
-      console.error(err);
-      event.sender.send('install_exec-file_reply.undo', {
-        error: err,
+    };
+    const stderr = (data) => {
+      event.sender.send('install_terminal-info_reply.undo', {
+        error: new Error(data),
         params: args.params,
-        result: err,
+        result: data,
       });
+    };
+    const close = (code) => {
+      if (code === 0) {
+        event.sender.send('install_exec-file_reply.undo', {
+          error: null,
+          params: args.params,
+          result: null,
+        });
+      } else {
+        event.sender.send('install_exec-file_reply.undo', {
+          error: new Error(` uninstall error code: ${code}`),
+          params: args.params,
+          result: null,
+        });
+      }
+    };
+
+    sudo.spawn({
+      _command: 'bash',
+      _params: [path, args.params],
+      _options: {},
+      _stdout: stdout,
+      _stderr: stderr,
+      _close: close,
     });
   });
 }

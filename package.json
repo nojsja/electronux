@@ -33,7 +33,8 @@
       "app/configure/view.conf",
       "app/views/*",
       "app/App.js",
-      "app/main.js"
+      "app/main.js",
+      "app/index.js"
     ],
     "delay": "1000"
   },

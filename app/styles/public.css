@@ -134,7 +134,7 @@ body {
 }
 
 .router-left-menu > .toggle-hidden {
-  background-color: rgba(1,1,1, 0.5);
+  /* background-color: rgba(1,1,1, 0.5); */
   right: -3rem;
 }
 

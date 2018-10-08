@@ -22,6 +22,24 @@ class Install {
     whatever: false,
   };
 
+  defaultTermInfo = 'System Terminal Info: ';
+
+  @observable terminalInfo = {
+    'oh-my-zsh': this.defaultTermInfo,
+    node: this.defaultTermInfo,
+    atom: this.defaultTermInfo,
+    vscode: this.defaultTermInfo,
+    chrome: this.defaultTermInfo,
+    wechat: this.defaultTermInfo,
+    'deepin-capture': this.defaultTermInfo,
+    'deepin-terminal': this.defaultTermInfo,
+    peek: this.defaultTermInfo,
+    easeMusic: this.defaultTermInfo,
+    QQ: this.defaultTermInfo,
+    albert: this.defaultTermInfo,
+    whatever: this.defaultTermInfo,
+  }
+
   @observable loadingMain = true; // 主界面加载
 
   @observable queue = { // 任务执行队列
@@ -95,6 +113,21 @@ class Install {
         rsp.params.forEach((name) => {
           that.updateOne(name, false);
         });
+      }
+    });
+
+    // 更新terminal终端信息事件 //
+    ipcRenderer.on('install_terminal-info_reply.undo', (event, rsp) => {
+      if (rsp.error) {
+        console.log(rsp.error);
+        ipcRenderer.send('notify-send', {
+          title: codeMessage('shell', rsp.error.code),
+          body: `ERROR: " ${rsp.error.cmd} "`,
+          icon: 'public/electronux.png',
+          iconDir: 'resources',
+        });
+      } else {
+        that.updateTerminal(rsp.params, rsp.result);
       }
     });
   }
@@ -197,6 +230,28 @@ class Install {
   @action updateOne = (name, status) => {
     status = status ? true : false;
     ( this.items[name] !== undefined ) && ( this.items[name] = status );
+  }
+
+  // 清除terminal info //
+  @action clearTerminal = (items) => {
+    let allTerms = [];
+    if (!Array.isArray(items)) {
+      allTerms.push(items);
+    } else {
+      allTerms = allTerms.concat(items);
+    }
+    items.forEach((item) => {
+      this.terminalInfo[item] = this.defaultTermInfo;
+    });
+  }
+
+  // 更新terminal info //
+  @action updateTerminal = (item, info) => {
+    const items = Array.isArray(item) ? item : [item];
+    const infos = Array.isArray(info) ? item : [info];
+    items.forEach((it, i) => {
+      this.terminalInfo[it] = (infos[i] || this.defaultTermInfo);
+    });
   }
 }
 

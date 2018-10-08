@@ -40,7 +40,7 @@ class SudoPrompt {
     self.getBin();
     const params = Array.isArray(_params) ? _params.join(' ') : _params;
     const options = (typeof (_options) === 'object') ? _options : {};
-    const command = `${_command} ${params}`;
+    const command = `${self.bin} ${_command} ${params}`;
 
     return new Promise(async (resolve, reject) => {
       child.exec(command, options, (_err, _stdout, _stderr) => {
@@ -77,6 +77,43 @@ class SudoPrompt {
           resolve(_stdout);
         }
       });
+    });
+  }
+
+  /**
+   * [exec 执行一个命令]
+   * @param  { [String] }  command    [命令]
+   * @param  { [Array] }   params  [参数数组]
+   * @param  { [Object] }  options [exec可定制的参数]
+   * @return { Promise }           [返回Promise对象]
+   */
+  async spawn({
+    _command, _params, _options, _stdout, _stderr, _close,
+  }) {
+    const self = this;
+    self.getBin();
+    const params = Array.isArray(_params) ? _params : [_params];
+    params.unshift(_command);
+    const options = (typeof (_options) === 'object') ? _options : {};
+    const command = self.bin;
+
+    const childSpawn = child.spawn(command, params, options);
+
+    // data output
+    childSpawn.stdout.on('data', (d) => {
+      _stdout(d.toString());
+    });
+
+    // err output
+    childSpawn.stderr.on('data', (d) => {
+      console.log('sudo stderr: ', d.toString());
+      _stderr(d.toString());
+    });
+
+    // process exit
+    childSpawn.on('close', (code) => {
+      console.log('sudo close: ', code);
+      _close(code);
     });
   }
 }

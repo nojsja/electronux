@@ -1,7 +1,7 @@
 import { observable, action } from 'mobx';
 
 const { shell } = require('electron');
-
+const { ipcRenderer } = require('electron'); // 渲染进程
 
 class Public {
   @observable state = {
