@@ -8,6 +8,7 @@ function InstallItem({ ...props }) {
     onToggle,
     loading,
     loadingLable,
+    showTerminalInfo,
   } = { ...props };
   return (
     <div className="install-item-wrapper">
@@ -16,7 +17,7 @@ function InstallItem({ ...props }) {
         <Loader size="tiny">{ loadingLable || 'Loading'}</Loader>
       </Dimmer>
 
-      <div className="install-item-image">
+      <div className="install-item-image" onClick={() => {showTerminalInfo(item.label)}}>
         <img alt="error" src={item.url} />
       </div>
       <div className="install-item-switch">

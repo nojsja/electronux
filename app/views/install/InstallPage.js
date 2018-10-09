@@ -4,9 +4,18 @@ import { inject, observer } from 'mobx-react';
 import { Dimmer, Loader } from 'semantic-ui-react';
 
 import InstallItem from './InstallItem';
+import TerminalInfo from './TerminalInfo';
 
 @inject('install') @observer
 class InstallPage extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      activeTerminal: null,
+      terminalShow: false,
+    };
+  }
+
   componentDidMount() {
     const { install } = this.props;
     install.refresh();
@@ -28,19 +37,37 @@ class InstallPage extends React.Component {
     return [loading, loadingLable];
   }
 
-  toggleInstall(item) {
-    const { install } = this.props;
-    install.toggle(item);
-  }
+  showTerminalInfo = (item) => {
+    this.setState({
+      activeTerminal: item,
+      terminalShow: true,
+    });
+  };
+
+  hideTerminalInfo = () => {
+    this.setState({
+      terminalShow: false,
+    });
+  };
 
   render() {
     const { install, animation } = this.props;
-    const { loadingMain, queue, intoqueue } = install;
+    const { activeTerminal, terminalShow } = this.state;
+    const {
+      loadingMain, queue, intoqueue, terminalInfo,
+    } = install;
     let loading = false;
     let loadingLable = null;
 
     return (
       <div className={`router-right-wrapper ${animation}`}>
+
+        <TerminalInfo
+          data={terminalInfo[activeTerminal]}
+          open={terminalShow}
+          hideTerminalInfo={this.hideTerminalInfo}
+        />
+
         <div className="install-wrapper">
           <Dimmer active={loadingMain} inverted>
             <Loader size="small">Loading</Loader>
@@ -54,6 +81,8 @@ class InstallPage extends React.Component {
                 loadingLable={loadingLable}
                 item={item}
                 onToggle={intoqueue}
+                showTerminalInfo={this.showTerminalInfo}
+                terminalInfo={terminalInfo[item.label]}
               />
             );
           })}

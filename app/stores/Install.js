@@ -250,7 +250,7 @@ class Install {
     const items = Array.isArray(item) ? item : [item];
     const infos = Array.isArray(info) ? item : [info];
     items.forEach((it, i) => {
-      this.terminalInfo[it] = (infos[i] || this.defaultTermInfo);
+      this.terminalInfo[it] = (`${this.terminalInfo[it]}\n${infos[i]}`);
     });
   }
 }

@@ -24,6 +24,7 @@ ipcMainListener(ipcMain);
 function getAppConf() {
   let { width, height } = electron.screen.getPrimaryDisplay().workAreaSize; // 硬件参数
   const viewInfo = viewConf.read(); // 用户配置文件
+
   if (!viewInfo.error && viewInfo.result.width && viewInfo.result.height) {
     width = viewInfo.result.width;
     height = viewInfo.result.height;
@@ -36,6 +37,10 @@ function getAppConf() {
     width *= (3 / 6);
     height *= (4 / 6);
   }
+
+  viewConf.set({
+    width, height,
+  });
 
   return {
     width,
