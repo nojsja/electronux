@@ -10,7 +10,7 @@ all_available=(oh-my-zsh node atom vscode chrome wechat peek deepin-capture deep
 
 # 安装初始化环境
 init_install() {
-  local all=(curl wget axel git aria2 gcc make patch)
+  local all=(curl wget axel git aria2 gcc make patch yaourt)
   local allStr=''
   for item in "${all[@]}"; do
     if [ -z "`pacman -Qs $item`" ]; then

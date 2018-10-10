@@ -1,6 +1,7 @@
 import { observable, action, computed } from 'mobx';
 
 import consoleLog from '../utils/console-log';
+import jsonstr2Object from '../utils/jsonstr2Ojbect';
 import codeMessage from '../configure/code-message';
 
 const { ipcRenderer } = require('electron'); // 渲染进程
@@ -42,6 +43,8 @@ class Install {
 
   @observable loadingMain = true; // 主界面加载
 
+  @observable sourceChecked = false; // archlinuxcn 源头的设置情况
+
   @observable queue = { // 任务执行队列
     install: [],
     uninstall: [],
@@ -64,10 +67,13 @@ class Install {
           iconDir: 'resources',
         });
       } else {
-        consoleLog('install.check: ', rsp.result);
-        const all = rsp.result.split('|');
-        const installed = all.shift().split(' ');
-        const uninstalled = all.shift().split(' ');
+        // const all = rsp.result.split('|');
+        // const installed = all.shift().split(' ');
+        // const uninstalled = all.shift().split(' ');
+        rsp.result = jsonstr2Object(`${rsp.result}`);
+        const all = Object.keys(rsp.result);
+        const installed = all.filter(item => (rsp.result[item] === true) || (rsp.result[item] === 'true'));
+        const uninstalled = all.filter(item => (rsp.result[item] === false) || (rsp.result[item] === 'false'));
         that.update(installed, uninstalled);
       }
     });
@@ -117,7 +123,7 @@ class Install {
     });
 
     // 更新terminal终端信息事件 //
-    ipcRenderer.on('install_terminal-info_reply.undo', (event, rsp) => {
+    ipcRenderer.on('install_terminal-info_reply', (event, rsp) => {
       if (rsp.error) {
         console.log(rsp.error);
         ipcRenderer.send('notify-send', {
@@ -128,6 +134,36 @@ class Install {
         });
       } else {
         that.updateTerminal(rsp.params, rsp.result);
+      }
+    });
+
+    // source 源检查操作 //
+    ipcRenderer.on('install_source-check_reply.configure', (event, rsp) => {
+      if (rsp.error) {
+        console.log(rsp.error);
+        ipcRenderer.send('notify-send', {
+          title: codeMessage('shell', rsp.error.code),
+          body: `ERROR: " ${rsp.error.cmd} "`,
+          icon: 'public/electronux.png',
+          iconDir: 'resources',
+        });
+      } else {
+        that.sourceChecked = rsp.result;
+      }
+    });
+
+    // source 源添加操作 //
+    ipcRenderer.on('install_source-config_reply.configure', (event, rsp) => {
+      if (rsp.error) {
+        console.log(rsp.error);
+        ipcRenderer.send('notify-send', {
+          title: codeMessage('shell', rsp.error.code),
+          body: `ERROR: " ${rsp.error.cmd} "`,
+          icon: 'public/electronux.png',
+          iconDir: 'resources',
+        });
+      } else {
+        that.refresh();
       }
     });
   }
@@ -211,10 +247,24 @@ class Install {
     this.loadingMain = true;
     ipcRenderer.send('install_exec-file.check', {
       dir: 'shell',
-      target: 'install-check.sh',
+      target: 'install-check-multi.sh',
       params: this.totalArray,
     });
+    ipcRenderer.send('install_source-check.configure', {
+      dir: 'shell',
+      target: 'install-configure.sh',
+      params: ['--check'],
+    });
   };
+
+  // 更新中国的软件源头 //
+  @action setSourceCN = () => {
+    ipcRenderer.send('install_source-check.configure', {
+      dir: 'shell',
+      target: 'install-configure.sh',
+      params: ['--config'],
+    });
+  }
 
   // 更新最新的安装状态 //
   @action update = (installed, uninstalled) => {
@@ -228,7 +278,7 @@ class Install {
 
   // 更新一项的安装状态 //
   @action updateOne = (name, status) => {
-    status = status ? true : false;
+    status = ( (status === true) || (status === 'true') ) ? true : false;
     ( this.items[name] !== undefined ) && ( this.items[name] = status );
   }
 

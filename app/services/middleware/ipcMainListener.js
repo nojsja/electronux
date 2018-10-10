@@ -10,7 +10,6 @@ const notifySend = require(pathLocator('utils', 'notify-send.js'));
 const sudo = new SudoPrompt();
 
 function ipcMain(ipc) {
-
   // 桌面通知发送 //
   ipc.on('notify-send', (event, args) => {
     notifySend({
@@ -26,6 +25,61 @@ function ipcMain(ipc) {
     const path = pathLocator(args.dir, args.target);
     execFile(path, args.params, (rsp) => {
       event.sender.send('install_exec-file_reply.check', rsp);
+    });
+  });
+
+  // archlinuxcn 源检查操作 //
+  ipc.on('install_source-check.configure', (event, args) => {
+    const path = pathLocator(args.dir, args.target);
+    execFile(path, args.params, (rsp) => {
+      const result = {
+        result: (parseInt(rsp.result) === 0),
+        error: rsp.error,
+      };
+      event.sender.send('install_source-check_reply.configure', result);
+    });
+  });
+
+  // archlinuxcn 源配置操作 //
+  ipc.on('install_source-config.configure', (event, args) => {
+    const path = pathLocator(args.dir, args.target);
+    const stdout = (data) => {
+      event.sender.send('install_terminal-info_reply', {
+        error: null,
+        params: args.params,
+        result: data,
+      });
+    };
+    const stderr = (data) => {
+      event.sender.send('install_terminal-info_reply', {
+        error: new Error(data),
+        params: args.params,
+        result: data,
+      });
+    };
+    const close = (code) => {
+      if (code === 0) {
+        event.sender.send('install_source-config_reply.configure', {
+          error: null,
+          params: args.params,
+          result: null,
+        });
+      } else {
+        event.sender.send('install_source-config_reply.configure', {
+          error: new Error(` install error code: ${code}`),
+          params: args.params,
+          result: null,
+        });
+      }
+    };
+
+    sudo.spawn({
+      _command: 'bash',
+      _params: [path, args.params],
+      _options: {},
+      _stdout: stdout,
+      _stderr: stderr,
+      _close: close,
     });
   });
 
@@ -51,14 +105,14 @@ function ipcMain(ipc) {
 
     /* sudo.spawn version */
     const stdout = (data) => {
-      event.sender.send('install_terminal-info_reply.do', {
+      event.sender.send('install_terminal-info_reply', {
         error: null,
         params: args.params,
         result: data,
       });
     };
     const stderr = (data) => {
-      event.sender.send('install_terminal-info_reply.do', {
+      event.sender.send('install_terminal-info_reply', {
         error: new Error(data),
         params: args.params,
         result: data,
@@ -109,14 +163,14 @@ function ipcMain(ipc) {
     // });
 
     const stdout = (data) => {
-      event.sender.send('install_terminal-info_reply.undo', {
+      event.sender.send('install_terminal-info_reply', {
         error: null,
         params: args.params,
         result: data,
       });
     };
     const stderr = (data) => {
-      event.sender.send('install_terminal-info_reply.undo', {
+      event.sender.send('install_terminal-info_reply', {
         error: new Error(data),
         params: args.params,
         result: data,

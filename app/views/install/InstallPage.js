@@ -1,7 +1,7 @@
 import React from 'react';
 // import { Link } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
-import { Dimmer, Loader } from 'semantic-ui-react';
+import { Dimmer, Loader, Divider, Checkbox } from 'semantic-ui-react';
 
 import InstallItem from './InstallItem';
 import TerminalInfo from './TerminalInfo';
@@ -50,11 +50,18 @@ class InstallPage extends React.Component {
     });
   };
 
+  setSourceCN = (checked) => {
+    const { install } = this.props;
+    if (!checked) {
+      install.setSourceCN();
+    }
+  }
+
   render() {
     const { install, animation } = this.props;
     const { activeTerminal, terminalShow } = this.state;
     const {
-      loadingMain, queue, intoqueue, terminalInfo,
+      loadingMain, queue, intoqueue, terminalInfo, sourceChecked,
     } = install;
     let loading = false;
     let loadingLable = null;
@@ -68,10 +75,20 @@ class InstallPage extends React.Component {
           hideTerminalInfo={this.hideTerminalInfo}
         />
 
+        <Checkbox
+          toggle
+          checked={sourceChecked}
+          label={sourceChecked ? 'china software source setted' : 'click to set china software source (important!)'}
+          onClick={() => this.setSourceCN(sourceChecked)}
+        />
+
+        <Divider />
+
         <div className="install-wrapper">
           <Dimmer active={loadingMain} inverted>
             <Loader size="small">Loading</Loader>
           </Dimmer>
+
           {install.total.map((item) => {
             [loading = false, loadingLable = null] = this.getLoadingStatus(item.label, queue);
             return (

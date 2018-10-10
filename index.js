@@ -58,7 +58,7 @@ function loadWindow(window, env) {
         protocol: 'http:',
         slashes: true,
       }));
-      window.webContents.openDevTools();
+      // window.webContents.openDevTools();
     }, 1e3);
   } else {
     window.loadURL(url.format({

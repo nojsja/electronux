@@ -23,6 +23,7 @@
 
 .install-item-image {
   display: inline-block;
+  position: relative;
   padding: 5px;
   width: 6rem;
   height: 6rem;
@@ -41,6 +42,13 @@
   text-align: center;
   word-break: break-all;
   word-wrap: break-word;
+}
+
+.install-item-label:hover {
+  cursor: pointer;
+  color: black;
+  transform: scale(1.1);
+  transition: .1s;
 }
 
 .install-item-switch {
@@ -78,7 +86,7 @@
   min-height: 500px;
   height: 100%;
   padding: 1rem;
-  border: solid 1px black;
+  border: dashed 1px black;
   color: white;
   background-color: transparent;
 }
