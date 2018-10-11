@@ -6,7 +6,7 @@ import { Menu } from 'semantic-ui-react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
-import { faArrowCircleLeft, faArrowCircleRight } from '@fortawesome/free-solid-svg-icons';
+import { faArrowCircleLeft, faArrowCircleRight, faCog } from '@fortawesome/free-solid-svg-icons';
 
 import startup from './startup/StartupPage';
 import install from './install/InstallPage';
@@ -14,6 +14,7 @@ import clean from './clean/CleanPage';
 import info from './info/InfoPage';
 
 import ScrollIndicator from './public/ScrollIndicator';
+import SettingPage from './public/SettingPage';
 
 @inject('pub') @observer
 class HomePage extends Component {
@@ -45,6 +46,16 @@ class HomePage extends Component {
   openExternalLink = (link) => {
     const { pub } = this.props;
     pub.openExternalLink(link);
+  }
+
+  openSettingPage = () => {
+    const { pub } = this.props;
+    pub.setSettingPage(true);
+  }
+
+  closeSettingPage = () => {
+    const { pub } = this.props;
+    pub.setSettingPage(false);
   }
 
   toggleRouterMenu = () => {
@@ -108,7 +119,8 @@ class HomePage extends Component {
 
   render() {
     const { pub } = this.props;
-    const { activeItem, navActivate, total } = pub.state;
+    const { checkPassword } = pub;
+    const { activeItem, navActivate, total, settingPage, password } = pub.state;
     const { animation } = this.getAnimation(activeItem, total);
     const {
       toggleIcon, toggleClass, rightToggleClass, leftToggleClass,
@@ -122,15 +134,29 @@ class HomePage extends Component {
               total.map((name, i) => this.buildSubItem(name, i, activeItem))
             }
           </Menu>
+
+          <SettingPage
+            open={settingPage}
+            closeSettingPage={this.closeSettingPage}
+            checkPassword={checkPassword}
+            password={password}
+            setPassword={pub.setPassword}
+          />
+
           <div className="router-left-menu">
+            <span className="router-left-setting" onClick={() => {this.openSettingPage()}}>
+              <FontAwesomeIcon icon={faCog} />
+            </span>
             <span onClick={() => {this.openExternalLink('https://www.github.com/NoJsJa')}}>
               <FontAwesomeIcon icon={faGithub} />
             </span>
             <span className={toggleClass} onClick={this.toggleRouterMenu}>
               <FontAwesomeIcon icon={toggleIcon} />
             </span>
+
           </div>
         </div>
+
         <div className={`container-router-right ${rightToggleClass}`}>
           {
             this.activateComponent(activeItem, animation)

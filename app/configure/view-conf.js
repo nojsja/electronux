@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const confPath = path.resolve(process.cwd(), 'app/configure/view.conf');
+const confPath = path.resolve(process.cwd(), 'app/runtime/view.conf');
 
 let viewConf = {
   width: null,

@@ -4,12 +4,30 @@
 */
 
 const execFile = require(pathLocator('utils', 'exec-file.js'));
+const child = require('child_process');
+const fs = require('fs');
 const SudoPrompt = require(pathLocator('utils', 'sudo-prompt.js'));
 const notifySend = require(pathLocator('utils', 'notify-send.js'));
 
 const sudo = new SudoPrompt();
 
 function ipcMain(ipc) {
+  // 用户root密码 //
+  ipc.on('public_password', (event, args) => {
+    if (args.action === 'set') {
+      sudo.setPassword(args.password);
+      notifySend({
+        delay: 0,
+        title: 'electron-tips',
+        body: `New Password: [ ${args.password} ]`,
+        icon: pathLocator('resources', 'public/settings.png'),
+      });
+    } else if (args.action === 'read') {
+      const passwd = sudo.readPassword();
+      event.sender.send('public_password-read_replay', { error: null, result: passwd });
+    }
+  });
+
   // 桌面通知发送 //
   ipc.on('notify-send', (event, args) => {
     notifySend({
@@ -37,6 +55,16 @@ function ipcMain(ipc) {
         error: rsp.error,
       };
       event.sender.send('install_source-check_reply.configure', result);
+    });
+  });
+
+  // archlinuxcn 测试带密码执行命令 //
+  ipc.on('sudo-with-password', (event, args) => {
+    const path = pathLocator('shell', 'sudo-test.sh');
+    sudo.spawnWithPasswd({
+      _command: 'bash',
+      _params: [path],
+      _options: {},
     });
   });
 
@@ -202,5 +230,18 @@ function ipcMain(ipc) {
     });
   });
 }
+
+process.on('uncaughtException', (err) => {
+  console.log('<---------------');
+
+  const errorInfo = err.stack.toString();
+  console.log(errorInfo);
+  const errorFile = pathLocator('runtime', 'error.log');
+  fs.writeFile(errorFile, errorInfo, { encoding: 'utf8', flag: 'w' }, (_err) => {
+    if (_err) console.log(_err);
+  });
+
+  console.log('--------------->');
+});
 
 module.exports = ipcMain;

@@ -128,6 +128,22 @@ body {
   z-index: 50;
 }
 
+.router-left-menu > .router-left-setting {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  left: 0;
+  bottom: 0;
+  height: 2rem;
+  width: 3rem;
+  color: white;
+}
+
+.setting-page-wrapper {
+  min-height: 10rem;
+}
+
 .router-left-menu > span:hover  {
   color: blue;
   cursor: pointer;
