@@ -141,7 +141,21 @@ body {
 }
 
 .setting-page-wrapper {
-  min-height: 10rem;
+  min-height: 5rem;
+}
+
+.setting-page-action {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* >>> force cover semantic */
+body > .ui.inverted.page.modals.dimmer.transition.visible.active > .ui.mini.modal.transition.visible.active > .actions {
+  padding: .5rem !important;
+}
+
+.setting-page-wrapper .ui.tiny.input {
+  width: 100%;
 }
 
 .router-left-menu > span:hover  {

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Checkbox, Dimmer, Loader } from 'semantic-ui-react';
-import './install.css';
 
 function InstallItem({ ...props }) {
   const {

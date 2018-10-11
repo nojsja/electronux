@@ -3,6 +3,8 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import { Dimmer, Loader, Divider, Checkbox } from 'semantic-ui-react';
 
+import './install.css';
+
 import InstallItem from './InstallItem';
 import TerminalInfo from './TerminalInfo';
 

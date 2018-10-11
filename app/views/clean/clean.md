@@ -22,6 +22,14 @@
 [manjaro]  
 ~/.cache
 
+### 垃圾桶
+-----------
+[ubuntu]  
+~/.local/share/Trash/files
+
+[manjaro]  
+~/.local/share/Trash/files
+
 ### 系统清理命令
 -----------
 [ubuntu]  

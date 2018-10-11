@@ -40,19 +40,20 @@ class SettingPage extends Component {
     const { password } = this.state;
     return (
       <div>
-        <Modal dimmer="inverted" open={open}>
-          <Modal.Header>Setting</Modal.Header>
+        <Modal dimmer="inverted" open={open} size="mini">
           <Modal.Content>
             <div className="setting-page-wrapper">
-            <p>PASSWORD：</p>
-            <Input size="tiny" value={password} type="password" onChange={this.onPasswdChange} />
+              <p>Password：</p>
+              <Input size="tiny" value={password} type="password" onChange={this.onPasswdChange} />
             </div>
           </Modal.Content>
           <Modal.Actions>
-            <Button color="blue" size="tiny" onClick={this.setPassword}>Confirm</Button>
-            <Button size="tiny" onClick={closeSettingPage}>
-              Cancel
-            </Button>
+            <div className="setting-page-action">
+              <Button size="tiny" onClick={closeSettingPage}>
+                Cancel
+              </Button>
+              <Button color="blue" size="tiny" onClick={this.setPassword}>Confirm</Button>
+            </div>
           </Modal.Actions>
         </Modal>
       </div>
