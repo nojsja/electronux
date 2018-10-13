@@ -9,10 +9,14 @@ class InfoPage extends React.Component {
   }
 
   render() {
-    const { info } = this.props;
+    const { info, location } = this.props;
+    const { animation } = location.state ? location.state : { animation: '' };
+    console.log(location);
     return (
-      <div >
-        info
+      <div className={`router-right-wrapper ${animation}`}>
+        <div>
+          info
+        </div>
       </div>
     );
   }

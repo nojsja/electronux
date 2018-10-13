@@ -25,10 +25,6 @@ dmg:
       x: 130
       y: 150
 
-mac:
-  target: dmg
-  category: public.app-category.tools
-
 linux:
   icon: resources
   target:

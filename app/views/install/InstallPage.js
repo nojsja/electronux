@@ -1,12 +1,23 @@
 import React from 'react';
 // import { Link } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
-import { Dimmer, Loader } from 'semantic-ui-react';
+import { Dimmer, Loader, Divider, Checkbox } from 'semantic-ui-react';
+
+import './install.css';
 
 import InstallItem from './InstallItem';
+import TerminalInfo from './TerminalInfo';
 
 @inject('install') @observer
 class InstallPage extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      activeTerminal: null,
+      terminalShow: false,
+    };
+  }
+
   componentDidMount() {
     const { install } = this.props;
     install.refresh();
@@ -28,34 +39,74 @@ class InstallPage extends React.Component {
     return [loading, loadingLable];
   }
 
-  toggleInstall(item) {
+  showTerminalInfo = (item) => {
+    this.setState({
+      activeTerminal: item,
+      terminalShow: true,
+    });
+  };
+
+  hideTerminalInfo = () => {
+    this.setState({
+      terminalShow: false,
+    });
+  };
+
+  setSourceCN = (checked) => {
     const { install } = this.props;
-    install.toggle(item);
+    if (!checked) {
+      install.setSourceCN();
+    }
   }
 
   render() {
-    const { install } = this.props;
-    const { loadingMain, queue, intoqueue } = install;
+    const { install, location } = this.props;
+    const { activeTerminal, terminalShow } = this.state;
+    const { animation } = location.state ? location.state : { animation: '' };
+    const {
+      loadingMain, queue, intoqueue, terminalInfo, sourceChecked,
+    } = install;
     let loading = false;
     let loadingLable = null;
 
     return (
-      <div className="install-wrapper">
-        <Dimmer active={loadingMain} inverted>
-          <Loader size="small">Loading</Loader>
-        </Dimmer>
-        {install.total.map((item) => {
-          [loading = false, loadingLable = null] = this.getLoadingStatus(item.label, queue);
-          return (
-            <InstallItem
-              key={`install-page-${item.label}`}
-              loading={loading}
-              loadingLable={loadingLable}
-              item={item}
-              onToggle={intoqueue}
-            />
-          );
-        })}
+      <div className={`router-right-wrapper ${animation}`}>
+
+        <TerminalInfo
+          data={terminalInfo[activeTerminal]}
+          open={terminalShow}
+          hideTerminalInfo={this.hideTerminalInfo}
+        />
+
+        <Checkbox
+          toggle
+          checked={sourceChecked}
+          label={sourceChecked ? 'china software source setted' : 'click to set china software source (important!)'}
+          onClick={() => this.setSourceCN(sourceChecked)}
+        />
+
+        <Divider />
+
+        <div className="install-wrapper">
+          <Dimmer active={loadingMain} inverted>
+            <Loader size="small">Loading</Loader>
+          </Dimmer>
+
+          {install.total.map((item) => {
+            [loading = false, loadingLable = null] = this.getLoadingStatus(item.label, queue);
+            return (
+              <InstallItem
+                key={`install-page-${item.label}`}
+                loading={loading}
+                loadingLable={loadingLable}
+                item={item}
+                onToggle={intoqueue}
+                showTerminalInfo={this.showTerminalInfo}
+                terminalInfo={terminalInfo[item.label]}
+              />
+            );
+          })}
+        </div>
       </div>
     );
   }

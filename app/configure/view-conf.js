@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const confPath = path.resolve(process.cwd(), 'app/configure/view.conf');
+const confPath = path.resolve(process.cwd(), 'app/runtime/view.conf');
 
 let viewConf = {
   width: null,
@@ -26,14 +26,18 @@ const set = (props) => {
 function write() {
   const data = JSON.stringify(viewConf);
   return new Promise((resolve, reject) => {
-    fs.writeFile(confPath, data, 'utf8', (err) => {
-      if (err) {
-        console.error(err);
-        reject(err);
-      } else {
-        resolve('');
-      }
-    });
+    try {
+      fs.writeFile(confPath, data, 'utf8', (err) => {
+        if (err) {
+          console.error(err);
+          reject(err);
+        } else {
+          resolve('');
+        }
+      });
+    } catch (e) {
+      reject(e);
+    }
   });
 }
 
@@ -42,20 +46,22 @@ function write() {
  * @return {[type]} [description]
  */
 function read() {
-  const result = fs.readFileSync(confPath, {
-    encoding: 'utf8',
-  });
-  const isError = result instanceof Error;
-
-  if (isError) {
-    return {
-      result: null,
-      error: result,
-    };
+  let result;
+  let error;
+  try {
+    result = fs.readFileSync(confPath, {
+      encoding: 'utf8',
+    });
+    result = JSON.parse(result);
+    error = null;
+  } catch (e) {
+    error = e;
+    result = null;
   }
+
   return {
-    result: JSON.parse(result),
-    error: null,
+    result,
+    error,
   };
 }
 

@@ -1,7 +1,8 @@
 import React from 'react';
-import { HashRouter, Route } from 'react-router-dom';
+import { Route, Router } from 'react-router-dom';
 import { Provider } from 'mobx-react';
 
+import createHistory from 'history/createBrowserHistory';
 import InstallState from './stores/Install';
 import CleanState from './stores/Clean';
 import InfoState from './stores/Info';
@@ -9,10 +10,9 @@ import StartupState from './stores/Startup';
 import PublicState from './stores/Public';
 
 import HomePage from './views/HomePage';
-import InfoPage from './views/info/InfoPage';
-import CleanPage from './views/clean/CleanPage';
-import StartupPage from './views/startup/StartupPage';
-import InstallPage from './views/install/InstallPage';
+
+/* ------------------- export global history ------------------- */
+export const history = createHistory();
 
 const stores = {
   install: new InstallState(),
@@ -22,21 +22,15 @@ const stores = {
   pub: new PublicState(),
 };
 
-
 function App() {
   return (
     <Provider {...stores}>
-      <HashRouter>
-        <div>
-          <Route exact path="/info" component={InfoPage} />
-          <Route exact path="/startup" component={StartupPage} />
-          <Route exact path="/clean" component={CleanPage} />
-          <Route exact path="/install" component={InstallPage} />
-          <Route exact path="/" component={HomePage} />
-        </div>
-      </HashRouter>
+      <Router history={history}>
+        <Route path="/" component={HomePage} />
+      </Router>
     </Provider>
   );
 }
 
+/* ------------------- export provider ------------------- */
 export default App;

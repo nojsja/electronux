@@ -2,12 +2,11 @@
 
 pacmanSource="/etc/pacman.conf"
 
-
 # config
 config() {
   # # 配置软件源
   echo ">>> import archlinuxcn source ... "
-  sudo sed -i "/archlinuxcn/, /mirrors.ustc.edu.cn/d" $pacmanSource
+  sudo sed -i "/archlinuxcn/, /mirrors.ustc.edu.cn\/archlinuxcn/d" $pacmanSource
   echo "[archlinuxcn]" >> $pacmanSource
   echo "SigLevel = Optional TrustedOnly" >> $pacmanSource
   echo 'Server = https://mirrors.ustc.edu.cn/archlinuxcn/$arch' >> $pacmanSource
@@ -16,14 +15,13 @@ config() {
   echo ">>> import GPG Key ... "
   sudo pacman -Syy
   sudo pacman -S archlinuxcn-keyring
-
 }
 
 # check
 check() {
-  local isConfigured=0
+  local isConfigured=1
 
-  [ -n "`sed '/archlinuxcn/p' $pacmanSource`" ] && isConfigured=1
+  [ -n "`sed '/mirrors.ustc.edu.cn\/archlinuxcn/p' $pacmanSource`" ] && isConfigured=0
 
   return $isConfigured
 }
@@ -35,7 +33,8 @@ while [ -n "$1" ]; do
     ;;
     --check )
       check
-      exit "$?"
+      echo -n "$?"
     ;;
   esac
+  shift
 done

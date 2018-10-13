@@ -8,12 +8,17 @@ const { ipcMain } = require('electron');
 /* ------------------- self module ------------------- */
 global.pathLocator = require('./app/utils/path-locator.js');
 global.consoleLog = require('./app/utils/console-log.js');
-const ipcMainListener = require('./app/services/middleware/ipcMainListener');
+const ipcInstallListener = require('./app/services/middleware/ipcInstallListener');
+const ipcCleanListener = require('./app/services/middleware/ipcCleanListener');
 const viewConf = require('./app/configure/view-conf');
 
 /* ------------------- var ------------------- */
 const nodeEnv = process.env.NODE_ENV;
 let win;
+
+/* ------------------- ipcMain ------------------- */
+ipcInstallListener(ipcMain);
+ipcCleanListener(ipcMain);
 
 /* ------------------- func  ------------------- */
 
@@ -21,6 +26,7 @@ let win;
 function getAppConf() {
   let { width, height } = electron.screen.getPrimaryDisplay().workAreaSize; // 硬件参数
   const viewInfo = viewConf.read(); // 用户配置文件
+
   if (!viewInfo.error && viewInfo.result.width && viewInfo.result.height) {
     width = viewInfo.result.width;
     height = viewInfo.result.height;
@@ -33,6 +39,10 @@ function getAppConf() {
     width *= (3 / 6);
     height *= (4 / 6);
   }
+
+  viewConf.set({
+    width, height,
+  });
 
   return {
     width,
@@ -50,7 +60,7 @@ function loadWindow(window, env) {
         protocol: 'http:',
         slashes: true,
       }));
-      window.webContents.openDevTools();
+      // window.webContents.openDevTools();
     }, 1e3);
   } else {
     window.loadURL(url.format({
@@ -110,6 +120,3 @@ app.on('activate', () => {
     createWindow();
   }
 });
-
-/* ------------------- ipcMain ------------------- */
-ipcMainListener(ipcMain);

@@ -5,14 +5,15 @@ import { inject, observer } from 'mobx-react';
 @inject('startup') @observer
 class StartupPage extends React.Component {
 
-  toggleInstall(index) {
-  }
-
   render() {
-    const { startup } = this.props;
+    const { startup, location } = this.props;
+    const { animation } = location.state ? location.state : { animation: '' };
+
     return (
-      <div >
-        startup
+      <div className={`router-right-wrapper ${animation}`}>
+        <div>
+          startup
+        </div>
       </div>
     );
   }

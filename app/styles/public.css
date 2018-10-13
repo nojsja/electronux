@@ -2,6 +2,63 @@ body {
   background-color: #ffffff;
 }
 
+/*  chrome全局定义scrollbar效果
+============================================================================= */
+::-webkit-scrollbar {width: 6px;height:6px;}
+::-webkit-scrollbar-track-piece{background-color: #eee;margin: -2px;}
+::-webkit-scrollbar-thumb{background: #cdcdcd;min-height: 150px;min-width: 150px;border-radius: 10px;}
+::-webkit-scrollbar-thumb:vertical:hover{background: #909090}
+::-webkit-scrollbar-thumb:horizontal:hover{background: #909090}
+
+
+.electronux_hidden {
+  display: none;
+}
+
+
+/*  Keyframes
+============================================================================= */
+/* 从左到右显示动画 */
+@keyframes leftRightShow {
+  0% {
+    transform: translateX(-5rem);
+    opacity: .5;
+  }
+
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* 从左到右显示动画 */
+@keyframes rightLeftShow {
+  0% {
+    transform: translateX(5rem);
+    opacity: .5;
+  }
+
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/*  animation class
+============================================================================= */
+.left-right-show-animation {
+  animation: leftRightShow;
+  animation-duration: .25s;
+  animation-timing-function: ease-in-out;
+}
+
+.right-left-show-animation {
+  animation: rightLeftShow;
+  animation-duration: .25s;
+  animation-timing-function: ease-in-out;
+}
+
+
 /*  container
 ============================================================================= */
 .container-router {
@@ -22,6 +79,8 @@ body {
 .shadow-normal {
   box-shadow: 0 0 7px black;
 }
+
+/* LEFT */
 
 .container-router-left {
   position: absolute;
@@ -82,13 +141,43 @@ body {
   z-index: 50;
 }
 
+.router-left-menu > .router-left-setting {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  left: 0;
+  bottom: 0;
+  height: 2rem;
+  width: 3rem;
+  color: white;
+}
+
+.setting-page-wrapper {
+  min-height: 5rem;
+}
+
+.setting-page-action {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* >>> force cover semantic */
+body > .ui.inverted.page.modals.dimmer.transition.visible.active > .ui.mini.modal.transition.visible.active > .actions {
+  padding: .5rem !important;
+}
+
+.setting-page-wrapper .ui.tiny.input {
+  width: 100%;
+}
+
 .router-left-menu > span:hover  {
   color: blue;
   cursor: pointer;
 }
 
 .router-left-menu > .toggle-hidden {
-  background-color: rgba(1,1,1, 0.5);
+  /* background-color: rgba(1,1,1, 0.5); */
   right: -3rem;
 }
 
@@ -101,6 +190,8 @@ body {
   font-size: 1.1rem;
   text-shadow: -1px 1px 1px grey;
 }
+
+/* RIGHT */
 
 .container-router-right {
   position: absolute;
@@ -119,5 +210,34 @@ body {
   right: 0rem;
   bottom: 0rem;
   padding: .5rem;
-  overflow-y: scroll;
+  overflow-y: auto;
+}
+
+/* ScrollIndicator */
+.router-scroll-indicator {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2rem;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.router-scroll-indicator > .indicator-dot {
+  display: flex;
+  width: .9rem;
+  height: .9rem;
+  margin: 0 1.2rem;
+  border-radius: 50%;
+}
+
+.router-scroll-indicator > .dot-active {
+  background-color: grey;
+}
+
+.router-scroll-indicator > .dot-inactive {
+  background-color: white;
 }
