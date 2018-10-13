@@ -2,7 +2,7 @@
 
 # du命令获取所有待检查目录输出 #
 du_dir() {
-  sudo du -h --max-depth=1 "$@"
+  sudo du -ah --max-depth=1 "$@"
 }
 
 # 格式化输出 # - 输出行之间的换行符号替换为'|'

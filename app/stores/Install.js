@@ -176,7 +176,7 @@ class Install {
   }
 
   // 获取所有安装项 //
-  @computed get total() {
+  get total() {
     const { items } = this;
     const dir = 'resources/install';
 
@@ -188,12 +188,12 @@ class Install {
   }
 
   // 获取所有已安装项 //
-  @computed get installed() {
+  get installed() {
     return Object.keys(this.items).filter(item => this.items[item]);
   }
 
   // 获取所有未安装项 //
-  @computed get uninstalled() {
+  get uninstalled() {
     return Object.keys(this.items).filter(item => !this.items[item]);
   }
 

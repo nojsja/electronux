@@ -62,7 +62,6 @@ class InstallPage extends React.Component {
   render() {
     const { install, location } = this.props;
     const { activeTerminal, terminalShow } = this.state;
-    console.log(location);
     const { animation } = location.state ? location.state : { animation: '' };
     const {
       loadingMain, queue, intoqueue, terminalInfo, sourceChecked,

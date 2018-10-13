@@ -14,14 +14,12 @@ const sudo = new SudoPrompt();
 function ipcClean(ipc) {
   // 用户root密码 //
   ipc.on('clean_handle-dirs', (event, args) => {
-    const {
-      dirs, action, content,
-    } = args;
     const duPath = pathLocator('shell', 'clean-du.sh');
     const rmPath = pathLocator('shell', 'clean-rm.sh');
     let result = '';
 
-    if (action === 'du') {
+    if (args.action === 'du') {
+      const { dirs, content, action } = args;
       sudo.spawnWithPasswd({
         _command: 'bash',
         _params: [duPath].concat(dirs),
@@ -47,19 +45,33 @@ function ipcClean(ipc) {
           }
         },
       });
-    } else if (action === 'rm') {
+    } else if (args.action === 'rm') {
+      const {
+        paths, content, allDirs, action,
+      } = args;
       sudo.spawnWithPasswd({
         _command: 'bash',
-        _params: [rmPath].concat(dirs),
+        _params: [rmPath].concat(allDirs),
         _options: { encoding: 'utf8' },
         _stdout: (out) => {
-          console.log(`out -> ${out}`);
+          result += out;
         },
-        _stderr: (err) => {
-          console.log(`err -> ${err}`);
-        },
-        _close: (close) => {
-          console.log(`close -> ${close}`);
+        _close: (code) => {
+          if (code === 0) {
+            event.sender.send('clean_handle-dirs_replay', {
+              content,
+              action,
+              result,
+              error: null,
+            });
+          } else {
+            event.sender.send('clean_handle-dirs_replay', {
+              content,
+              action,
+              result,
+              error: `exec ${rmPath} error!`,
+            });
+          }
         },
       });
     }

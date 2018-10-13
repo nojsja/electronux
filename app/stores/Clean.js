@@ -1,7 +1,10 @@
-import { observable, action, computed, toJS } from 'mobx';
+import {
+  observable, action, computed, toJS,
+} from 'mobx';
+
+import trim from '../utils/str-trim';
 
 const os = require('os');
-const fs = require('fs');
 
 const { ipcRenderer } = require('electron'); // 渲染进程
 
@@ -9,11 +12,13 @@ class Clean {
   constructor() {
     // 列举和清理所有文件结果 //
     ipcRenderer.on('clean_handle-dirs_replay', (event, rsp) => {
-      console.log(rsp);
+      setTimeout(() => {
+        this.loadingMain = false;
+      }, 500);
       if (rsp.action === 'du') {
         this.updateDuResult(rsp.content, rsp.result);
       } else if (rsp.action === 'rm') {
-        this.updateRmResult(rsp.content, rsp.result);
+        this.lsAllDirs();
       }
     });
   }
@@ -34,73 +39,101 @@ class Clean {
   // 主界面加载 //
   @observable loadingMain = false;
 
-  // 清理选项细节 //
-  @observable cleanDetails = {
-    appCache: {
-      url: [`/home/${this.userinfo.username}/.cache`], // 指定扫描路径多个
-      contents: { // 绝对路径
-        // '/var/cache/pacman/pkg/zsh-5.6.2-1-x86_64.pkg.tar.xz': false,
-      },
-      size: {
-        // '/var/cache/pacman/pkg/zsh-5.6.2-1-x86_64.pkg.tar.xz': '10kb',
-      },
-    },
-    appLog: {
-      url: ['/var/log/'],
-      contents: {
-        // '/var/log//pacman.log': false,
-      },
-      size: {
-        // '/var/log//pacman.log': '10kb',
-      },
-    },
-    trash: {
-      url: [`/home/${this.userinfo.username}/.local/share/Trash/files`],
-      contents: {},
-      size: {
-        // '/var/log//pacman.log': '10kb',
-      },
-    },
-    packageCache: {
-      url: ['/var/cache/pacman/pkg'],
-      contents: {},
-      size: {
-        // '/var/log//pacman.log': '10kb',
-      },
-    },
+  // 清理路径 //
+  cleanPaths = {
+    appCache: [`/home/${this.userinfo.username}/.cache`],
+    appLog: ['/var/log/'],
+    trash: [`/home/${this.userinfo.username}/.local/share/Trash/files`],
+    packageCache: ['/var/cache/pacman/pkg'],
   }
+
+  // 路径模块映射 //
+  @observable cleanPathMap = {
+    appCache: [], // '/var/log/pacman.log'
+    appLog: [],
+    trash: [],
+    packageCache: [],
+  }
+
+  // 清理内容 //
+  @observable cleanContents = observable.map({})
+
+  // 清理大小 //
+  cleanSizes = {
+    // '/var/log//pacman.log': '10kb',
+  }
+
+  // ---- 清理选项细节-数据对象逻辑树 ---- //
+  // @observable cleanDetails = {
+  //   appCache: {
+  //     url: [`/home/${this.userinfo.username}/.cache`], // 指定扫描路径多个
+  //     contents: { // 绝对路径
+  //       // '/var/cache/pacman/pkg/zsh-5.6.2-1-x86_64.pkg.tar.xz': false,
+  //     },
+  //     size: {
+  //       // '/var/cache/pacman/pkg/zsh-5.6.2-1-x86_64.pkg.tar.xz': '10kb',
+  //     },
+  //   },
+  //   appLog: {
+  //     url: ['/var/log/'],
+  //     contents: {
+  //       // '/var/log//pacman.log': false,
+  //     },
+  //     size: {
+  //       // '/var/log//pacman.log': '10kb',
+  //     },
+  //   },
+  //   trash: {
+  //     url: [`/home/${this.userinfo.username}/.local/share/Trash/files`],
+  //     contents: {},
+  //     size: {
+  //       // '/var/log//pacman.log': '10kb',
+  //     },
+  //   },
+  //   packageCache: {
+  //     url: ['/var/cache/pacman/pkg'],
+  //     contents: {},
+  //     size: {
+  //       // '/var/log//pacman.log': '10kb',
+  //     },
+  //   },
+  // }
 
   /* ------------------- static ------------------- */
 
 
   /* ------------------- computed ------------------- */
 
+  // 获取所有被选中的detail item //
+  @computed get allCheckedDetail() {
+    const a = [];
+    this.cleanContents.forEach((v, k) => {
+      if (v) a.push(k);
+    });
+    return a;
+  }
+
   // 清理路径详细信息 //
   @computed get cleanDetail() {
-    // return Object.keys(this.items).filter(item => this.items[item]).map((content) => {
-    //   let item = this.cleanDetails[content];
-    //   item = Object.keys(item.contents).map(it => ({
-    //     content: it,
-    //     size: item.size[it],
-    //     checked: item.contents[it],
-    //   }));
-    //   return {
-    //     label: content,
-    //     contents: item,
-    //   };
-    // });
+    const result = [];
+    Object.keys(this.cleanPathMap).forEach((item) => {
+      if (this.items[item]) {
+        const oneResult = {
+          label: item,
+          contents: [],
+        };
+        this.cleanPathMap[item].forEach((it) => {
+          oneResult.contents.push({
+            content: it,
+            size: this.cleanSizes[it] || 0,
+          });
+        });
 
-    return Object.keys(this.cleanDetails).filter(detail => this.items[detail]).map((content) => {
-      const item = Object.keys(this.cleanDetails[content].contents).map(it => ({
-        content: it,
-        size: this.cleanDetails[content].size[it],
-        checked: this.cleanDetails[content].contents[it],
-      }));
-      return {
-        label: content,
-        contents: item,
-      };
+        result.push(oneResult);
+      }
     });
+
+    return result;
   }
 
   @computed get totalArray() {
@@ -127,7 +160,7 @@ class Clean {
     return allChecked;
   }
 
-  @computed get checkedContents() {
+  get checkedContents() {
     return Object.keys(this.items).filter(item => this.items[item]);
   }
 
@@ -145,45 +178,93 @@ class Clean {
     }
   }
 
+  // 根据路径取得模块名字 //
+  @action getHeaderLabel = (str) => {
+    let label = '';
+    if (!str) {
+      return label;
+    }
+    Object.keys(this.cleanPaths).forEach((path) => {
+      if (this.cleanPaths[path].includes(str.trim())) {
+        label = `[ ${path} ]`;
+      }
+    });
+    return label;
+  }
+
+  // 切换clean detail 项目选中状态 //
+  @action toggleDetailOne = (item) => {
+    const status = this.cleanContents.get(item);
+    if (status !== undefined) {
+      this.cleanContents.set(item, !status);
+    }
+  }
+
+  // 切换clean detail 项目选中状态 //
+  @action toggleDetailAll = (content, status) => {
+    if (!this.cleanPathMap[content]) return;
+    for (let i = 0; i < this.cleanPathMap[content].length; i += 1) {
+      this.cleanContents.set(this.cleanPathMap[content][i], status);
+    }
+  }
+
   @action toggleChecked = (item) => {
     this.items[item] = !this.items[item];
   }
 
+  // 清除查询缓存数据 //
+  @action resetDetails = () => {
+    this.cleanContents.clear();
+    this.cleanSizes = {};
+    Object.keys(this.cleanPathMap).forEach((key) => {
+      this.cleanPathMap[key] = [];
+    });
+  }
+
   // 开始统计所有需要清理的文件夹 //
   @action lsAllDirs = () => {
-    this.checkedContents.forEach((content) => {
-      const { url } = this.cleanDetails[content];
+    this.loadingMain = true;
+    Object.keys(this.cleanPaths).forEach((content) => {
+      const url = this.cleanPaths[content];
       const params = {
         content,
         dirs: toJS(url),
         action: 'du',
       };
+      this.resetDetails();
       ipcRenderer.send('clean_handle-dirs', params);
     });
   }
 
   // 更新du结果 // 8.0K/home/nojsja/.cache/folks|4.0K/home/nojsja/.cache/obexd
   @action updateDuResult = (content, _result) => {
-    if (!this.cleanDetails[content]) return;
+    if (!this.items[content]) return;
     const dirs = _result.split('|');
     dirs.forEach((_dir) => {
-      const all = _dir.split('/');
+      const dir = trim(_dir);
+      const all = dir.split('/');
       const size = all.shift();
-      all.unshift(' ');
+      all.unshift('');
       const item = all.join('/');
-      this.cleanDetails[content].contents[item] = false;
-      this.cleanDetails[content].size[item] = size;
+      this.cleanContents.set(item, false);
+      this.cleanSizes[item] = size;
+      if (!this.cleanPathMap[content].includes(item)) {
+        this.cleanPathMap[content].push(item);
+      }
     });
   }
 
   // 开始清理所有选中的文件夹 //
   @action cleanAllDirs = () => {
     this.checkedContents.forEach((content) => {
-      let paths = this.cleanDetails[content].contents;
-      paths = Object.keys(paths).filter((item) => paths[item])
-      let params = {
-        content,
+      const paths = this.cleanPaths[content]; // all clean father path
+      const allDirs = this.cleanPathMap[content]
+        .filter(con => !paths.includes(con) && this.cleanContents.get(con));
+      if (!allDirs.length) return;
+      const params = {
         paths,
+        content,
+        allDirs,
         action: 'rm',
       };
       ipcRenderer.send('clean_handle-dirs', params);
