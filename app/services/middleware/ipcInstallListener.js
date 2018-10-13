@@ -4,8 +4,8 @@
 */
 
 const execFile = require(pathLocator('utils', 'exec-file.js'));
-const child = require('child_process');
 const fs = require('fs');
+
 const SudoPrompt = require(pathLocator('utils', 'sudo-prompt.js'));
 const notifySend = require(pathLocator('utils', 'notify-send.js'));
 

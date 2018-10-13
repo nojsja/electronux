@@ -6,7 +6,9 @@ import { inject, observer } from 'mobx-react';
 class StartupPage extends React.Component {
 
   render() {
-    const { startup, animation } = this.props;
+    const { startup, location } = this.props;
+    const { animation } = location.state ? location.state : { animation: '' };
+
     return (
       <div className={`router-right-wrapper ${animation}`}>
         <div>

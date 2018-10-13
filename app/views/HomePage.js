@@ -2,19 +2,24 @@ import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import { Menu } from 'semantic-ui-react';
 // import { PropTypes } from 'prop-types';
-// import { Link } from 'react-router-dom';
+import {
+  Route, BrowserRouter as Router, Switch,
+} from 'react-router-dom';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { faArrowCircleLeft, faArrowCircleRight, faCog } from '@fortawesome/free-solid-svg-icons';
 
-import startup from './startup/StartupPage';
-import install from './install/InstallPage';
-import clean from './clean/CleanPage';
-import info from './info/InfoPage';
+import StartupPage from './startup/StartupPage';
+import InstallPage from './install/InstallPage';
+import CleanPage from './clean/CleanPage';
+import InfoPage from './info/InfoPage';
+import CleanDetail from './clean/CleanDetail';
 
 import ScrollIndicator from './public/ScrollIndicator';
 import SettingPage from './public/SettingPage';
+
+import { history } from '../App';
 
 @inject('pub') @observer
 class HomePage extends Component {
@@ -23,18 +28,19 @@ class HomePage extends Component {
     this.state = {
     };
     this.lastActiveItem = null;
-    this.componentMap = {
-      clean,
-      startup,
-      install,
-      info,
-    };
   }
 
   /* ------------------- react event ------------------- */
 
 
   componentDidMount() {
+    const { pub } = this.props;
+    const { activeItem, total } = pub.state;
+    const { animation } = this.getAnimation(activeItem, total);
+    history.push({
+      pathname: '/install',
+      state: { animation },
+    });
   }
 
   componentWillUnmount() {
@@ -65,18 +71,16 @@ class HomePage extends Component {
 
   handleItemClick = (ev, { name }) => {
     const { pub } = this.props;
+    const { total } = pub.state;
+    const { animation } = this.getAnimation(name, total);
+    history.push({
+      pathname: `/${name}`,
+      state: { animation },
+    });
     pub.setActiveItem(name);
   }
 
   /* ------------------- element builder ------------------- */
-
-  /* 获取当前激活组件 */
-  activateComponent = (name, animation) => {
-    const Compolent = this.componentMap[name];
-    return (
-      <Compolent animation={animation} />
-    );
-  }
 
   /* 子菜单组件组件 */
   buildSubItem = (name, i, activeItem) => (
@@ -118,10 +122,11 @@ class HomePage extends Component {
   /* ------------------- page render ------------------- */
 
   render() {
-    const { pub } = this.props;
+    const { pub, match } = this.props;
     const { checkPassword } = pub;
-    const { activeItem, navActivate, total, settingPage, password } = pub.state;
-    const { animation } = this.getAnimation(activeItem, total);
+    const {
+      activeItem, navActivate, total, settingPage, password,
+    } = pub.state;
     const {
       toggleIcon, toggleClass, rightToggleClass, leftToggleClass,
     } = this.getToggleState(navActivate);
@@ -158,9 +163,13 @@ class HomePage extends Component {
         </div>
 
         <div className={`container-router-right ${rightToggleClass}`}>
-          {
-            this.activateComponent(activeItem, animation)
-          }
+
+          <Route path={`${match.path}install`} component={InstallPage} />
+          <Route path={`${match.path}info`} component={InfoPage} />
+          <Route path={`${match.path}startup`} component={StartupPage} />
+          <Route path={`${match.path}clean/detail`} component={CleanDetail} />
+          <Route exact path={`${match.path}clean`} component={CleanPage} />
+
           <ScrollIndicator
             total={total}
             activeItem={activeItem}

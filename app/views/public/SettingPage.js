@@ -18,7 +18,7 @@ class SettingPage extends Component {
 
   componentDidMount() {
     const { checkPassword } = this.props;
-    checkPassword();
+    // checkPassword();
   }
 
   onPasswdChange = (ev, { value }) => {

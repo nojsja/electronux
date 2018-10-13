@@ -49,6 +49,7 @@ class SudoPrompt {
     if (!this.password) {
       password = fs.readFileSync(this.passwordFile);
       password = password.toString().trim();
+      this.password = password;
     }
     return password;
   }
@@ -164,7 +165,6 @@ class SudoPrompt {
     const self = this;
     const prompt = '<::sudo-password::>';
     self.readPassword();
-
     if (!self.password) {
       _close && (_close(1));
       return;
@@ -179,12 +179,12 @@ class SudoPrompt {
 
     // data output
     childSpawn.stdout.on('data', (d) => {
-      console.log('stdout data-> ', d.toString());
+      (_stdout) && (_stdout(d.toString()));
     });
 
     // err output
     childSpawn.stderr.on('data', (d) => {
-      console.log('std error-> ', d.toString());
+      console.log('spawn stderr-> ', d.toString());
       const message = d.toString().trim();
 
       if (message === prompt) {
@@ -196,10 +196,8 @@ class SudoPrompt {
 
     // process close
     childSpawn.on('close', (code) => {
-      console.log('close-> ', code);
-      if (_close) {
-        _close(code);
-      }
+      console.log('spawn close-> ', code);
+      (_close) && (_close(code));
     });
   }
 }

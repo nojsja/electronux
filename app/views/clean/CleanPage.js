@@ -7,6 +7,8 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 import './clean.css';
 
+import { history } from '../../App';
+
 import CleanItem from './CleanItem';
 
 @inject('clean') @observer
@@ -17,15 +19,20 @@ class CleanPage extends React.Component {
     };
   }
 
-  componentDidMount() {
+  componentDidMount() {}
 
+  // 路由跳转 //
+  redirectToDetail = () => {
+    const { clean } = this.props;
+    history.push('/clean/detail');
   }
 
   render() {
-    const { clean, animation } = this.props;
+    const { clean, location } = this.props;
     const {
       loadingMain, allChecked, total, toggleAllChecked, toggleChecked,
     } = clean;
+    const { animation } = location.state ? location.state : { animation: '' };
 
     return (
       <div className={`router-right-wrapper ${animation}`}>
@@ -51,12 +58,13 @@ class CleanPage extends React.Component {
                 key={`clean-page-${item.label}`}
                 item={item}
                 onToggle={toggleChecked}
+                history={history}
               />
             ))}
           </div>
 
           <div className="clean-action">
-            <span>
+            <span onClick={this.redirectToDetail} >
               <FontAwesomeIcon icon={faSearch} />
             </span>
           </div>

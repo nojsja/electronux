@@ -8,7 +8,8 @@ const { ipcMain } = require('electron');
 /* ------------------- self module ------------------- */
 global.pathLocator = require('./app/utils/path-locator.js');
 global.consoleLog = require('./app/utils/console-log.js');
-const ipcMainListener = require('./app/services/middleware/ipcMainListener');
+const ipcInstallListener = require('./app/services/middleware/ipcInstallListener');
+const ipcCleanListener = require('./app/services/middleware/ipcCleanListener');
 const viewConf = require('./app/configure/view-conf');
 
 /* ------------------- var ------------------- */
@@ -16,7 +17,8 @@ const nodeEnv = process.env.NODE_ENV;
 let win;
 
 /* ------------------- ipcMain ------------------- */
-ipcMainListener(ipcMain);
+ipcInstallListener(ipcMain);
+ipcCleanListener(ipcMain);
 
 /* ------------------- func  ------------------- */
 
