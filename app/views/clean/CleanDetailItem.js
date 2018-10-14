@@ -105,7 +105,7 @@ class CleanDetailItem extends Component {
                     color={this.getCheckedIconColor(allCheckedDetail.includes(con.content))}
                     onClick={() => { toggleDetailOne(con.content); }}
                   />
-                  <span>{con.content}</span>
+                  <span className="list-content">{con.content}</span>
                 </span>
                 <span>{con.size}</span>
               </div>

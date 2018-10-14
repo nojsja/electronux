@@ -241,3 +241,40 @@ body > .ui.inverted.page.modals.dimmer.transition.visible.active > .ui.mini.moda
 .router-scroll-indicator > .dot-inactive {
   background-color: white;
 }
+
+/*  Ahthor Pane
+============================================================================= */
+.author-pane-wrapper {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+  margin-top: 50%;
+}
+
+.author-pane-image {
+  display: inline-block;
+  width: 7rem;
+  height: 7rem;
+  padding: 3px;
+  border: solid .2rem white;
+  border-radius: 50%;
+  background-color: #ec90ae;
+}
+
+.author-pane-image > img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+.author-pane-text {
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin: 1rem 0;
+  color: black;
+  text-shadow: 0 0 3px white;
+}

@@ -18,6 +18,7 @@ import CleanDetail from './clean/CleanDetail';
 
 import ScrollIndicator from './public/ScrollIndicator';
 import SettingPage from './public/SettingPage';
+import AuthorPane from './public/AuthorPane';
 
 import { history } from '../App';
 
@@ -147,6 +148,8 @@ class HomePage extends Component {
             password={password}
             setPassword={pub.setPassword}
           />
+
+          <AuthorPane />
 
           <div className="router-left-menu">
             <span className="router-left-setting" onClick={() => {this.openSettingPage()}}>
