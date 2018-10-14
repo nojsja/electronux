@@ -264,6 +264,8 @@
   justify-content: space-between;
   align-items: center;
   border-bottom: solid 1px #f0f0f0;
+  overflow: hidden;
+  height: 2rem;
 }
 
 .detail-item-list > .list-item:hover {
@@ -279,4 +281,11 @@
 
 .detail-item-list > .list-item > span > span {
   margin: 0 .5rem;
+}
+
+.detail-item-list > .list-item .list-content {
+  display: inline-block;
+  height: 1.5rem;
+  line-height: 1.5rem;
+  overflow: hidden;
 }

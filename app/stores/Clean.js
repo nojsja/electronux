@@ -63,7 +63,7 @@ class Clean {
     // '/var/log//pacman.log': '10kb',
   }
 
-  // ---- 清理选项细节-数据对象逻辑树 ---- //
+  // ---- 清理选项细节-数据对象逻辑树结构 ---- //
   // @observable cleanDetails = {
   //   appCache: {
   //     url: [`/home/${this.userinfo.username}/.cache`], // 指定扫描路径多个
