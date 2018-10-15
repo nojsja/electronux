@@ -1,3 +1,11 @@
-Error: read ECONNRESET
-    at _errnoException (util.js:1024:11)
-    at Pipe.onread (net.js:615:25)
+TypeError: viewConf.writeSync is not a function
+    at process.on (/home/nojsja/github/electronux/app/services/middleware/ipcMainListener.js:27:14)
+    at emitOne (events.js:121:20)
+    at process.emit (events.js:211:7)
+    at process.emit (/home/nojsja/github/electronux/node_modules/source-map-support/source-map-support.js:439:21)
+    at App.<anonymous> (/home/nojsja/github/electronux/node_modules/electron/dist/resources/electron.asar/browser/init.js:64:11)
+    at emitTwo (events.js:126:13)
+    at App.emit (events.js:214:7)
+    at App.app.on (/home/nojsja/github/electronux/index.js:109:9)
+    at emitOne (events.js:121:20)
+    at App.emit (events.js:211:7)

@@ -231,17 +231,4 @@ function ipcMain(ipc) {
   });
 }
 
-process.on('uncaughtException', (err) => {
-  console.log('<---------------');
-
-  const errorInfo = err.stack.toString();
-  console.log(errorInfo);
-  const errorFile = pathLocator('runtime', 'error.log');
-  fs.writeFile(errorFile, errorInfo, { encoding: 'utf8', flag: 'w' }, (_err) => {
-    if (_err) console.log(_err);
-  });
-
-  console.log('--------------->');
-});
-
 module.exports = ipcMain;

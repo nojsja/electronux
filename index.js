@@ -8,6 +8,7 @@ const { ipcMain } = require('electron');
 /* ------------------- self module ------------------- */
 global.pathLocator = require('./app/utils/path-locator.js');
 global.consoleLog = require('./app/utils/console-log.js');
+const ipcMainListener = require('./app/services/middleware/ipcMainListener');
 const ipcInstallListener = require('./app/services/middleware/ipcInstallListener');
 const ipcCleanListener = require('./app/services/middleware/ipcCleanListener');
 const viewConf = require('./app/configure/view-conf');
@@ -19,6 +20,7 @@ let win;
 /* ------------------- ipcMain ------------------- */
 ipcInstallListener(ipcMain);
 ipcCleanListener(ipcMain);
+ipcMainListener(ipcMain);
 
 /* ------------------- func  ------------------- */
 
@@ -103,16 +105,26 @@ app.on('ready', () => {
 });
 
 app.on('window-all-closed', () => {
+  console.log('window-all-closed');
+  viewConf.write().then(() => 0, (err) => {
+    console.error(err);
+    throw new Error('App quit: view-conf write error !');
+  });
   if (process.platform !== 'darwin') {
     app.quit();
   }
 });
 
 app.on('will-quit', () => {
-  viewConf.write().then(() => 0, (err) => {
-    console.error(err);
-    throw new Error('App quit: view-conf write error !');
-  });
+  console.log('will-quit');
+});
+
+app.on('before-quit', () => {
+  console.log('before-quit');
+});
+
+app.on('quit', () => {
+  console.log('quit');
 });
 
 app.on('activate', () => {

@@ -42,6 +42,16 @@ function write() {
 }
 
 /**
+ * [write 从内存中读取数值并同步写入.conf文件]
+ * @return {[type]} [description]
+ */
+function writeSync() {
+  const data = JSON.stringify(viewConf);
+  console.log('write sync');
+  fs.writeFileSync(confPath, data, 'utf8');
+}
+
+/**
  * [write 从.conf文件中读取数值并存到内存中]
  * @return {[type]} [description]
  */
@@ -68,5 +78,6 @@ function read() {
 module.exports = Object.assign(viewConf, {
   set,
   write,
+  writeSync,
   read,
 });
