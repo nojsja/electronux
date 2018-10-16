@@ -1,26 +1,39 @@
 import { observable, action, computed } from 'mobx';
+const { ipcRenderer } = require('electron');
+const os = require('os');
 
-class Install {
+class Startup {
+
+  constructor() {
+    this.userInfo = `${os.userInfo()}`;
+    this.targetDir = `${this.userInfo.homedir}/.config/autostart`;
+
+    ipcRenderer.on('startup_handle-files_reply', (event, rsp) => {
+      console.log(rsp);
+      updateDetails(rsp);
+    });
+  }
+
   @observable items = {
-    'oh-my-zsh': false,
-    git: false,
-    svn: false,
-    Whatever: false,
-    chrome: false,
-    QQ: false,
-    wechat: false,
+    // "Name_xxx.desktop": 'xxx',
+    // "Comment_xxx.desktop": 'xxx',
+    // "Exec_xxx.desktop": 'xxx',
   };
 
-  @computed get installs() {
+  @observable files = [
+  // 'xxx.desktop'
+  ];
+
+  @computed get startupDetails() {
     return this.items;
   }
 
-  @action addInstall(title) {
-    this.items[title] = false;
+  @action getDetails() {
+    ipcRenderer.send('startup_handle-files');
   }
 
-  @action toggleInstall(index) {
-    this.items[index] = !this.items[index];
+  @action updateDetails(rsp) {
+
   }
 }
-export default Install;
+export default Startup;

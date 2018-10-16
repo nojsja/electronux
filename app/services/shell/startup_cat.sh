@@ -1,0 +1,9 @@
+#!/bin/bash
+
+targetDir=/home/nojsja/.config/autostart/
+allFiles=(`ls $targetDir`)
+for file in ${allFiles[@]}; do
+  echo -n "\"Comment_$file\"":"\"`sed -n '/^Comment=/p' $targetDir/$file | awk -F '=' '{print $2}'`\"",
+  echo -n "\"Name_$file\"":"\"`sed -n '/^Name=/p' $targetDir/$file | awk -F '=' '{print $2}'`\"",
+  echo -n "\"Exec_$file\"":"\"`sed -n '/^Exec=/p' $targetDir/$file | awk -F '=' '{print $2}'`\"",
+done

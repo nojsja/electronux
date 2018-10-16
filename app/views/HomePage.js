@@ -71,9 +71,10 @@ class HomePage extends Component {
   }
 
   handleItemClick = (ev, { name }) => {
-    const { pub } = this.props;
+    const { pub, location } = this.props;
     const { total } = pub.state;
     const { animation } = this.getAnimation(name, total);
+    if (location.pathname === `/${name}`) return;
     history.push({
       pathname: `/${name}`,
       state: { animation },
