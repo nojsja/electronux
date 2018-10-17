@@ -1,4 +1,4 @@
 #!/bin/bash
 
 targetDir=/home/nojsja/.config/autostart/
-echo `ls $targetDir`
+echo -n `ls $targetDir`

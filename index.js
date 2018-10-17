@@ -11,6 +11,7 @@ global.consoleLog = require('./app/utils/console-log.js');
 const ipcMainListener = require('./app/services/middleware/ipcMainListener');
 const ipcInstallListener = require('./app/services/middleware/ipcInstallListener');
 const ipcCleanListener = require('./app/services/middleware/ipcCleanListener');
+const ipcStartupListener = require('./app/services/middleware/ipcStartupListener');
 const viewConf = require('./app/configure/view-conf');
 
 /* ------------------- var ------------------- */
@@ -21,6 +22,7 @@ let win;
 ipcInstallListener(ipcMain);
 ipcCleanListener(ipcMain);
 ipcMainListener(ipcMain);
+ipcStartupListener(ipcMain);
 
 /* ------------------- func  ------------------- */
 
