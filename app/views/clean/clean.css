@@ -216,7 +216,8 @@
 
 /*  DetailItem
 ============================================================================= */
-.detail-item-wrapper {
+
+.clean-detail-content > .detail-item-wrapper {
   width: 100%;
   padding: .5rem 2rem .5rem 1rem;
 }
