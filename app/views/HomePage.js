@@ -39,7 +39,7 @@ class HomePage extends Component {
     const { activeItem, total } = pub.state;
     const { animation } = this.getAnimation(activeItem, total);
     history.push({
-      pathname: '/startup',
+      pathname: '/install',
       state: { animation },
     });
   }

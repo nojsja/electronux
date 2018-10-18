@@ -14,6 +14,7 @@
   padding-right: 1rem;
   font-size: 1.05rem;
   width: 100%;
+  color: #1f7dec;
 }
 
 .startup-detail-header > span:last-child {
@@ -37,10 +38,11 @@
   justify-content:space-between;
   align-items: center;
   margin: .7rem 0;
-  border: solid 1px #dce0e4;
-  background-color: #f5f5f5;
+  border: solid 1px #f1f1f1;
+  background-color: #f7f7f7;
   padding: 5px;
   transition: .1s;
+  color: #838f9c;
 }
 
 .startup-detail-wrapper > .detail-item-wrapper:hover {

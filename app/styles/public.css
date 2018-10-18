@@ -223,7 +223,7 @@ body > .ui.inverted.page.modals.dimmer.transition.visible.active > .ui.mini.moda
   left: 0;
   right: 0;
   height: 2rem;
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(195, 195, 195, 0.2);
 }
 
 .router-scroll-indicator > .indicator-dot {
@@ -235,7 +235,7 @@ body > .ui.inverted.page.modals.dimmer.transition.visible.active > .ui.mini.moda
 }
 
 .router-scroll-indicator > .dot-active {
-  background-color: grey;
+  background-color: #d0d0d0;
 }
 
 .router-scroll-indicator > .dot-inactive {
@@ -262,6 +262,7 @@ body > .ui.inverted.page.modals.dimmer.transition.visible.active > .ui.mini.moda
   border: solid .2rem white;
   border-radius: 50%;
   background-color: #ec90ae;
+  box-shadow: 0 0 .5rem white;
 }
 
 .author-pane-image > img {

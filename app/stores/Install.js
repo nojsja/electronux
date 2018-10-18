@@ -243,7 +243,7 @@ class Install {
 
   // 获取最新的安装状态 //
   @action refresh = () => {
-    consoleLog('refresh');
+    // consoleLog('refresh');
     this.loadingMain = true;
     ipcRenderer.send('install_exec-file.check', {
       dir: 'shell',
