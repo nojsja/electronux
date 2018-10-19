@@ -1,5 +1,6 @@
 import React from 'react';
 import { Checkbox } from 'semantic-ui-react';
+import PropTypes from 'prop-types';
 
 function CleanItem({ ...props }) {
   const {
@@ -31,5 +32,12 @@ function CleanItem({ ...props }) {
     </div>
   );
 }
+
+CleanItem.propTypes = {
+  item: PropTypes.shape({
+    label: PropTypes.string.isRequired,
+    checked: PropTypes.bool.isRequired,
+  }).isRequired,
+};
 
 export default CleanItem;

@@ -1,6 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
+import PropTypes from 'prop-types';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
@@ -14,6 +14,11 @@ import './startup.css';
 
 @inject('startup') @observer
 class StartupPage extends React.Component {
+  static propTypes = {
+    startup: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
+  }
+
   constructor() {
     super();
     this.state = {

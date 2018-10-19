@@ -1,5 +1,6 @@
-import React, { Component } from 'react'
-import { Button, Modal, Input } from 'semantic-ui-react'
+import React, { Component } from 'react';
+import { Button, Modal, Input } from 'semantic-ui-react';
+import PropTypes from 'prop-types';
 
 /**
  * [ScrollIndicator 滑动指示器]
@@ -9,6 +10,11 @@ import { Button, Modal, Input } from 'semantic-ui-react'
  */
 
 class SettingPage extends Component {
+  static propTypes = {
+    open: PropTypes.bool.isRequired,
+    closeSettingPage: PropTypes.func.isRequired,
+  }
+
   constructor() {
     super();
     this.state = {

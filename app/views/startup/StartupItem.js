@@ -1,8 +1,7 @@
 import React from 'react';
 import { Checkbox } from 'semantic-ui-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCalendarMinus } from '@fortawesome/free-regular-svg-icons';
-import { faPencilAlt, faMinusCircle } from '@fortawesome/free-solid-svg-icons';
+import { faPencilAlt, faMinusCircle, faStream } from '@fortawesome/free-solid-svg-icons';
 
 import boolValue from '../../utils/bool-value';
 
@@ -17,7 +16,7 @@ class StartupItem extends React.Component {
     return (
       <div className="detail-item-wrapper">
         <span>
-          <span><FontAwesomeIcon icon={faCalendarMinus} color="#5d89e9" /></span>
+          <span><FontAwesomeIcon icon={faStream} color="#5d89e9" /></span>
           <span>{detail.Name}</span>
         </span>
         <span>
@@ -33,6 +32,7 @@ class StartupItem extends React.Component {
             color="#5d89e9"
             onClick={() => deleteDetail(detail.file)}
           />
+          <span>|</span>
           <Checkbox
             title="toggle"
             checked={!boolValue(detail.Hidden)}

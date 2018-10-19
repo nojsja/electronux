@@ -1,9 +1,20 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   Button, Header, Icon, Modal,
 } from 'semantic-ui-react';
 
 class TerminalInfo extends React.Component {
+  static defaultProps = {
+    data: '',
+  }
+
+  static propTypes = {
+    open: PropTypes.bool.isRequired,
+    data: PropTypes.string,
+    hideTerminalInfo: PropTypes.func.isRequired,
+  }
+
   componentDidMount() {
     window.addEventListener('keyup', this.handleEscapeKeydown, true);
   }

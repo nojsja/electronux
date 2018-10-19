@@ -1,7 +1,10 @@
 import React from 'react';
 // import { Link } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
-import { Dimmer, Loader, Divider, Checkbox } from 'semantic-ui-react';
+import PropTypes from 'prop-types';
+import {
+  Dimmer, Loader, Divider, Checkbox,
+} from 'semantic-ui-react';
 
 import './install.css';
 
@@ -10,6 +13,12 @@ import TerminalInfo from './TerminalInfo';
 
 @inject('install') @observer
 class InstallPage extends React.Component {
+  /* ------------------- propTypes ------------------- */
+  static propTypes = {
+    install: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
+  }
+
   constructor() {
     super();
     this.state = {
@@ -22,6 +31,8 @@ class InstallPage extends React.Component {
     const { install } = this.props;
     install.refresh();
   }
+
+  /* ------------------- define func ------------------- */
 
   // 获取loading状态信息 //
   getLoadingStatus = (name, queue) => {

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Checkbox } from 'semantic-ui-react';
+import PropTypes from 'prop-types';
 import { inject, observer } from 'mobx-react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -7,6 +8,12 @@ import { faChevronRight, faChevronDown, faCheckCircle } from '@fortawesome/free-
 
 @inject('clean') @observer
 class CleanDetailItem extends Component {
+  static propTypes = {
+    contents: PropTypes.arrayOf(PropTypes.object).isRequired,
+    clean: PropTypes.object.isRequired,
+    label: PropTypes.string.isRequired,
+  }
+
   constructor() {
     super();
     this.state = {

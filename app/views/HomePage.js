@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import { Menu } from 'semantic-ui-react';
-// import { PropTypes } from 'prop-types';
+import PropTypes from 'prop-types';
 import {
   Route, BrowserRouter as Router, Switch,
 } from 'react-router-dom';
@@ -24,6 +24,12 @@ import { history } from '../App';
 
 @inject('pub') @observer
 class HomePage extends Component {
+  static propTypes = {
+    pub: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
+    match: PropTypes.object.isRequired,
+  }
+
   constructor(props) {
     super(props);
     this.state = {

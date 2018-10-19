@@ -1,5 +1,6 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
+import PropTypes from 'prop-types';
 import {
   Dimmer, Loader, Divider, Button,
 } from 'semantic-ui-react';
@@ -10,12 +11,15 @@ import {
   faSmile, faSurprise, faSmileWink, faLaughSquint, faKissWinkHeart,
 } from '@fortawesome/free-solid-svg-icons';
 
-
 import CleanDetailItem from './CleanDetailItem';
-
 
 @inject('clean') @observer
 class CleanDetail extends React.Component {
+  static propTypes = {
+    clean: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired,
+  }
+
   componentDidMount() {
     const { clean } = this.props;
     clean.lsAllDirs();

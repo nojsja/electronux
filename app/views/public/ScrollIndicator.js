@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 /**
  * [ScrollIndicator 滑动指示器]
@@ -26,5 +27,11 @@ function ScrollIndicator({ total, activeItem, handleItemClick }) {
     </div>
   );
 }
+
+ScrollIndicator.propTypes = {
+  total: PropTypes.arrayOf(PropTypes.string).isRequired,
+  activeItem: PropTypes.string.isRequired,
+  handleItemClick: PropTypes.func.isRequired,
+};
 
 export default ScrollIndicator;
