@@ -153,6 +153,10 @@ body {
   color: white;
 }
 
+.router-left-menu i {
+  margin: 0;
+}
+
 .setting-page-wrapper {
   min-height: 5rem;
 }

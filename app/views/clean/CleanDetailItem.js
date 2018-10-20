@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
-import { Checkbox } from 'semantic-ui-react';
+import { Checkbox, Icon } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import { inject, observer } from 'mobx-react';
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronRight, faChevronDown, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 
 @inject('clean') @observer
 class CleanDetailItem extends Component {
@@ -40,16 +37,16 @@ class CleanDetailItem extends Component {
   getVisibleIcon = () => {
     const { visible } = this.state;
     if (visible) {
-      return faChevronDown;
+      return 'chevron down';
     }
-    return faChevronRight;
+    return 'chevron right';
   }
 
   getCheckedIconColor = (checked) => {
     if (checked) {
-      return '#666666';
+      return 'green';
     }
-    return '#cfcfcf';
+    return 'grey';
   }
 
   handleData = (_data, label) => {
@@ -92,7 +89,7 @@ class CleanDetailItem extends Component {
       <div className="detail-item-wrapper">
         <div className="detail-item-header">
           <span>
-            <FontAwesomeIcon icon={this.getVisibleIcon()} onClick={this.toggleVisible} />
+            <Icon name={this.getVisibleIcon()} onClick={this.toggleVisible} />
             <Checkbox
               checked={allChecked}
               onClick={() => this.toggleDetailAll(clean, allChecked, label)}
@@ -107,8 +104,8 @@ class CleanDetailItem extends Component {
             list.map(con => (
               <div className="list-item" key={`detail-item-list-${con.content}`}>
                 <span>
-                  <FontAwesomeIcon
-                    icon={faCheckCircle}
+                  <Icon
+                    name="check circle"
                     color={this.getCheckedIconColor(allCheckedDetail.includes(con.content))}
                     onClick={() => { toggleDetailOne(con.content); }}
                   />

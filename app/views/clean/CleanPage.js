@@ -1,10 +1,9 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 import PropTypes from 'prop-types';
-import { Dimmer, Loader, Divider, Checkbox } from 'semantic-ui-react';
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import {
+  Dimmer, Loader, Divider, Checkbox, Icon,
+} from 'semantic-ui-react';
 
 import './clean.css';
 
@@ -71,7 +70,7 @@ class CleanPage extends React.Component {
 
           <div className="clean-action">
             <span onClick={this.redirectToDetail} >
-              <FontAwesomeIcon icon={faSearch} />
+              <Icon name="search" />
             </span>
           </div>
         </div>

@@ -1,7 +1,5 @@
 import React from 'react';
-import { Checkbox } from 'semantic-ui-react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPencilAlt, faMinusCircle, faStream } from '@fortawesome/free-solid-svg-icons';
+import { Checkbox, Icon } from 'semantic-ui-react';
 
 import boolValue from '../../utils/bool-value';
 
@@ -16,20 +14,18 @@ class StartupItem extends React.Component {
     return (
       <div className="detail-item-wrapper">
         <span>
-          <span><FontAwesomeIcon icon={faStream} color="#5d89e9" /></span>
+          <span><Icon name="th" color="blue" /></span>
           <span>{detail.Name}</span>
         </span>
         <span>
-          <FontAwesomeIcon
+          <Icon
             title="edit"
-            icon={faPencilAlt}
-            color="#5d89e9"
+            name="pencil"
             onClick={() => toggleModal(detail.file)}
           />
-          <FontAwesomeIcon
+          <Icon
             title="delete"
-            icon={faMinusCircle}
-            color="#5d89e9"
+            name="minus circle"
             onClick={() => deleteDetail(detail.file)}
           />
           <span>|</span>

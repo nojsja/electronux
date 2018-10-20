@@ -2,14 +2,9 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import PropTypes from 'prop-types';
 import {
-  Dimmer, Loader, Divider, Button,
+  Dimmer, Loader, Divider,
+  Icon,
 } from 'semantic-ui-react';
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faTrashAlt, faArrowCircleLeft,
-  faSmile, faSurprise, faSmileWink, faLaughSquint, faKissWinkHeart,
-} from '@fortawesome/free-solid-svg-icons';
 
 import CleanDetailItem from './CleanDetailItem';
 
@@ -35,19 +30,19 @@ class CleanDetail extends React.Component {
       return (
         <div className="clean-empty-emoji">
           <span>
-            <FontAwesomeIcon color="#4e97e4" icon={faSmile} />
+            <Icon color="blue" name="smile outline" />
           </span>
           <span>
-            <FontAwesomeIcon color="#3dc61b" icon={faSurprise} />
+            <Icon color="purple" name="smile outline" />
           </span>
           <span>
-            <FontAwesomeIcon color="#de4435" icon={faSmileWink} />
+            <Icon color="orange" name="smile outline" />
           </span>
           <span>
-            <FontAwesomeIcon color="#ec6da2" icon={faLaughSquint} />
+            <Icon color="grey" name="smile outline" />
           </span>
           <span>
-            <FontAwesomeIcon color="#728be8" icon={faKissWinkHeart} />
+            <Icon color="yellow" name="smile outline" />
           </span>
         </div>
       );
@@ -66,7 +61,7 @@ class CleanDetail extends React.Component {
         </Dimmer>
 
         <span className="clean-detail-return" onClick={this.historyGoBack}>
-          <FontAwesomeIcon icon={faArrowCircleLeft} />
+          <Icon name="arrow circle left" />
           <span>Return</span>
         </span>
         <Divider />
@@ -91,7 +86,7 @@ class CleanDetail extends React.Component {
 
           <div className="clean-detail-action">
             <span onClick={cleanAllDirs} >
-              <FontAwesomeIcon icon={faTrashAlt} />
+              <Icon name="trash alternate outline" />
             </span>
           </div>
         </div>
