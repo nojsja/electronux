@@ -136,8 +136,9 @@ class HomePage extends Component {
     } = this.getToggleState(navActivate);
     return (
       <div className="container-router">
-        <div className={`container-router-left shadow-normal router-left-background ${leftToggleClass}`}>
-          <div className="router-left-mask" />
+        <div className={`container-router-left ${leftToggleClass}`}>
+          <div className="router-left-mask router-left-background" />
+          <div className="router-left-mask2" />
           <Menu pointing vertical className="text-white-shadow">
             {
               total.map((name, i) => this.buildSubItem(name, i, activeItem))

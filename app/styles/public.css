@@ -99,10 +99,23 @@ body {
   position: absolute;
   top:  0;
   left: 0;
-  bottom: 0;
+  width: 100%;
+  height: 100%;
+  filter: blur(2px);
+}
+
+.router-left-mask2 {
+  position: absolute;
+  top: 0;
+  left: 0;
   right: 0;
-  background-color: white;
-  opacity: .1;
+  bottom: 2rem;
+  background-color: hsla(0, 0%, 0%, 0.2);
+  border-left: solid 1px black;
+  border-bottom: solid 1px black;
+  border-right: solid 2px #e7e7e7;
+  border-top: 0;
+  box-shadow: 0 0px 5px grey;
 }
 
 .router-left-background {
@@ -126,6 +139,10 @@ body {
   text-align: center;
   background-color: rgba(1,1,1, 0.5);
   z-index: 50;
+
+  border-left: solid 1px black;
+  border-bottom: solid 1px black;
+  border-right: solid 2px #e7e7e7;
 }
 
 .router-left-menu > .router-left-toggle {
@@ -187,7 +204,8 @@ body > .ui.inverted.page.modals.dimmer.transition.visible.active > .ui.mini.moda
 
 /* >>> force cover semantic */
 .container-router-left > .ui.pointing.vertical.menu {
-  background-color:rgba(255,255,255,0.75);
+  filter: blur(0px);
+  background-color:rgba(255,255,255,0.80);
 }
 
 .text-white-shadow {
