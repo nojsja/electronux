@@ -1,11 +1,22 @@
 import React from 'react';
 import { Checkbox, Icon } from 'semantic-ui-react';
+import PropTypes from 'prop-types';
 
 import boolValue from '../../utils/bool-value';
 
 class StartupItem extends React.Component {
-  componentDidMount() {
+  static propTypes = {
+    detail: PropTypes.shape({
+      Name: PropTypes.string.isRequired,
+      file: PropTypes.string.isRequired,
+      Hidden: PropTypes.string.isRequired,
+    }).isRequired,
+    toggleModal: PropTypes.func.isRequired,
+    deleteDetail: PropTypes.func.isRequired,
+    setDetails: PropTypes.func.isRequired,
   }
+
+  componentDidMount() {}
 
   render() {
     const {
@@ -14,7 +25,7 @@ class StartupItem extends React.Component {
     return (
       <div className="detail-item-wrapper">
         <span>
-          <span><Icon name="th" color="blue" /></span>
+          <span><Icon name="th" /></span>
           <span>{detail.Name}</span>
         </span>
         <span>

@@ -10,7 +10,7 @@
     "start": "concurrently \"npm run start-dev\" \"npm run start-electron\"",
     "start-dev": "cross-env NODE_ENV=development webpack-dev-server",
     "start-electron": "nodemon --exec 'cross-env NODE_ENV=development electron --inspect=5858 index'",
-    "build-all": "npm run dist && npm run build-all",
+    "build-all": "npm run dist && npm run build",
     "dist": "cross-env NODE_ENV=production webpack --config webpack.production.config.js",
     "build": "electron-builder -l"
   },
