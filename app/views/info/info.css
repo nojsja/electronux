@@ -3,14 +3,32 @@
 ============================================================================= */
 
 .info-wrapper {
+  padding-right: 1rem;
+}
 
+.black-dot {
+  position: absolute;
+  top: 5px;
+  right: .5rem;
+  display: inline-block;
+  width: .8rem;
+  height: .8rem;
+  border-radius: 50%;
+  background-color: #5b5b5c;
+  box-shadow: inset 0 0 5px white;
 }
 
 /*  cpus
 ============================================================================= */
 
 .info-cpus-wrapper {
+  position: relative;
   width: 100%;
+  margin: 1rem 0;
+  border: solid 1px #e2e2e2;
+  border-left: solid 3px #e2e2e2;
+  border-top-right-radius: .5rem;
+  background-color: #fefefe;
   zoom: 1;
 }
 
@@ -25,7 +43,7 @@
 .cpu-item-wrapper {
   position: relative;
   float: left;
-  width: 15%;
+  width: 6rem;
   margin: 1rem 1rem;
   overflow: hidden;
 }
@@ -42,7 +60,34 @@
 
 /*  basic
 ============================================================================= */
+.info-basic-wrapper {
+  position: relative;
+  margin: 1rem 0;
+  border: solid 1px #e2e2e2;
+  border-left: solid 3px #e2e2e2;
+  border-top-right-radius: .5rem;
+  background-color: #fefefe;
+  padding: .5rem;
+}
 
+.info-basic-wrapper > p > span:first-child {
+  margin-right: .5rem;
+  font-weight: bold;
+}
 
 /*  memory
 ============================================================================= */
+.info-memory-wrapper {
+  margin: 1rem 0;
+}
+
+.memory-text-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 2rem;
+}
+
+.memory-text-wrapper > span {
+  margin: 0 2rem;
+}

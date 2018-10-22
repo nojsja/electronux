@@ -25,6 +25,7 @@ class InfoCpus extends Component {
 
     return (
       <div className="info-cpus-wrapper clear-fix">
+        <span className="black-dot" />
         {
           cpus.map((cpu, i) => {
             const key = `cpu-item-${i}`;
