@@ -1,14 +1,10 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
-import { Menu } from 'semantic-ui-react';
-// import { PropTypes } from 'prop-types';
+import { Menu, Icon } from 'semantic-ui-react';
+import PropTypes from 'prop-types';
 import {
   Route, BrowserRouter as Router, Switch,
 } from 'react-router-dom';
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGithub } from '@fortawesome/free-brands-svg-icons';
-import { faArrowCircleLeft, faArrowCircleRight, faCog } from '@fortawesome/free-solid-svg-icons';
 
 import StartupPage from './startup/StartupPage';
 import InstallPage from './install/InstallPage';
@@ -24,6 +20,12 @@ import { history } from '../App';
 
 @inject('pub') @observer
 class HomePage extends Component {
+  static propTypes = {
+    pub: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
+    match: PropTypes.object.isRequired,
+  }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -96,7 +98,7 @@ class HomePage extends Component {
 
   /* 根据导航菜单显示状态选择样式类 */
   getToggleState = navActivate => ({
-    toggleIcon: navActivate ? faArrowCircleLeft : faArrowCircleRight,
+    toggleIcon: navActivate ? 'arrow alternate circle left outline' : 'arrow alternate circle right outline',
     toggleClass: navActivate ? 'router-left-toggle' : 'router-left-toggle toggle-hidden',
     rightToggleClass: navActivate ? '' : 'toggle-hidden',
     leftToggleClass: navActivate ? '' : 'toggle-hidden',
@@ -134,9 +136,10 @@ class HomePage extends Component {
     } = this.getToggleState(navActivate);
     return (
       <div className="container-router">
-        <div className={`container-router-left shadow-normal router-left-background text-white-shadow ${leftToggleClass}`}>
-          <div className="router-left-mask" />
-          <Menu pointing vertical>
+        <div className={`container-router-left ${leftToggleClass}`}>
+          <div className="router-left-mask router-left-background" />
+          <div className="router-left-mask2" />
+          <Menu pointing vertical className="text-white-shadow">
             {
               total.map((name, i) => this.buildSubItem(name, i, activeItem))
             }
@@ -154,13 +157,13 @@ class HomePage extends Component {
 
           <div className="router-left-menu">
             <span className="router-left-setting" onClick={() => {this.openSettingPage()}}>
-              <FontAwesomeIcon icon={faCog} />
+              <Icon name="key" />
             </span>
             <span onClick={() => {this.openExternalLink('https://www.github.com/NoJsJa')}}>
-              <FontAwesomeIcon icon={faGithub} />
+              <Icon name="github" />
             </span>
             <span className={toggleClass} onClick={this.toggleRouterMenu}>
-              <FontAwesomeIcon icon={toggleIcon} />
+              <Icon name={toggleIcon} />
             </span>
 
           </div>

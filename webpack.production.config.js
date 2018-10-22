@@ -4,36 +4,42 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: [
-    './app/index'
+    './app/index',
   ],
-  mode:'production',
+  mode: 'production',
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist'),
-    publicPath: '/static/'
+    publicPath: '/static/',
   },
   module: {
     rules: [
       {
         test: /\.js$/,
-        use: ['babel-loader']
+        use: ['babel-loader'],
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader']
-      }
-    ]
+        use: ['style-loader', 'css-loader'],
+      },
+      {
+        test: /\.(png|jpg|gif|svg|woff|eot|ttf|woff2)$/,
+        use: [
+          'file-loader',
+        ],
+      },
+    ],
   },
 
   plugins: [
     new webpack.NamedModulesPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
-    new HtmlWebpackPlugin({template: 'index.html', inject: false}),
+    new HtmlWebpackPlugin({ template: 'index.html', inject: false }),
     new webpack.DefinePlugin({
       'process.env': {
-        'NODE_ENV': JSON.stringify('production')
-      }
+        NODE_ENV: JSON.stringify('production'),
+      },
     }),
   ],
-  target: 'electron-renderer'
+  target: 'electron-renderer',
 };

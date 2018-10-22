@@ -1,26 +1,81 @@
-import { observable, action, computed } from 'mobx';
+import { observable, computed, action } from 'mobx';
+
+const { remote } = require('electron');
+
+const {
+  cpu, memory, basic, user,
+} = remote.require('./app/services/render-serv/info');
 
 class Info {
-  @observable items = {
-    'oh-my-zsh': false,
-    git: false,
-    svn: false,
-    Whatever: false,
-    chrome: false,
-    QQ: false,
-    wechat: false,
-  };
+  @observable cpuInfo = observable.array([])
 
-  @computed get installs() {
-    return this.items;
+  @observable memoryInfo = {
+    freemem: '',
+    totalmem: '',
+    ratio: '',
   }
 
-  @action addInstall(title) {
-    this.items[title] = false;
+  @observable userInfo = {
+    username: '',
+    homedir: '',
+    shell: '',
   }
 
-  @action toggleInstall(index) {
-    this.items[index] = !this.items[index];
+  @observable basicInfo = {
+    hostname: '',
+    release: '',
+    platform: '',
+    arch: '',
+    uptime: '',
+  }
+
+  /* ------------------- computed ------------------- */
+
+  @computed get cpus() {
+    return this.cpuInfo.map(c => ({
+      name: c.model,
+      speed: `${c.speed} Mhz`,
+    }));
+  }
+
+  /* ------------------- action ------------------- */
+
+  @action getTotal = () => {
+    this.getCpuInfo();
+    this.getMemoryInfo();
+    this.getUserInfo();
+    this.getBasicInfo();
+  }
+
+  @action getCpuInfo = () => {
+    cpu().then((r) => {
+      this.cpuInfo.replace(r);
+    });
+  }
+
+  @action getMemoryInfo = () => {
+    memory().then((meminfo) => {
+      Object.keys(meminfo).forEach((k) => {
+        this.memoryInfo[k] = meminfo[k];
+      });
+    });
+  }
+
+  @action getUserInfo = () => {
+    user().then((useri) => {
+      Object.keys(useri).forEach((k) => {
+        this.userInfo[k] = useri[k];
+      });
+    });
+  }
+
+  @action getBasicInfo = () => {
+    basic().then((basici) => {
+      Object.keys(basici).forEach((k) => {
+        this.basicInfo[k] = basici[k];
+      });
+    });
   }
 }
+
 export default Info;

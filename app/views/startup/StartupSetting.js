@@ -1,8 +1,19 @@
 import React, { Component } from 'react';
 import { Button, Modal, Input } from 'semantic-ui-react';
+import PropTypes from 'prop-types';
+
 const { ipcRenderer } = require('electron');
 
 class StartupSetting extends Component {
+  static propTypes = {
+    setDetails: PropTypes.func.isRequired,
+    addDetail: PropTypes.func.isRequired,
+    detail: PropTypes.object.isRequired,
+    show: PropTypes.bool.isRequired,
+    toggleModal: PropTypes.func.isRequired,
+    isNew: PropTypes.bool.isRequired,
+  }
+
   constructor() {
     super();
     this.Name = '';
@@ -27,7 +38,7 @@ class StartupSetting extends Component {
   }
 
   addDetail = () => {
-    const { addDetail, detail } = this.props;
+    const { addDetail } = this.props;
 
     if (this.Name && this.Exec) {
       addDetail({
@@ -46,7 +57,9 @@ class StartupSetting extends Component {
   }
 
   render() {
-    const { show, detail, toggleModal, isNew } = this.props;
+    const {
+      show, detail, toggleModal, isNew,
+    } = this.props;
     return (
       <div>
         <Modal dimmer="inverted" open={show} size="mini">

@@ -15,8 +15,8 @@ function ipcStartup(ipc) {
   ipc.on('startup_handle-files', (event, args) => {
     if (args.action === 'get') {
       const params = [args.dir];
-      const lsPath = pathLocator('shell', 'startup_ls.sh');
-      const catPath = pathLocator('shell', 'startup_cat.sh');
+      const lsPath = pathLocator('shell', 'startup-ls.sh');
+      const catPath = pathLocator('shell', 'startup-cat.sh');
       const lsResult = (child.execSync(lsPath, params)).toString();
 
       execFile(catPath, params, ({ error, result }) => {
@@ -33,7 +33,7 @@ function ipcStartup(ipc) {
       const {
         dir, file, Comment, Name, Exec, Hidden,
       } = args.detail;
-      const setPath = pathLocator('shell', 'startup_set.sh');
+      const setPath = pathLocator('shell', 'startup-set.sh');
       let params = [
         '-d', dir, '-f', file,
         '-kv', 'Hidden', Hidden,
@@ -68,7 +68,7 @@ function ipcStartup(ipc) {
   ipc.on('startup_add-files', (event, args) => {
     const { dir, file, detail } = args;
     const { Name, Comment, Exec } = detail;
-    const addPath = pathLocator('shell', 'startup_new.sh');
+    const addPath = pathLocator('shell', 'startup-new.sh');
 
     const params = ['-d', dir, '-n', Name, '-c', Comment, '-e', Exec];
 

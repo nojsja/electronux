@@ -30,10 +30,13 @@
   align-items: center;
   min-height: 10rem;
   margin: 2rem 0;
-  font-size: 3rem;
+  font-size: 2.5rem;
 }
 
 .clean-empty-emoji > span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   animation-duration: 2.5s;
   animation-fill-mode: forwards;
   animation-iteration-count: infinite;
@@ -92,6 +95,10 @@
   border: solid 1px #dde2e6;
   border-radius: 50%;
   transition: .2s;
+}
+
+.clean-action > span i {
+  margin: 0;
 }
 
 .clean-action > span:hover {
@@ -209,6 +216,11 @@
   transition: .2s;
 }
 
+.clean-detail-action > span i {
+  margin: 0;
+}
+
+
 .clean-detail-action > span:hover {
   cursor: pointer;
   transform: scale(1.1) translateX(-50%);
@@ -254,7 +266,7 @@
 }
 
 .detail-item-list {
-  padding-left: 1.3rem;
+  padding-left: 1.4rem;
   padding-right: 1rem;
   color: #606060;
   background-color: #fafafa;

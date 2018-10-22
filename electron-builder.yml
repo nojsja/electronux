@@ -15,18 +15,10 @@ files:
   - app/
   - node_modules/
 
-dmg:
-  contents:
-    - type: link
-      path: /Applications
-      x: 410
-      y: 150
-    - type: file
-      x: 130
-      y: 150
-
 linux:
   icon: resources
+  category: System
+  description: 'A System Management Tool Build For Manjaro Linux 17'
   target:
-    - deb
+    - pacman
     - AppImage

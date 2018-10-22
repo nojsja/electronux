@@ -1,14 +1,22 @@
 import React from 'react';
-import { Checkbox } from 'semantic-ui-react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCalendarMinus } from '@fortawesome/free-regular-svg-icons';
-import { faPencilAlt, faMinusCircle } from '@fortawesome/free-solid-svg-icons';
+import { Checkbox, Icon } from 'semantic-ui-react';
+import PropTypes from 'prop-types';
 
 import boolValue from '../../utils/bool-value';
 
 class StartupItem extends React.Component {
-  componentDidMount() {
+  static propTypes = {
+    detail: PropTypes.shape({
+      Name: PropTypes.string.isRequired,
+      file: PropTypes.string.isRequired,
+      Hidden: PropTypes.string.isRequired,
+    }).isRequired,
+    toggleModal: PropTypes.func.isRequired,
+    deleteDetail: PropTypes.func.isRequired,
+    setDetails: PropTypes.func.isRequired,
   }
+
+  componentDidMount() {}
 
   render() {
     const {
@@ -17,22 +25,21 @@ class StartupItem extends React.Component {
     return (
       <div className="detail-item-wrapper">
         <span>
-          <span><FontAwesomeIcon icon={faCalendarMinus} color="#5d89e9" /></span>
+          <span><Icon name="th" /></span>
           <span>{detail.Name}</span>
         </span>
         <span>
-          <FontAwesomeIcon
+          <Icon
             title="edit"
-            icon={faPencilAlt}
-            color="#5d89e9"
+            name="pencil"
             onClick={() => toggleModal(detail.file)}
           />
-          <FontAwesomeIcon
+          <Icon
             title="delete"
-            icon={faMinusCircle}
-            color="#5d89e9"
+            name="minus circle"
             onClick={() => deleteDetail(detail.file)}
           />
+          <span>|</span>
           <Checkbox
             title="toggle"
             checked={!boolValue(detail.Hidden)}

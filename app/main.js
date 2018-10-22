@@ -8,7 +8,7 @@ const { ipcMain } = require('electron');
 /* ------------------- self module ------------------- */
 global.pathLocator = require('./utils/path-locator.js');
 global.consoleLog = require('./utils/console-log.js');
-const ipcMainListener = require('./services/middleware/ipcMainListener');
+const ipcMainListener = require('./services/main-serv/ipcMainListener');
 const viewConf = require('./configure/view-conf');
 
 /* ------------------- var ------------------- */
