@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
   devtool: 'source-map',
@@ -26,7 +27,13 @@ module.exports = {
         use: ['style-loader', 'css-loader'],
       },
       {
-        test: /\.(png|jpg|gif|svg|woff|eot|ttf|woff2)$/,
+        test: /\.html$/,
+        use: {
+          loader: 'html-loader',
+        },
+      },
+      {
+        test: /\.(png|jpg|gif|ico|svg|woff|eot|ttf|woff2)$/,
         use: [
           'file-loader',
         ],
@@ -36,6 +43,7 @@ module.exports = {
 
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
+    new CleanWebpackPlugin(['dist']),
     new webpack.NamedModulesPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
   ],

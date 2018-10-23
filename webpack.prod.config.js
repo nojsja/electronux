@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
   entry: [
@@ -10,7 +11,7 @@ module.exports = {
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist'),
-    publicPath: '/static/',
+    publicPath: '/',
   },
   module: {
     rules: [
@@ -23,7 +24,24 @@ module.exports = {
         use: ['style-loader', 'css-loader'],
       },
       {
-        test: /\.(png|jpg|gif|svg|woff|eot|ttf|woff2)$/,
+        test: /\.(png|jpg|gif|svg|ico|jpeg)$/,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 8192,
+            },
+          },
+        ],
+      },
+      {
+        test: /\.html$/,
+        use: {
+          loader: 'html-loader',
+        },
+      },
+      {
+        test: /\.(png|jpg|gif|svg|ico|woff|eot|ttf|woff2)$/,
         use: [
           'file-loader',
         ],
@@ -33,6 +51,7 @@ module.exports = {
 
   plugins: [
     new webpack.NamedModulesPlugin(),
+    new CleanWebpackPlugin(['dist']),
     new webpack.NoEmitOnErrorsPlugin(),
     new HtmlWebpackPlugin({ template: 'index.html', inject: false }),
     new webpack.DefinePlugin({
