@@ -11,6 +11,11 @@ import './install.css';
 import InstallItem from './InstallItem';
 import TerminalInfo from './TerminalInfo';
 
+// 批量引入所有图片(可以指定所有图片类型)
+// const requireContext = require.context('../../../resources/install', true, /^\.\/.*\.(jpg|png)$/);
+const requireContext = require.context('../../../resources/install', true, /.*/);
+requireContext.keys().map(requireContext);
+
 @inject('install') @observer
 class InstallPage extends React.Component {
   /* ------------------- propTypes ------------------- */

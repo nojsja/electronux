@@ -18,7 +18,6 @@ files:
 linux:
   icon: resources
   category: System
-  fpm: []
   description: 'A System Management Tool Build For Manjaro Linux 17'
   synopsis: 'electronux'
   target:

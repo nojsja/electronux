@@ -2,6 +2,18 @@ import React from 'react';
 import { Checkbox, Dimmer, Loader } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
+const importDir = require('../../utils/import-dir');
+
+// 批量引入所有图片(可以指定所有图片类型)
+// const requireContext = require.context('../../../resources/install', true, /^\.\/.*\.(jpg|png)$/);
+const requireContext = require.context('../../../resources/install', true, /.*/);
+requireContext.keys().map(requireContext);
+
+// 不能通过变量引入，要不然不能识别
+// importDir('resources/install/').forEach((addr) => {
+//   require(addr);
+// });
+
 function InstallItem({ ...props }) {
   const {
     item,
