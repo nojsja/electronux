@@ -11,3 +11,4 @@ Build for Manjaro linux 17.1 desktop -- [ startup configure | software installer
 ![clean_detail](resources/screenshots/clean_detail.png)
 ![clean_search](resources/screenshots/clean_search.png)
 ![startup_list](resources/screenshots/startup_list.png)
+![info_total](resources/screenshots/info_total.png)
