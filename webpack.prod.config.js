@@ -2,6 +2,18 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+
+// 拆分样式文件
+const extractSass = new ExtractTextPlugin({
+  filename: 'style.scss.css',
+  disable: process.env.NODE_ENV === 'development',
+});
+
+const extractCss = new ExtractTextPlugin({
+  filename: 'style.css',
+  disable: process.env.NODE_ENV === 'development',
+});
 
 module.exports = {
   entry: [
@@ -11,7 +23,7 @@ module.exports = {
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist'),
-    publicPath: '/',
+    publicPath: './',
   },
   module: {
     rules: [
@@ -21,7 +33,21 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader'],
+        use: extractCss.extract({
+          fallback: 'style-loader',
+          use: 'css-loader',
+        }),
+      },
+      {
+        test: /\.scss$/,
+        use: extractSass.extract({
+          use: [{
+            loader: 'css-loader',
+          }, {
+            loader: 'sass-loader',
+          }],
+          fallback: 'style-loader', // 在开发环境使用 style-loader
+        }),
       },
       {
         test: /\.(png|jpg|gif|svg|ico|jpeg)$/,
@@ -30,6 +56,7 @@ module.exports = {
             loader: 'url-loader',
             options: {
               limit: 8192,
+              name: '[path][name].[ext]',
             },
           },
         ],
@@ -43,13 +70,20 @@ module.exports = {
       {
         test: /\.(png|jpg|gif|svg|ico|woff|eot|ttf|woff2)$/,
         use: [
-          'file-loader',
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[path][name].[ext]',
+            },
+          },
         ],
       },
     ],
   },
 
   plugins: [
+    extractSass,
+    extractCss,
     new webpack.NamedModulesPlugin(),
     new CleanWebpackPlugin(['dist']),
     new webpack.NoEmitOnErrorsPlugin(),
