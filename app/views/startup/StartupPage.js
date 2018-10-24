@@ -9,6 +9,11 @@ import StartupSetting from './StartupSetting';
 
 import './startup.css';
 
+// 批量引入所有图片(可以指定所有图片类型)
+// const requireContext = require.context('../../../resources/install', true, /^\.\/.*\.(jpg|png)$/);
+// const requireContext = require.context('../../../resources/startup', true, /.*/);
+// requireContext.keys().map(requireContext);
+
 @inject('startup') @observer
 class StartupPage extends React.Component {
   static propTypes = {

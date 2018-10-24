@@ -1,7 +1,5 @@
-TypeError: exec is not a function
-    at EventEmitter.ipc.on (/home/nojsja/github/electronux/app/services/middleware/ipcStartupListener.js:59:5)
-    at emitTwo (events.js:126:13)
-    at EventEmitter.emit (events.js:214:7)
-    at WebContents.<anonymous> (/home/nojsja/github/electronux/node_modules/electron/dist/resources/electron.asar/browser/api/web-contents.js:286:13)
-    at emitTwo (events.js:126:13)
-    at WebContents.emit (events.js:214:7)
+TypeError: process.pwd is not a function
+    at loadWindow (/home/nojsja/github/electronux/index.js:72:35)
+    at createWindow (/home/nojsja/github/electronux/index.js:97:3)
+    at App.app.on (/home/nojsja/github/electronux/index.js:106:3)
+    at App.emit (events.js:187:15)

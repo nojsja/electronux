@@ -68,7 +68,7 @@ function loadWindow(window, env) {
     }, 1e3);
   } else {
     window.loadURL(url.format({
-      pathname: path.join(path.resolve(__dirname, './dist'), 'index.html'),
+      pathname: path.resolve(__dirname, 'dist', 'index.html'),
       protocol: 'file:',
       slashes: true,
     }));

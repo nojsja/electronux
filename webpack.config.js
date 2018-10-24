@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
   devtool: 'source-map',
@@ -26,9 +27,30 @@ module.exports = {
         use: ['style-loader', 'css-loader'],
       },
       {
-        test: /\.(png|jpg|gif|svg|woff|eot|ttf|woff2)$/,
+        test: /\.scss$/,
+        use: [{
+          loader: 'style-loader', // 将 JS 字符串生成为 style 节点
+        }, {
+          loader: 'css-loader', // 将 CSS 转化成 CommonJS 模块
+        }, {
+          loader: 'sass-loader', // 将 Sass 编译成 CSS
+        }],
+      },
+      {
+        test: /\.html$/,
+        use: {
+          loader: 'html-loader',
+        },
+      },
+      {
+        test: /\.(png|jpg|gif|svg|ico|woff|eot|ttf|woff2)$/,
         use: [
-          'file-loader',
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[path][name].[ext]',
+            },
+          },
         ],
       },
     ],
@@ -36,6 +58,7 @@ module.exports = {
 
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
+    new CleanWebpackPlugin(['dist']),
     new webpack.NamedModulesPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
   ],
