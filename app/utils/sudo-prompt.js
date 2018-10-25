@@ -5,7 +5,8 @@
 
 const child = require('child_process');
 const fs = require('fs');
-const inPath = require(pathLocator('utils', 'in-path'));
+const path = require('path');
+const inPath = require(path.join(__dirname, 'in-path'));
 const { ipcMain } = require('electron');
 
 class SudoPrompt {
@@ -16,7 +17,7 @@ class SudoPrompt {
     ];
     this.bin = null;
     this.password = null;
-    this.passwordFile = pathLocator('runtime', 'password.conf');
+    this.passwordFile = path.join(__dirname, '../', 'runtime/password.conf');
   }
 
   // 识别系统权限弹窗获取程序 //

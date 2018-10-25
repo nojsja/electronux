@@ -1,5 +1,3 @@
-TypeError: process.pwd is not a function
-    at loadWindow (/home/nojsja/github/electronux/index.js:72:35)
-    at createWindow (/home/nojsja/github/electronux/index.js:97:3)
-    at App.app.on (/home/nojsja/github/electronux/index.js:106:3)
-    at App.emit (events.js:187:15)
+Error: read ECONNRESET
+    at _errnoException (util.js:1024:11)
+    at Pipe.onread (net.js:615:25)

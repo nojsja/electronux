@@ -17,16 +17,12 @@ class Startup {
         ipcRenderer.send('notify-send', {
           title: codeMessage('shell', rsp.error.code || 1),
           body: `ERROR: " ${rsp.error.cmd} "`,
-          icon: 'public/electronux.png',
-          iconDir: 'resources',
         });
       } else {
         if (rsp.action === 'set') {
           ipcRenderer.send('notify-send', {
             title: 'startup',
             body: 'set startup success!',
-            icon: 'public/electronux.png',
-            iconDir: 'resources',
           });
         }
         this.updateDetails(rsp.action, rsp.result);
@@ -39,8 +35,6 @@ class Startup {
         ipcRenderer.send('notify-send', {
           title: codeMessage('shell', rsp.error.code || 1),
           body: `ERROR: " ${rsp.error.cmd} "`,
-          icon: 'public/electronux.png',
-          iconDir: 'resources',
         });
       } else {
         this.getDetails();
@@ -53,8 +47,6 @@ class Startup {
         ipcRenderer.send('notify-send', {
           title: codeMessage('shell', rsp.error.code || 1),
           body: `ERROR: " ${rsp.error.cmd} "`,
-          icon: 'public/electronux.png',
-          iconDir: 'resources',
         });
       } else {
         this.setModal(false);

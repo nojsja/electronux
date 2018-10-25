@@ -2,12 +2,14 @@ const electron = require('electron');
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
 const url = require('url');
-const sourceMapSupport = require('source-map-support');
+const fs = require('fs');
+// const sourceMapSupport = require('source-map-support');
 const { ipcMain } = require('electron');
 
 /* ------------------- self module ------------------- */
 global.pathLocator = require('./app/utils/path-locator.js');
 global.consoleLog = require('./app/utils/console-log.js');
+const fsChmod = require('./app/services/middleware/fs-chmod.js');
 const ipcMainListener = require('./app/services/main-serv/ipcMainListener');
 const ipcInstallListener = require('./app/services/main-serv/ipcInstallListener');
 const ipcCleanListener = require('./app/services/main-serv/ipcCleanListener');
@@ -17,6 +19,9 @@ const viewConf = require('./app/configure/view-conf');
 /* ------------------- var ------------------- */
 const nodeEnv = process.env.NODE_ENV;
 let win;
+
+/* ------------------- middleware ------------------- */
+fsChmod();
 
 /* ------------------- ipcMain ------------------- */
 ipcInstallListener(ipcMain);
@@ -101,7 +106,7 @@ function createWindow() {
 
 app.on('ready', () => {
   if (nodeEnv === 'development') {
-    sourceMapSupport.install();
+    require('source-map-support').install();
   }
   createWindow();
 });

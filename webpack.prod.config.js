@@ -7,12 +7,10 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 // 拆分样式文件
 const extractSass = new ExtractTextPlugin({
   filename: 'style.scss.css',
-  disable: process.env.NODE_ENV === 'development',
 });
 
 const extractCss = new ExtractTextPlugin({
   filename: 'style.css',
-  disable: process.env.NODE_ENV === 'development',
 });
 
 module.exports = {
@@ -23,7 +21,13 @@ module.exports = {
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist'),
-    publicPath: './',
+    publicPath: '/',
+  },
+  resolve: {
+    alias: {
+      resources: path.resolve(__dirname, 'resources'),
+      app: path.resolve(__dirname, 'app'),
+    },
   },
   module: {
     rules: [
@@ -36,6 +40,7 @@ module.exports = {
         use: extractCss.extract({
           fallback: 'style-loader',
           use: 'css-loader',
+          publicPath: path.join(__dirname, 'dist/'),
         }),
       },
       {
@@ -47,20 +52,22 @@ module.exports = {
             loader: 'sass-loader',
           }],
           fallback: 'style-loader', // 在开发环境使用 style-loader
+          publicPath: path.join(__dirname, 'dist/'),
         }),
       },
-      {
-        test: /\.(png|jpg|gif|svg|ico|jpeg)$/,
-        use: [
-          {
-            loader: 'url-loader',
-            options: {
-              limit: 8192,
-              name: '[path][name].[ext]',
-            },
-          },
-        ],
-      },
+      // { // parse error
+      //   test: /\.(png|jpg|gif|svg|ico|jpeg)$/,
+      //   use: [
+      //     {
+      //       loader: 'url-loader',
+      //       options: {
+      //         limit: 8192,
+      //         name: '[path][name].[ext]',
+      //         fallback: 'file-loader',
+      //       },
+      //     },
+      //   ],
+      // },
       {
         test: /\.html$/,
         use: {
@@ -68,7 +75,7 @@ module.exports = {
         },
       },
       {
-        test: /\.(png|jpg|gif|svg|ico|woff|eot|ttf|woff2)$/,
+        test: /\.(png|jpg|jpeg|gif|svg|ico|woff|eot|ttf|woff2)$/,
         use: [
           {
             loader: 'file-loader',

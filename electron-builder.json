@@ -1,0 +1,18 @@
+{
+  "appId": "com.nojsja.electronux",
+  "copyright": "nojsja",
+  "productName": "electronux",
+  "asar": false,
+  "directories": {
+    "buildResources": "build-assets/",
+    "output": "build/"
+  },
+  "files": ["package.json", "index.js", "dist/", "app/", "node_modules/"],
+  "linux": {
+    "icon": "resources",
+    "category": "System",
+    "description": "A System Management Tool Build For Manjaro Linux 17",
+    "synopsis": "electronux",
+    "target": ["zip", "AppImage", "pacman"]
+  }
+}

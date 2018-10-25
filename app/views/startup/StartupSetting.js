@@ -50,8 +50,6 @@ class StartupSetting extends Component {
       ipcRenderer.send('notify-send', {
         title: 'tips',
         body: 'Segment [Name] and [Exec] is required!',
-        icon: 'public/electronux.png',
-        iconDir: 'resources',
       });
     }
   }

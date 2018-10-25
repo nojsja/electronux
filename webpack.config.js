@@ -1,6 +1,16 @@
 const path = require('path');
 const webpack = require('webpack');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+
+// 拆分样式文件
+const extractSass = new ExtractTextPlugin({
+  filename: 'style.scss.css',
+});
+
+const extractCss = new ExtractTextPlugin({
+  filename: 'style.css',
+});
 
 module.exports = {
   devtool: 'source-map',
@@ -16,25 +26,51 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     publicPath: '/',
   },
+  resolve: {
+    alias: {
+      resources: path.resolve(__dirname, 'resources'),
+      app: path.resolve(__dirname, 'app'),
+    },
+  },
   module: {
     rules: [
       {
         test: /\.js$/,
         use: ['babel-loader'],
       },
+      // {
+      //   test: /\.css$/,
+      //   use: ['style-loader', 'css-loader'],
+      // },
+      // {
+      //   test: /\.scss$/,
+      //   use: [{
+      //     loader: 'style-loader', // 将 JS 字符串生成为 style 节点
+      //   }, {
+      //     loader: 'css-loader', // 将 CSS 转化成 CommonJS 模块
+      //   }, {
+      //     loader: 'sass-loader', // 将 Sass 编译成 CSS
+      //   }],
+      // },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader'],
+        use: extractCss.extract({
+          fallback: 'style-loader',
+          use: 'css-loader',
+          publicPath: '/',
+        }),
       },
       {
         test: /\.scss$/,
-        use: [{
-          loader: 'style-loader', // 将 JS 字符串生成为 style 节点
-        }, {
-          loader: 'css-loader', // 将 CSS 转化成 CommonJS 模块
-        }, {
-          loader: 'sass-loader', // 将 Sass 编译成 CSS
-        }],
+        use: extractSass.extract({
+          use: [{
+            loader: 'css-loader',
+          }, {
+            loader: 'sass-loader',
+          }],
+          fallback: 'style-loader', // 在开发环境使用 style-loader
+          publicPath: '/',
+        }),
       },
       {
         test: /\.html$/,
@@ -57,6 +93,8 @@ module.exports = {
   },
 
   plugins: [
+    extractSass,
+    extractCss,
     new webpack.HotModuleReplacementPlugin(),
     new CleanWebpackPlugin(['dist']),
     new webpack.NamedModulesPlugin(),

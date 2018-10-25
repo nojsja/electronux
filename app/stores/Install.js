@@ -63,8 +63,6 @@ class Install {
         ipcRenderer.send('notify-send', {
           title: codeMessage('shell', rsp.error.code),
           body: `ERROR: " ${rsp.error.cmd} "`,
-          icon: 'public/electronux.png',
-          iconDir: 'resources',
         });
       } else {
         // const all = rsp.result.split('|');
@@ -89,8 +87,6 @@ class Install {
         ipcRenderer.send('notify-send', {
           title: codeMessage('shell', rsp.error.code),
           body: `ERROR: " ${rsp.error.cmd} "`,
-          icon: 'public/electronux.png',
-          iconDir: 'resources',
         });
       } else {
         consoleLog('install.do: ', rsp.result);
@@ -111,8 +107,6 @@ class Install {
         ipcRenderer.send('notify-send', {
           title: codeMessage('shell', rsp.error.code),
           body: `ERROR: " ${rsp.error.cmd} "`,
-          icon: 'public/electronux.png',
-          iconDir: 'resources',
         });
       } else {
         consoleLog('install.undo: ', rsp.result);
@@ -129,8 +123,6 @@ class Install {
         ipcRenderer.send('notify-send', {
           title: codeMessage('shell', rsp.error.code),
           body: `ERROR: " ${rsp.error.cmd} "`,
-          icon: 'public/electronux.png',
-          iconDir: 'resources',
         });
       } else {
         that.updateTerminal(rsp.params, rsp.result);
@@ -144,8 +136,6 @@ class Install {
         ipcRenderer.send('notify-send', {
           title: codeMessage('shell', rsp.error.code),
           body: `ERROR: " ${rsp.error.cmd} "`,
-          icon: 'public/electronux.png',
-          iconDir: 'resources',
         });
       } else {
         that.sourceChecked = rsp.result;
@@ -159,8 +149,6 @@ class Install {
         ipcRenderer.send('notify-send', {
           title: codeMessage('shell', rsp.error.code),
           body: `ERROR: " ${rsp.error.cmd} "`,
-          icon: 'public/electronux.png',
-          iconDir: 'resources',
         });
       } else {
         that.refresh();
