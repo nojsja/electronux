@@ -16,7 +16,7 @@ class Startup {
         console.log(rsp.error);
         ipcRenderer.send('notify-send', {
           title: codeMessage('shell', rsp.error.code || 1),
-          body: `ERROR: " ${rsp.error.cmd} "`,
+          body: `ERROR: " ${rsp.error.cmd || rsp.error.toString()} "`,
         });
       } else {
         if (rsp.action === 'set') {
@@ -34,7 +34,7 @@ class Startup {
       if (rsp.error) {
         ipcRenderer.send('notify-send', {
           title: codeMessage('shell', rsp.error.code || 1),
-          body: `ERROR: " ${rsp.error.cmd} "`,
+          body: `ERROR: " ${rsp.error.cmd || rsp.error.toString()} "`,
         });
       } else {
         this.getDetails();
@@ -46,7 +46,7 @@ class Startup {
       if (rsp.error) {
         ipcRenderer.send('notify-send', {
           title: codeMessage('shell', rsp.error.code || 1),
-          body: `ERROR: " ${rsp.error.cmd} "`,
+          body: `ERROR: " ${rsp.error.cmd || rsp.error.toString()} "`,
         });
       } else {
         this.setModal(false);

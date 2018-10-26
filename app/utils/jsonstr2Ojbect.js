@@ -10,7 +10,7 @@ function jsonstr2Object(_str) {
     str = `{${str}}`;
     str = JSON.parse(str);
   } catch (e) {
-    str = {};
+    str = '{}';
     console.error(e);
   }
 

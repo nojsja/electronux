@@ -32,6 +32,9 @@ function ipcMain(ipc) {
   ipc.on('install_exec-file.check', (event, args) => {
     const _path = path.join(__dirname, '../', args.dir, args.target);
     execFile(_path, args.params, (rsp) => {
+      if (rsp.error) {
+        console.log(rsp);
+      }
       event.sender.send('install_exec-file_reply.check', rsp);
     });
   });
@@ -40,6 +43,9 @@ function ipcMain(ipc) {
   ipc.on('install_source-check.configure', (event, args) => {
     const _path = path.join(__dirname, '../', args.dir, args.target);
     execFile(_path, args.params, (rsp) => {
+      if (rsp.error) {
+        console.log(rsp);
+      }
       const result = {
         result: (parseInt(rsp.result) === 0),
         error: rsp.error,

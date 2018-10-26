@@ -2,8 +2,6 @@ const electron = require('electron');
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
 const url = require('url');
-const fs = require('fs');
-// const sourceMapSupport = require('source-map-support');
 const { ipcMain } = require('electron');
 
 /* ------------------- self module ------------------- */
@@ -21,7 +19,7 @@ const nodeEnv = process.env.NODE_ENV;
 let win;
 
 /* ------------------- middleware ------------------- */
-fsChmod();
+fsChmod(path.resolve('app/services/shell'), 0o711);
 
 /* ------------------- ipcMain ------------------- */
 ipcInstallListener(ipcMain);

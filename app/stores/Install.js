@@ -61,19 +61,16 @@ class Install {
       if (rsp.error) {
         console.log(rsp.error);
         ipcRenderer.send('notify-send', {
-          title: codeMessage('shell', rsp.error.code),
-          body: `ERROR: " ${rsp.error.cmd} "`,
+          title: codeMessage('shell', rsp.error.code || 1),
+          body: `ERROR: " ${rsp.error.cmd || rsp.error.toString()} "`,
         });
-      } else {
-        // const all = rsp.result.split('|');
-        // const installed = all.shift().split(' ');
-        // const uninstalled = all.shift().split(' ');
-        rsp.result = jsonstr2Object(`${rsp.result}`);
-        const all = Object.keys(rsp.result);
-        const installed = all.filter(item => (rsp.result[item] === true) || (rsp.result[item] === 'true'));
-        const uninstalled = all.filter(item => (rsp.result[item] === false) || (rsp.result[item] === 'false'));
-        that.update(installed, uninstalled);
       }
+
+      rsp.result = jsonstr2Object(`${rsp.result}`);
+      const all = Object.keys(rsp.result);
+      const installed = all.filter(item => (rsp.result[item] === true) || (rsp.result[item] === 'true'));
+      const uninstalled = all.filter(item => (rsp.result[item] === false) || (rsp.result[item] === 'false'));
+      that.update(installed, uninstalled);
     });
 
     // 安装脚本文件事件 //
@@ -85,8 +82,8 @@ class Install {
       if (rsp.error) {
         console.log(rsp.error);
         ipcRenderer.send('notify-send', {
-          title: codeMessage('shell', rsp.error.code),
-          body: `ERROR: " ${rsp.error.cmd} "`,
+          title: codeMessage('shell', rsp.error.code || 1),
+          body: `ERROR: " ${rsp.error.cmd || rsp.error.toString()} "`,
         });
       } else {
         consoleLog('install.do: ', rsp.result);
@@ -105,8 +102,8 @@ class Install {
       if (rsp.error) {
         console.log(rsp.error);
         ipcRenderer.send('notify-send', {
-          title: codeMessage('shell', rsp.error.code),
-          body: `ERROR: " ${rsp.error.cmd} "`,
+          title: codeMessage('shell', rsp.error.code || 1),
+          body: `ERROR: " ${rsp.error.cmd || rsp.error.toString()} "`,
         });
       } else {
         consoleLog('install.undo: ', rsp.result);
@@ -120,13 +117,12 @@ class Install {
     ipcRenderer.on('install_terminal-info_reply', (event, rsp) => {
       if (rsp.error) {
         console.log(rsp.error);
-        ipcRenderer.send('notify-send', {
-          title: codeMessage('shell', rsp.error.code),
-          body: `ERROR: " ${rsp.error.cmd} "`,
-        });
-      } else {
-        that.updateTerminal(rsp.params, rsp.result);
+        // ipcRenderer.send('notify-send', {
+        //   title: codeMessage('shell', rsp.error.code || 1),
+        //   body: `ERROR: " ${rsp.error.cmd || rsp.error.toString()} "`,
+        // });
       }
+      that.updateTerminal(rsp.params, rsp.result);
     });
 
     // source 源检查操作 //
@@ -134,8 +130,8 @@ class Install {
       if (rsp.error) {
         console.log(rsp.error);
         ipcRenderer.send('notify-send', {
-          title: codeMessage('shell', rsp.error.code),
-          body: `ERROR: " ${rsp.error.cmd} "`,
+          title: codeMessage('shell', rsp.error.code || 1),
+          body: `ERROR: " ${rsp.error.cmd || rsp.error.toString()} "`,
         });
       } else {
         that.sourceChecked = rsp.result;
@@ -147,8 +143,8 @@ class Install {
       if (rsp.error) {
         console.log(rsp.error);
         ipcRenderer.send('notify-send', {
-          title: codeMessage('shell', rsp.error.code),
-          body: `ERROR: " ${rsp.error.cmd} "`,
+          title: codeMessage('shell', rsp.error.code || 1),
+          body: `ERROR: " ${rsp.error.cmd || rsp.error.toString()} "`,
         });
       } else {
         that.refresh();
@@ -266,7 +262,7 @@ class Install {
 
   // 更新一项的安装状态 //
   @action updateOne = (name, status) => {
-    status = ( (status === true) || (status === 'true') ) ? true : false;
+    status = ((status === true) || (status === 'true')) ? true : false;
     ( this.items[name] !== undefined ) && ( this.items[name] = status );
   }
 

@@ -12,8 +12,8 @@ import { history } from '../../App';
 import CleanItem from './CleanItem';
 
 // 批量引入所有图片(可以指定所有图片类型)
-// const requireContext = require.context('../../../resources/install', true, /^\.\/.*\.(jpg|png)$/);
-const requireContext = require.context('../../../resources/clean', true, /.*/);
+// const requireContext = require.context('resources/install', true, /^\.\/.*\.(jpg|png)$/);
+const requireContext = require.context('resources/clean', true, /.*/);
 requireContext.keys().map(requireContext);
 
 @inject('clean') @observer

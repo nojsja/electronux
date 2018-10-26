@@ -10,11 +10,12 @@ const notifySend = require('../../utils/notify-send.js');
 function ipcMain(ipc) {
   // 桌面通知发送 //
   ipc.on('notify-send', (event, args) => {
+    const iconAddr = args.icon || 'resources/public/electronux.png';
     notifySend({
       delay: args.delay || 0,
       title: args.title || 'electron',
       body: args.body || 'electron notification',
-      icon: path.join(__dirname, '../../../', 'resources/electronux.png'),
+      icon: path.join(__dirname, '../../../', iconAddr),
     });
   });
 
