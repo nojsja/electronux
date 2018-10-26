@@ -1,3 +1,8 @@
+/**
+* @name: pathLocator
+* @description: 在index.js引入生成全局变量pathLocator
+*/
+
 const path = require('path');
 
 function pathLocator(module, name) {
@@ -14,6 +19,7 @@ function pathLocator(module, name) {
   };
   const abpath = paths[module] ? (`${paths[module]}/${name}`) : '';
 
+  // 自动合并根目录路径
   return path.resolve(abpath);
 }
 

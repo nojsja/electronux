@@ -2,12 +2,12 @@
 * @name: ipcMainListener
 * @description: 主进程ipc信号监听器
 */
+const path = require('path');
 
-const execFile = require(pathLocator('utils', 'exec-file.js'));
-const fs = require('fs');
+const execFile = require(path.join(__dirname, '../../', 'utils/exec-file.js'));
 
-const SudoPrompt = require(pathLocator('utils', 'sudo-prompt.js'));
-const notifySend = require(pathLocator('utils', 'notify-send.js'));
+const SudoPrompt = require(path.join(__dirname, '../../', 'utils/sudo-prompt.js'));
+const notifySend = require(path.join(__dirname, '../../', 'utils/notify-send.js'));
 
 const sudo = new SudoPrompt();
 
@@ -20,7 +20,7 @@ function ipcMain(ipc) {
         delay: 0,
         title: 'electron-tips',
         body: `New Password: [ ${args.password} ]`,
-        icon: pathLocator('resources', 'public/settings.png'),
+        icon: path.join(__dirname, '../../../', 'resources/public/settings.png'),
       });
     } else if (args.action === 'read') {
       const passwd = sudo.readPassword();
@@ -28,28 +28,24 @@ function ipcMain(ipc) {
     }
   });
 
-  // 桌面通知发送 //
-  ipc.on('notify-send', (event, args) => {
-    notifySend({
-      delay: args.delay || 0,
-      title: args.title || 'electron',
-      body: args.body || 'electron notification',
-      icon: (args.icon && args.iconDir) ? pathLocator(args.iconDir, args.icon) : undefined,
-    });
-  });
-
   // 安装项检查 //
   ipc.on('install_exec-file.check', (event, args) => {
-    const path = pathLocator(args.dir, args.target);
-    execFile(path, args.params, (rsp) => {
+    const _path = path.join(__dirname, '../', args.dir, args.target);
+    execFile(_path, args.params, (rsp) => {
+      if (rsp.error) {
+        console.log(rsp);
+      }
       event.sender.send('install_exec-file_reply.check', rsp);
     });
   });
 
   // archlinuxcn 源检查操作 //
   ipc.on('install_source-check.configure', (event, args) => {
-    const path = pathLocator(args.dir, args.target);
-    execFile(path, args.params, (rsp) => {
+    const _path = path.join(__dirname, '../', args.dir, args.target);
+    execFile(_path, args.params, (rsp) => {
+      if (rsp.error) {
+        console.log(rsp);
+      }
       const result = {
         result: (parseInt(rsp.result) === 0),
         error: rsp.error,
@@ -60,7 +56,7 @@ function ipcMain(ipc) {
 
   // archlinuxcn 测试带密码执行命令 //
   ipc.on('sudo-with-password', (event, args) => {
-    const path = pathLocator('shell', 'sudo-test.sh');
+    const _path = path.join(__dirname, '../', 'shell', 'sudo-test.sh');
     sudo.spawnWithPasswd({
       _command: 'bash',
       _params: [path],
@@ -70,7 +66,7 @@ function ipcMain(ipc) {
 
   // archlinuxcn 源配置操作 //
   ipc.on('install_source-config.configure', (event, args) => {
-    const path = pathLocator(args.dir, args.target);
+    const _path = path.join(__dirname, '../', args.dir, args.target);
     const stdout = (data) => {
       event.sender.send('install_terminal-info_reply', {
         error: null,
@@ -103,7 +99,7 @@ function ipcMain(ipc) {
 
     sudo.spawn({
       _command: 'bash',
-      _params: [path, args.params],
+      _params: [_path, args.params],
       _options: {},
       _stdout: stdout,
       _stderr: stderr,
@@ -113,7 +109,7 @@ function ipcMain(ipc) {
 
   // 安装项安装 //
   ipc.on('install_exec-file.do', (event, args) => {
-    const path = pathLocator(args.dir, args.target);
+    const _path = path.join(__dirname, '../', args.dir, args.target);
 
     /* sudo.execFile version */
     // sudo.execFile(path, args.params).then((result) => {
@@ -164,7 +160,7 @@ function ipcMain(ipc) {
 
     sudo.spawn({
       _command: 'bash',
-      _params: [path, args.params],
+      _params: [_path, args.params],
       _options: {},
       _stdout: stdout,
       _stderr: stderr,
@@ -174,7 +170,7 @@ function ipcMain(ipc) {
 
   // 安装项卸载 //
   ipc.on('install_exec-file.undo', (event, args) => {
-    const path = pathLocator(args.dir, args.target);
+    const _path = path.join(__dirname, '../', args.dir, args.target);
     // sudo.execFile(path, args.params).then((result) => {
     //   event.sender.send('install_exec-file_reply.undo', {
     //     error: null,
@@ -222,7 +218,7 @@ function ipcMain(ipc) {
 
     sudo.spawn({
       _command: 'bash',
-      _params: [path, args.params],
+      _params: [_path, args.params],
       _options: {},
       _stdout: stdout,
       _stderr: stderr,

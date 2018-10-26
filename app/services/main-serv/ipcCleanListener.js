@@ -2,20 +2,20 @@
 * @name: ipcCleanListener
 * @description: 主进程ipc信号监听器
 */
-
-const execFile = require(pathLocator('utils', 'exec-file.js'));
+const path = require('path');
+const execFile = require(path.join(__dirname, '../../', 'utils/exec-file.js'));
 const fs = require('fs');
 
-const SudoPrompt = require(pathLocator('utils', 'sudo-prompt.js'));
-const notifySend = require(pathLocator('utils', 'notify-send.js'));
+const SudoPrompt = require(path.join(__dirname, '../../', 'utils/sudo-prompt.js'));
+const notifySend = require(path.join(__dirname, '../../', 'utils/notify-send.js'));
 
 const sudo = new SudoPrompt();
 
 function ipcClean(ipc) {
   // 用户root密码 //
   ipc.on('clean_handle-dirs', (event, args) => {
-    const duPath = pathLocator('shell', 'clean-du.sh');
-    const rmPath = pathLocator('shell', 'clean-rm.sh');
+    const duPath = path.join(__dirname, '../', 'shell/clean-du.sh');
+    const rmPath = path.join(__dirname, '../', 'shell/clean-rm.sh');
     let result = '';
 
     if (args.action === 'du') {
