@@ -13,6 +13,6 @@
     "category": "System",
     "description": "A System Management Tool Build For Manjaro Linux 17",
     "synopsis": "electronux",
-    "target": ["zip", "AppImage", "pacman"]
+    "target": ["zip"]
   }
 }

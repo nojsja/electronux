@@ -7,7 +7,7 @@ const { ipcMain } = require('electron');
 /* ------------------- self module ------------------- */
 global.pathLocator = require('./app/utils/path-locator.js');
 global.consoleLog = require('./app/utils/console-log.js');
-const fsChmod = require('./app/services/middleware/fs-chmod.js');
+const fsChmodShell = require('./app/services/middleware/fs-chmod-shell.js');
 const ipcMainListener = require('./app/services/main-serv/ipcMainListener');
 const ipcInstallListener = require('./app/services/main-serv/ipcInstallListener');
 const ipcCleanListener = require('./app/services/main-serv/ipcCleanListener');
@@ -19,7 +19,7 @@ const nodeEnv = process.env.NODE_ENV;
 let win;
 
 /* ------------------- middleware ------------------- */
-fsChmod(path.resolve('app/services/shell'), 0o711);
+fsChmodShell();
 
 /* ------------------- ipcMain ------------------- */
 ipcInstallListener(ipcMain);
