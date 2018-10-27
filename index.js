@@ -87,6 +87,7 @@ function createWindow() {
     height,
     title: 'electronux',
     autoHideMenuBar: true,
+    icon: path.join(__dirname, 'resources/icon.png'),
   });
 
   win.on('resize', () => {
