@@ -1,13 +1,11 @@
 const path = require('path');
 const webpack = require('webpack');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 // 拆分样式文件
 const extractSass = new ExtractTextPlugin({
   filename: 'style.scss.css',
 });
-
 const extractCss = new ExtractTextPlugin({
   filename: 'style.css',
 });
@@ -36,22 +34,8 @@ module.exports = {
     rules: [
       {
         test: /\.js$/,
-        use: ['babel-loader'],
+        use: ['babel-loader?cacheDirectory=true'],
       },
-      // {
-      //   test: /\.css$/,
-      //   use: ['style-loader', 'css-loader'],
-      // },
-      // {
-      //   test: /\.scss$/,
-      //   use: [{
-      //     loader: 'style-loader', // 将 JS 字符串生成为 style 节点
-      //   }, {
-      //     loader: 'css-loader', // 将 CSS 转化成 CommonJS 模块
-      //   }, {
-      //     loader: 'sass-loader', // 将 Sass 编译成 CSS
-      //   }],
-      // },
       {
         test: /\.css$/,
         use: extractCss.extract({
@@ -96,7 +80,6 @@ module.exports = {
     extractSass,
     extractCss,
     new webpack.HotModuleReplacementPlugin(),
-    new CleanWebpackPlugin(['dist']),
     new webpack.NamedModulesPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
   ],

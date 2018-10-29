@@ -1,7 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 // 拆分样式文件
@@ -11,6 +10,12 @@ const extractSass = new ExtractTextPlugin({
 
 const extractCss = new ExtractTextPlugin({
   filename: 'style.css',
+});
+
+// 拆分静态库
+const dllRefPlugin = new webpack.DllReferencePlugin({
+  context: __dirname,
+  manifest: require('./dist/vendor-manifest.json'),
 });
 
 module.exports = {
@@ -89,10 +94,10 @@ module.exports = {
   },
 
   plugins: [
+    dllRefPlugin,
     extractSass,
     extractCss,
     new webpack.NamedModulesPlugin(),
-    new CleanWebpackPlugin(['dist']),
     new webpack.NoEmitOnErrorsPlugin(),
     new HtmlWebpackPlugin({ template: 'index.html', inject: false }),
     new webpack.DefinePlugin({
