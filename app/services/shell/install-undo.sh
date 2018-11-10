@@ -6,6 +6,7 @@
 all_install=()
 all_available=(oh-my-zsh node atom whatever vscode chrome wechat peek deepin-capture deepin-terminal easeMusic QQ albert)
 whoami="`whoami`"
+release=`cat /etc/issue | awk -F ' ' '{print $1}'`
 
 # -------- env install ---------- #
 
@@ -21,7 +22,11 @@ do_uninstall() {
 # 安装oh-my-zsh
 u_oh-my-zsh() {
   echo ">>> uninstall on-my-zsh ... "
-  sudo pacman -R --noconfirm zsh
+  if [ "$release" == "Ubuntu" ]; then
+    sudo apt remove zsh -y
+  else
+    sudo pacman -R --noconfirm zsh
+  fi
   chsh -s /bin/bash
 }
 
@@ -35,73 +40,127 @@ u_node() {
 # 安装atom编辑器
 u_atom() {
   echo ">>> uninstall atom editor ..."
-  sudo pacman -R --noconfirm atom
+  if [ "$release" == "Ubuntu" ]; then
+    sudo apt remove atom -y
+  else
+    sudo pacman -R --noconfirm atom
+  fi
 }
 
 # whatever
 u_whatever() {
   echo ">>> uninstall whatever ..."
-  pacman -R --noconfirm whatever
+  if [ "$release" == "Ubuntu" ]; then
+    echo "Ubuntu -- whatever"
+  else
+    sudo pacman -R --noconfirm whatever
+  fi
 }
 
 # 安装vscode编辑器
 u_vscode() {
   echo ">>> uninstall vscode ... "
-  sudo pacman -R --noconfirm visual-studio-code-bin
+  if [ "$release" == "Ubuntu" ]; then
+    echo "Ubuntu -- vscode"
+  else
+    sudo pacman -R --noconfirm visual-studio-code-bin
+  fi
 }
 
 # 安装chrome浏览器
 u_chrome() {
   echo ">>> uninstall google-chrome ... "
-  sudo pacman -R --noconfirm google-chrome
+  if [ "$release" == "Ubuntu" ]; then
+    sudo apt remove google-chrome-stable -y
+  else
+    sudo pacman -R --noconfirm google-chrome
+  fi
 }
 
 # 安装微信
 u_wechat() {
   echo ">>> uninstall wechat ..."
-  yaourt -R --noconfirm electronic-wechat
+  if [ "$release" == "Ubuntu" ]; then
+    echo "Ubuntu -- wechat"
+  else
+    yaourt -R --noconfirm electronic-wechat
+  fi
 }
 
 # 安装Peek
 u_peek() {
   echo ">>> uninstall peek ..."
-  yaourt -R --noconfirm peek
+  if [ "$release" == "Ubuntu" ]; then
+    sudo apt remove peek -y
+    sudo add-apt-repository -r ppa:peek-developers/stable -y
+    sudo apt update
+  else
+    yaourt -R --noconfirm peek
+  fi
 }
 
 # 安装深度截图
 u_deepin-capture() {
   echo ">>> uninstall deepin-capture ... "
-  yaourt -R --noconfirm deepin-screenshot
+  if [ "$release" == "Ubuntu" ]; then
+    sudo apt remove deepin-screenshot
+  else
+    yaourt -R --noconfirm deepin-screenshot
+  fi
 }
 
 # 安装深度终端
 u_deepin-terminal() {
   echo ">>> uninstall deepin-terminal ... "
-  yaourt -R --noconfirm deepin-terminal
+  if [ "$release" == "Ubuntu" ]; then
+    sudo apt remove deepin-terminal
+  else
+    yaourt -R --noconfirm deepin-terminal
+  fi
 }
 
 # 安装ieaseMusic
 u_easeMusic() {
   echo ">>> uninstall ieaseMusic ... "
-  yaourt -R --noconfirm iease-music
+  if [ "$release" == "Ubuntu" ]; then
+    echo "Ubuntu -- iease-music"
+  else
+    yaourt -R --noconfirm iease-music
+  fi
 }
 
 # 安装QQ
 u_QQ() {
   echo ">>> uninstall deepin-qq ... "
-  yaourt -R --noconfirm deepin.com.qq.im
+  if [ "$release" == "Ubuntu" ]; then
+    echo "Ubuntu -- QQ"
+  else
+    yaourt -R --noconfirm deepin.com.qq.im
+  fi
 }
 
 # 安装albert
 u_albert() {
   echo ">>> uninstall albert ... "
-  sudo pacman -R --noconfirm albert
+  if [ "$release" == "Ubuntu" ]; then
+    sudo apt remove albert -y
+    sudo add-apt-repository -r ppa:noobslab/macbuntu -y
+    sudo apt update
+  else
+    sudo pacman -R --noconfirm albert
+  fi
 }
 
 # 安装stacer
 u_stacer() {
   echo ">>> uninstall stacer ... "
-  yaourt -R --noconfirm stacer
+  if [ "$release" == "Ubuntu" ]; then
+    sudo apt remove stacer -y
+    sudo add-apt-repository -r ppa:oguzhaninan/stacer -y
+    sudo apt update
+  else
+    yaourt -R --noconfirm stacer
+  fi
 }
 
 # --------- MAIN -------- #
