@@ -13,7 +13,7 @@
     "category": "System",
     "description": "A System Management Tool Build For Manjaro Linux 17",
     "synopsis": "electronux",
-    "target": ["zip"],
+    "target": ["zip", "deb"],
     "publish": {
       "provider": "github",
       "repo": "https://github.com/NoJsJa/electronux.git",

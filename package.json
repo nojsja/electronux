@@ -17,7 +17,7 @@
     "start-electron": "nodemon --exec 'cross-env NODE_ENV=development electron --inspect=5858 index'",
     "start-production": "cross-env NODE_ENV=production electron --inspect=5858 index",
     "dist": "npm run start-dll && cross-env NODE_ENV=production webpack --config webpack.prod.config.js",
-    "build-before": "touch build/ && rm build/* -rf && cp resources/*.* build",
+    "build-before": "mkdir build -p && rm build/* -rf && cp resources/*.* build",
     "build-after": "unzip -qq -o build/electronux*.zip -d build/electronux-zip/",
     "build": "npm run build-before && build -l && npm run build-after",
     "build-all": "npm run dist && npm run build",
