@@ -11,7 +11,7 @@ import PublicState from './stores/Public';
 
 import HomePage from './views/HomePage';
 
-/* ------------------- export global history ------------------- */
+/* ------------------- global history ------------------- */
 export const history = createHistory();
 
 const stores = {

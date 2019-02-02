@@ -8,6 +8,7 @@ all_check=() # 所有检查项
 all_available=(oh-my-zsh node atom vscode chrome whatever wechat peek deepin-capture deepin-terminal easeMusic QQ albert) # 所有可获取
 
 whoami="`whoami`"
+release=`cat /etc/issue | awk -F ' ' '{print $1}'`
 
 # 开始逐个检查安装情况
 do_check() {
@@ -28,7 +29,7 @@ do_check() {
 c_oh-my-zsh() {
   # echo ">>> check on-my-zsh ... "
   local isInstalled=0
-  if [ -n "`pacman -Qs zsh`" ]; then
+  if [ -n "`which zsh`" ]; then
     if [ -e "/home/$whoami/.oh-my-zsh" ]; then
       isInstalled=1
     fi
@@ -66,7 +67,11 @@ c_whatever() {
   # echo ">>> check whatever ..."
   local isInstalled=0
 
-  if [ -n "`yaourt -Qs whatever`" ]; then
+  if [ "$release" == "Ubuntu" ]; then
+    if [ -n "`which whatever`" ]; then
+      isInstalled=1
+    fi
+  elif [ -n "`yaourt -Qs whatever`" ]; then
     isInstalled=1
   fi
 
@@ -113,7 +118,7 @@ c_wechat() {
 c_peek() {
   # echo ">>> check peek ..."
   local isInstalled=0
-  if [ -n "`yaourt -Qs peek`" ]; then
+  if [ -n "`which peek`" ]; then
       isInstalled=1
   fi
 
@@ -124,7 +129,7 @@ c_peek() {
 c_deepin-capture() {
   # echo ">>> check deepin-capture ... "
   local isInstalled=0
-  if [ -n "`yaourt -Qs deepin-screenshot`" ]; then
+  if [ -n "` which deepin-screenshot`" ]; then
       isInstalled=1
   fi
 
@@ -135,7 +140,9 @@ c_deepin-capture() {
 c_deepin-terminal() {
   # echo ">>> check deepin-terminal ... "
   local isInstalled=0
-  if [ -n "`yaourt -Qs deepin-terminal`" ]; then
+  if [ "$release" == "Ubuntu" ]; then
+    isInstalled=0
+  elif [ -n "`yaourt -Qs iease-music`" ]; then
       isInstalled=1
   fi
 
@@ -157,7 +164,9 @@ c_easeMusic() {
 c_QQ() {
   # echo ">>> check deepin-qq ... "
   local isInstalled=0
-  if [ -n "`yaourt -Qs deepin.com.qq.im`" ]; then
+  if [ "$release" == "Ubuntu" ]; then
+    isInstalled=0
+  elif [ -n "`yaourt -Qs deepin.com.qq.im`" ]; then
       isInstalled=1
   fi
 
@@ -168,7 +177,7 @@ c_QQ() {
 c_albert() {
   # echo ">>> check albert ... "
   local isInstalled=0
-  if [ -n "`pacman -Qs albert`" ]; then
+  if [ -n "`which albert`" ]; then
       isInstalled=1
   fi
 
@@ -179,7 +188,7 @@ c_albert() {
 c_stacer() {
   # echo ">>> check stacer ... "
   local isInstalled=0
-  if [ -n "`yaourt -Qs stacer`" ]; then
+  if [ -n "`which stacer`" ]; then
       isInstalled=1
   fi
 

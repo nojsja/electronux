@@ -7,13 +7,13 @@
     "buildResources": "resources/",
     "output": "build/"
   },
-  "files": ["package.json", "index.js", "dist/", "app/", "node_modules/"],
+  "files": ["package.json", "index.js", "dist/", "app/", "node_modules/", "resources/*.*"],
   "linux": {
-    "icon": "resources/",
+    "icon": "build/",
     "category": "System",
     "description": "A System Management Tool Build For Manjaro Linux 17",
     "synopsis": "electronux",
-    "target": ["zip"],
+    "target": ["zip", "deb"],
     "publish": {
       "provider": "github",
       "repo": "https://github.com/NoJsJa/electronux.git",

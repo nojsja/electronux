@@ -3,8 +3,8 @@
   "description": "linux manager-software powered by electron & react & Mobx ",
   "version": "v1.0.0",
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/NoJsJa/electronux.git"
+    "type": "git",
+    "url": "https://github.com/NoJsJa/electronux.git"
   },
   "author": {
     "name": "NoJsJa",
@@ -12,11 +12,12 @@
   },
   "scripts": {
     "start": "concurrently \"npm run start-dev\" \"npm run start-electron\"",
-    "start-dev": "cross-env NODE_ENV=development webpack-dev-server",
+    "start-dll": "cross-env NODE_ENV=development webpack --config webpack.dll.config.js",
+    "start-dev": "npm run start-dll && cross-env NODE_ENV=development webpack-dev-server",
     "start-electron": "nodemon --exec 'cross-env NODE_ENV=development electron --inspect=5858 index'",
     "start-production": "cross-env NODE_ENV=production electron --inspect=5858 index",
-    "dist": "cross-env NODE_ENV=production webpack --config webpack.prod.config.js",
-    "build-before": "rm build -rf",
+    "dist": "npm run start-dll && cross-env NODE_ENV=production webpack --config webpack.prod.config.js",
+    "build-before": "mkdir build -p && rm build/* -rf && cp resources/*.* build",
     "build-after": "unzip -qq -o build/electronux*.zip -d build/electronux-zip/",
     "build": "npm run build-before && build -l && npm run build-after",
     "build-all": "npm run dist && npm run build",
@@ -75,13 +76,14 @@
     "concurrently": "^3.6.1",
     "cross-env": "^5.2.0",
     "css-loader": "^0.28.11",
-    "electron": "^2.0.9",
+    "electron": "^3.0.6",
     "electron-builder": "^20.28.4",
     "eslint": "^5.6.1",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jsx-a11y": "^6.1.2",
     "eslint-plugin-react": "^7.11.1",
+    "event-stream": "^4.0.1",
     "extract-text-webpack-plugin": "^4.0.0-beta.0",
     "file-loader": "^2.0.0",
     "html-loader": "^0.5.5",
