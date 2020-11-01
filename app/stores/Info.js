@@ -1,10 +1,6 @@
 import { observable, computed, action } from 'mobx';
 
-const { remote } = require('electron');
-
-const {
-  cpu, memory, basic, user,
-} = remote.require('./app/services/render-serv/info');
+const { ipcRenderer } = require('electron');
 
 class Info {
   @observable cpuInfo = observable.array([])
@@ -48,32 +44,57 @@ class Info {
   }
 
   @action getCpuInfo = () => {
-    cpu().then((r) => {
-      this.cpuInfo.replace(r);
+    ipcRenderer.invoke('info', {
+      action: 'getCpuInfo',
+      params: ''
+    })
+    .then((rsp) => {
+      if (rsp.code === 200) {
+        this.cpuInfo.replace(rsp.result);
+      }
     });
   }
 
   @action getMemoryInfo = () => {
-    memory().then((meminfo) => {
-      Object.keys(meminfo).forEach((k) => {
-        this.memoryInfo[k] = meminfo[k];
-      });
+    ipcRenderer.invoke('info', {
+      action: 'getMemoryInfo',
+      params: ''
+    })
+    .then((rsp) => {
+      console.log(rsp);
+      if (rsp.code === 200) {
+        Object.keys(rsp.result).forEach((k) => {
+          this.memoryInfo[k] = rsp.result[k];
+        });
+      }
     });
   }
 
   @action getUserInfo = () => {
-    user().then((useri) => {
-      Object.keys(useri).forEach((k) => {
-        this.userInfo[k] = useri[k];
-      });
+    ipcRenderer.invoke('info', {
+      action: 'getMemoryInfo',
+      params: ''
+    })
+    .then((rsp) => {
+      if (rsp.code === 200) {
+        Object.keys(rsp.result).forEach((k) => {
+          this.userInfo[k] = rsp.result[k];
+        });
+      }
     });
   }
 
   @action getBasicInfo = () => {
-    basic().then((basici) => {
-      Object.keys(basici).forEach((k) => {
-        this.basicInfo[k] = basici[k];
-      });
+    ipcRenderer.invoke('info', {
+      action: 'getMemoryInfo',
+      params: ''
+    })
+    .then((rsp) => {
+      if (rsp.code === 200) {
+        Object.keys(rsp.result).forEach((k) => {
+          this.basicInfo[k] = rsp.result[k];
+        });
+      }
     });
   }
 }

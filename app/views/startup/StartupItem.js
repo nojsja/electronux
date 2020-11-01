@@ -2,7 +2,7 @@ import React from 'react';
 import { Checkbox, Icon } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
-import boolValue from '../../utils/bool-value';
+import { boolValue } from '../../utils/utils';
 
 class StartupItem extends React.Component {
   static propTypes = {

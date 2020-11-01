@@ -2,7 +2,7 @@ import {
   observable, action, computed, toJS,
 } from 'mobx';
 
-import trim from '../utils/str-trim';
+import { trim } from '../utils/utils';
 
 const os = require('os');
 

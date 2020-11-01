@@ -1,8 +1,0 @@
-Error: exec file -> /home/nojsja/github/electronux/app/services/shell/install-check-multi.sh error !
-    at ExecFile (/home/nojsja/github/electronux/app/utils/exec-file.js:28:11)
-    at EventEmitter.ipc.on (/home/nojsja/github/electronux/app/services/main-serv/ipcInstallListener.js:34:5)
-    at emitTwo (events.js:126:13)
-    at EventEmitter.emit (events.js:214:7)
-    at WebContents.<anonymous> (/home/nojsja/github/electronux/node_modules/electron/dist/resources/electron.asar/browser/api/web-contents.js:286:13)
-    at emitTwo (events.js:126:13)
-    at WebContents.emit (events.js:214:7)

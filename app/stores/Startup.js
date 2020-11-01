@@ -1,5 +1,5 @@
 import { observable, action, computed } from 'mobx';
-import jsonstr2Ojbect from '../utils/jsonstr2Ojbect';
+const { jsonstr2Ojbect } = require('../utils/utils');
 import codeMessage from '../configure/code-message';
 
 const { ipcRenderer } = require('electron');
@@ -141,6 +141,7 @@ class Startup {
 
   @action updateDetails = (_action, _rsp) => {
     if (_action === 'get') {
+      console.log(require('../utils/utils'))
       const details = jsonstr2Ojbect(_rsp.details);
       const files = _rsp.files.split(' ');
       this.items.replace(details);

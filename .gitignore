@@ -3,3 +3,5 @@ out
 build
 .eslintcache
 .ftpconfig
+.vscode
+yarn-error.log
