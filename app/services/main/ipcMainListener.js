@@ -2,10 +2,11 @@
 * @name: ipcCleanListener
 * @description: 主进程ipc信号监听器
 */
+const { app } = require('electron');
 const path = require('path');
 const fs = require('fs');
 
-const { notifySend } = require('../../utils/utils');
+const { notifySend } = require(path.join(app.getAppPath(), 'app/utils/utils'));
 
 function ipcMain(ipc) {
   // 桌面通知发送 //
@@ -15,7 +16,7 @@ function ipcMain(ipc) {
       delay: args.delay || 0,
       title: args.title || 'electron',
       body: args.body || 'electron notification',
-      icon: path.join(__dirname, '../../../', iconAddr),
+      icon: path.join(app.getAppPath(), iconAddr),
     });
   });
 
@@ -25,7 +26,7 @@ function ipcMain(ipc) {
 
     const errorInfo = err.stack.toString();
     console.log(errorInfo);
-    const errorFile = path.join(__dirname, '../../', 'runtime/error.log');
+    const errorFile = path.join(pathRuntime, 'error.log');
     fs.writeFile(errorFile, errorInfo, { encoding: 'utf8', flag: 'w' }, (_err) => {
       if (_err) console.log(_err);
     });

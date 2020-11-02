@@ -1,5 +1,6 @@
 
 const { execFile } = require('child_process');
+const fs = require('fs');
 
 /**
  * [_execFile 执行文件]
@@ -8,11 +9,14 @@ const { execFile } = require('child_process');
  * @return      {[Object]}            [返回结果对象]
  * @param       {[Array]}    params   [执行携带参数]
  */
-function ExecFile(path, params, callback) {
+function ExecFile(_path, params, callback) {
+  if (!fs.existsSync(_path)) return callback({
+    error: new Error(`path - ${_path} not exists!`)
+  });
   try {
     let error = '';
     let result = '';
-    execFile(path, params, (err, stdout, stderr) => {
+    execFile(_path, params, (err, stdout, stderr) => {
       if (err || stderr) {
         error = !err ? stderr : err;
         console.error(error);
@@ -25,7 +29,7 @@ function ExecFile(path, params, callback) {
     });
   } catch (e) {
     console.error(e);
-    throw new Error(`exec file -> ${path} error !`);
+    throw new Error(`exec file -> ${_path} error !`);
   }
 }
 

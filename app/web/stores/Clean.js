@@ -10,17 +10,6 @@ const { ipcRenderer } = require('electron'); // 渲染进程
 
 class Clean {
   constructor() {
-    // 列举和清理所有文件结果 //
-    ipcRenderer.on('clean_handle-dirs_replay', (event, rsp) => {
-      setTimeout(() => {
-        this.loadingMain = false;
-      }, 500);
-      if (rsp.action === 'du') {
-        this.updateDuResult(rsp.content, rsp.result);
-      } else if (rsp.action === 'rm') {
-        this.lsAllDirs();
-      }
-    });
   }
 
   /* ------------------- static ------------------- */
@@ -44,7 +33,7 @@ class Clean {
     appCache: [`/home/${this.userinfo.username}/.cache`],
     appLog: ['/var/log/'],
     trash: [`/home/${this.userinfo.username}/.local/share/Trash/files`],
-    packageCache: ['/var/cache/pacman/pkg'],
+    packageCache: ['/var/cache/apt/archives'],
   }
 
   // 路径模块映射 //
@@ -178,7 +167,18 @@ class Clean {
     }
   }
 
-  // 根据路径取得模块名字 //
+  /* 列举和清理所有文件结果 */
+  @action listItems = (rsp) => {
+    if (rsp.code === 200) {
+      if (rsp.result.action === 'du') {
+        this.updateDuResult(rsp.result.content, rsp.result.result);
+      } else if (rsp.result.action === 'rm') {
+        this.lsAllDirs();
+      }
+    }
+  }
+
+  /* 根据路径取得模块名字 */
   @action getHeaderLabel = (str) => {
     let label = '';
     if (!str) {
@@ -232,14 +232,19 @@ class Clean {
         action: 'du',
       };
       this.resetDetails();
-      ipcRenderer.send('clean_handle-dirs', params);
+      ipcRenderer.invoke('clean', {action: 'handleDirs', params}).then((rsp) => {
+        this.loadingMain = false;
+        if (rsp.code === 200) {
+          this.updateDuResult(rsp.result.content, rsp.result.result);
+        }
+      });
     });
   }
 
   // 更新du结果 // 8.0K/home/nojsja/.cache/folks|4.0K/home/nojsja/.cache/obexd
-  @action updateDuResult = (content, _result) => {
+  @action updateDuResult = (content, result) => {
     if (!this.items[content]) return;
-    const dirs = _result.split('|');
+    const dirs = result.split('|');
     dirs.forEach((_dir) => {
       const dir = trim(_dir);
       const all = dir.split('/');
@@ -255,7 +260,7 @@ class Clean {
   }
 
   // 开始清理所有选中的文件夹 //
-  @action cleanAllDirs = () => {
+  cleanAllDirs = () => {
     this.checkedContents.forEach((content) => {
       const paths = this.cleanPaths[content]; // all clean father path
       const allDirs = this.cleanPathMap[content]
@@ -267,7 +272,7 @@ class Clean {
         allDirs,
         action: 'rm',
       };
-      ipcRenderer.send('clean_handle-dirs', params);
+      ipcRenderer.invoke('clean', { action: 'handleDirs', params }).then(this.listItems);
     });
   }
 }

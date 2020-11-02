@@ -2,7 +2,7 @@ import { observable, action, computed } from 'mobx';
 
 import consoleLog from '../utils/console-log';
 import { jsonstr2Object } from '../utils/utils';
-import codeMessage from '../configure/code-message';
+import codeMessage from '../utils/code-message';
 
 const { ipcRenderer } = require('electron'); // 渲染进程
 
@@ -217,7 +217,6 @@ class Install {
 
       // this.loadingMain = true;
       ipcRenderer.send(signal, {
-        dir: 'scripts',
         target,
         params: [item],
       });
@@ -230,12 +229,10 @@ class Install {
     // consoleLog('refresh');
     this.loadingMain = true;
     ipcRenderer.send('install_exec-file.check', {
-      dir: 'scripts',
       target: 'install-check-multi.sh',
       params: this.totalArray,
     });
     ipcRenderer.send('install_source-check.configure', {
-      dir: 'scripts',
       target: 'install-configure.sh',
       params: ['--check'],
     });
@@ -244,7 +241,6 @@ class Install {
   // 更新中国的软件源头 //
   @action setSourceCN = () => {
     ipcRenderer.send('install_source-check.configure', {
-      dir: 'scripts',
       target: 'install-configure.sh',
       params: ['--config'],
     });

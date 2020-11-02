@@ -70,6 +70,7 @@ exports.notifySend = function ({
     { _path: appDataPath, isDir: true },
     { _path: pathRuntime, isDir: true },
     { _path: path.join(pathRuntime, 'view.conf'), isDir: false },
+    { _path: path.join(pathRuntime, 'password.conf'), isDir: false },
     { _path: path.join(pathRuntime, 'database/'), isDir: true },
     { _path: path.join(pathRuntime, 'database/setting.json'), isDir: false },
   ].forEach(({ _path, isDir }) => {

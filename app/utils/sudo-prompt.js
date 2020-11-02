@@ -2,7 +2,7 @@
 * @name: sudo-prompt
 * @description: 调用系统弹窗组件申请权限执行脚本或命令
 */
-
+const { app } = require('electron');
 const child = require('child_process');
 const fs = require('fs');
 const path = require('path');
@@ -17,7 +17,7 @@ class SudoPrompt {
     ];
     this.bin = null;
     this.password = null;
-    this.passwordFile = path.join(__dirname, '../', 'runtime/password.conf');
+    this.passwordFile = path.join(global.pathRuntime, 'password.conf');
   }
 
   // 识别系统权限弹窗获取程序 //

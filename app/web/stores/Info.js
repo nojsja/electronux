@@ -61,7 +61,6 @@ class Info {
       params: ''
     })
     .then((rsp) => {
-      console.log(rsp);
       if (rsp.code === 200) {
         Object.keys(rsp.result).forEach((k) => {
           this.memoryInfo[k] = rsp.result[k];
@@ -72,7 +71,7 @@ class Info {
 
   @action getUserInfo = () => {
     ipcRenderer.invoke('info', {
-      action: 'getMemoryInfo',
+      action: 'getUserInfo',
       params: ''
     })
     .then((rsp) => {
@@ -86,7 +85,7 @@ class Info {
 
   @action getBasicInfo = () => {
     ipcRenderer.invoke('info', {
-      action: 'getMemoryInfo',
+      action: 'getBasicInfo',
       params: ''
     })
     .then((rsp) => {

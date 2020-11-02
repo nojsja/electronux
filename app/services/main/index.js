@@ -7,18 +7,20 @@ const { app } = require('electron');
 const fs = require('fs');
 
 /* tool */
-const { notifySend } = require('../../utils/utils');
-const ipcBridge = require('./ipcBridge');
+const { notifySend } = require(path.join(app.getAppPath(), 'app/utils/utils'));
+const ipcBridge = require(path.join(app.getAppPath(), 'app/utils/ipcBridge'));
 
 /* model */
 const SettingModel = require('../model/Setting');
 const InfoModel = require('../model/Info');
+const CleanModel = require('../model/Clean');
 
 class IpcMainProcess {
   constructor(ipc) {
     this.ipc = ipc;
     this.settingModel = ipcBridge(this.ipc, 'setting',new SettingModel());
     this.infoModel = ipcBridge(this.ipc, 'info', new InfoModel());
+    this.cleanModel = ipcBridge(this.ipc, 'clean', new CleanModel());
     this.ipc.on('notify-send', (event, args) => {
       this.notifySend(args);
     });

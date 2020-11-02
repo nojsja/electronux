@@ -3,7 +3,7 @@ const { app, BrowserWindow, Menu, Tray, dialog } = require('electron');
 const path = require('path');
 const url = require('url');
 const os = require('os');
-const viewConf = require('../../configure/view-conf');
+const viewConf = require(path.join(app.getAppPath(), 'app/configure/view-conf'));
 
 class WindowManagement {
   constructor() {

@@ -41,6 +41,8 @@
       "app/stores/*",
       "app/services/main/*",
       "app/services/render/*",
+      "app/services/model/*",
+      "app/web/*",
       "app/styles/*",
       "app/services/scripts/*",
       "app/configure/view.conf",

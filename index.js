@@ -20,7 +20,6 @@ const IpcMaiWindowClass = require('./app/services/main/ipcMainWindow');
 const fsChmodShell = require('./app/utils/fs-chmod-shell.js');
 const ipcMainListener = require('./app/services/main/ipcMainListener');
 const ipcInstallListener = require('./app/services/main/ipcInstallListener');
-const ipcCleanListener = require('./app/services/main/ipcCleanListener');
 const ipcStartupListener = require('./app/services/main/ipcStartupListener');
 
 
@@ -31,7 +30,6 @@ global.ipcMainWindow = new IpcMaiWindowClass();
 
 /* ------------------- Controller ------------------- */
 ipcInstallListener(ipcMain);
-ipcCleanListener(ipcMain);
 ipcMainListener(ipcMain);
 ipcStartupListener(ipcMain);
 

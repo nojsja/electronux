@@ -2,13 +2,13 @@
 * @name: ipcMainListener
 * @description: 主进程ipc信号监听器
 */
-const { app} = require('electron');
+const { app } = require('electron');
 const path = require('path');
 
-const execFile = require(path.join(__dirname, '../../', 'utils/exec-file.js'));
+const execFile = require(path.join(app.getAppPath(), 'app/utils/exec-file.js'));
 
-const SudoPrompt = require(path.join(__dirname, '../../', 'utils/sudo-prompt.js'));
-const { notifySend } = require(path.join(__dirname, '../../', 'utils/utils'));
+const SudoPrompt = require(path.join(app.getAppPath(), 'app/utils/sudo-prompt.js'));
+const { notifySend } = require(path.join(app.getAppPath(), 'app/utils/utils'));
 
 const sudo = new SudoPrompt();
 
@@ -21,7 +21,7 @@ function ipcMain(ipc) {
         delay: 0,
         title: 'electron-tips',
         body: `New Password: [ ${args.password} ]`,
-        icon: path.join(__dirname, '../../../', 'resources/public/settings.png'),
+        icon: path.join(app.getAppPath(), 'resources/public/settings.png'),
       });
     } else if (args.action === 'read') {
       const passwd = sudo.readPassword();
@@ -31,7 +31,7 @@ function ipcMain(ipc) {
 
   // 安装项检查 //
   ipc.on('install_exec-file.check', (event, args) => {
-    const _path = path.join(__dirname, '../', args.dir, args.target);
+    const _path = path.join(app.getAppPath(), 'app/services/scripts', args.target);
     execFile(_path, args.params, (rsp) => {
       if (rsp.error) {
         console.log(rsp);
@@ -42,7 +42,7 @@ function ipcMain(ipc) {
 
   // archlinuxcn 源检查操作 //
   ipc.on('install_source-check.configure', (event, args) => {
-    const _path = path.join(__dirname, '../', args.dir, args.target);
+    const _path = path.join(app.getAppPath(), 'app/services/scripts', args.target);
     execFile(_path, args.params, (rsp) => {
       if (rsp.error) {
         console.log(rsp);
@@ -67,7 +67,7 @@ function ipcMain(ipc) {
 
   // archlinuxcn 源配置操作 //
   ipc.on('install_source-config.configure', (event, args) => {
-    const _path = path.join(__dirname, '../', args.dir, args.target);
+    const _path = path.join(app.getAppPath(), 'app/services', args.target);
     const stdout = (data) => {
       event.sender.send('install_terminal-info_reply', {
         error: null,
@@ -110,7 +110,7 @@ function ipcMain(ipc) {
 
   // 安装项安装 //
   ipc.on('install_exec-file.do', (event, args) => {
-    const _path = path.join(app.getAppPath(), 'app/services', args.dir, args.target);
+    const _path = path.join(app.getAppPath(), 'app/services', args.target);
 
     /* sudo.spawn version */
     const stdout = (data) => {
@@ -155,7 +155,7 @@ function ipcMain(ipc) {
 
   // 安装项卸载 //
   ipc.on('install_exec-file.undo', (event, args) => {
-    const _path = path.join(__dirname, '../', args.dir, args.target);
+    const _path = path.join(app.getAppPath(), 'app/services', args.target);
     // sudo.execFile(path, args.params).then((result) => {
     //   event.sender.send('install_exec-file_reply.undo', {
     //     error: null,
