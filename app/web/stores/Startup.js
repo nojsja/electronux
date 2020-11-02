@@ -9,50 +9,6 @@ class Startup {
   constructor() {
     this.userInfo = os.userInfo();
     this.targetDir = `${this.userInfo.homedir}/.config/autostart`;
-
-    // 修改文件 //
-    ipcRenderer.on('startup_handle-files_reply', (event, rsp) => {
-      if (rsp.error) {
-        console.log(rsp.error);
-        ipcRenderer.send('notify-send', {
-          title: codeMessage('shell', rsp.error.code || 1),
-          body: `ERROR: " ${rsp.error.cmd || rsp.error.toString()} "`,
-        });
-      } else {
-        if (rsp.action === 'set') {
-          ipcRenderer.send('notify-send', {
-            title: 'startup',
-            body: 'set startup success!',
-          });
-        }
-        this.updateDetails(rsp.action, rsp.result);
-      }
-    });
-
-    // 删除文件 //
-    ipcRenderer.on('startup_delete-files_reply', (event, rsp) => {
-      if (rsp.error) {
-        ipcRenderer.send('notify-send', {
-          title: codeMessage('shell', rsp.error.code || 1),
-          body: `ERROR: " ${rsp.error.cmd || rsp.error.toString()} "`,
-        });
-      } else {
-        this.getDetails();
-      }
-    });
-
-    // 添加文件 //
-    ipcRenderer.on('startup_add-files_reply', (event, rsp) => {
-      if (rsp.error) {
-        ipcRenderer.send('notify-send', {
-          title: codeMessage('shell', rsp.error.code || 1),
-          body: `ERROR: " ${rsp.error.cmd || rsp.error.toString()} "`,
-        });
-      } else {
-        this.setModal(false);
-        this.getDetails();
-      }
-    });
   }
 
   // 读取到的文件属性 //
@@ -90,9 +46,26 @@ class Startup {
 
   /* ------------------- action ------------------- */
   @action getDetails = () => {
-    ipcRenderer.send('startup_handle-files', {
-      dir: this.targetDir,
-      action: 'get',
+    ipcRenderer.invoke('startup', {
+      action: 'getStartupConfig',
+      params: {
+        dir: this.targetDir
+      }
+    })
+    .then(rsp => {
+      if (rsp.code !== 200) return;
+      console.log(rsp);
+      if (rsp.result.error) {
+        ipcRenderer.send('notify-send', {
+          title: codeMessage('shell', rsp.result.error.code || 1),
+          body: `ERROR: " ${rsp.result.error.cmd || rsp.result.error.toString()} "`,
+        });
+      } else {
+        const details = jsonstr2Object(rsp.result.details);
+        const files = rsp.result.files.split(' ');
+        this.items.replace(details);
+        this.files.replace(files);
+      }
     });
   }
 
@@ -104,51 +77,87 @@ class Startup {
   @action setDetails = ({
     file, Comment, Name, Exec, Hidden,
   }) => {
-    ipcRenderer.send('startup_handle-files', {
-      dir: this.targetDir,
-      action: 'set',
-      detail: {
+    ipcRenderer.invoke('startup', {
+      action: 'modifyStartupConfig',
+      params: {
         dir: this.targetDir,
-        file,
-        Comment,
-        Name,
-        Exec,
-        Hidden: Hidden || false,
-      },
+        detail: {
+          dir: this.targetDir,
+          file,
+          Comment,
+          Name,
+          Exec,
+          Hidden: Hidden || false,
+        },
+      }
+    })
+    .then((rsp) => {
+      if (rsp.code !== 200) return;
+      if (rsp.result.error) {
+        console.log(rsp.result.error);
+        ipcRenderer.send('notify-send', {
+          title: codeMessage('shell', rsp.result.error.code || 1),
+          body: `ERROR: " ${rsp.result.error.cmd || rsp.result.error.toString()} "`,
+        });
+      } else {
+        ipcRenderer.send('notify-send', {
+          title: 'startup',
+          body: 'set startup success!',
+        });
+        this.getDetails();
+      }
+
     });
   }
 
   // 删除启动项
   @action deleteDetail = (file) => {
-    ipcRenderer.send('startup_delete-files', {
-      dir: this.targetDir,
-      file,
+    ipcRenderer.invoke('startup', {
+      action: 'deleteStartupItem',
+      params: {
+        dir: this.targetDir,
+        file,
+      }
+    })
+    .then((rsp) => {
+      if (rsp.code !== 200) return;
+      if (rsp.result.error) {
+        ipcRenderer.send('notify-send', {
+          title: codeMessage('shell', rsp.result.error.code || 1),
+          body: `ERROR: " ${rsp.result.error.cmd || rsp.result.error.toString()} "`,
+        });
+      } else {
+        this.getDetails();
+      }
     });
   }
 
   // 添加启动项
   @action addDetail = ({ Name, Comment, Exec }) => {
-    ipcRenderer.send('startup_add-files', {
-      dir: this.targetDir,
-      file: `${Name}.desktop`,
-      detail: {
-        Name,
-        Comment,
-        Exec,
-      },
+    ipcRenderer.invoke('startup_add-files', {
+      action: 'addStartupItem',
+      params: {
+        dir: this.targetDir,
+        file: `${Name}.desktop`,
+        detail: {
+          Name,
+          Comment,
+          Exec,
+        },
+      }
+    })
+    .then(rsp => {
+      if (rsp.code !== 200) return;
+      if (rsp.result.error) {
+        ipcRenderer.send('notify-send', {
+          title: codeMessage('shell', rsp.result.error.code || 1),
+          body: `ERROR: " ${rsp.result.error.cmd || rsp.result.error.toString()} "`,
+        });
+      } else {
+        this.setModal(false);
+        this.getDetails();
+      }
     });
-  }
-
-  @action updateDetails = (_action, _rsp) => {
-    if (_action === 'get') {
-      console.log(require('../utils/utils'))
-      const details = jsonstr2Object(_rsp.details);
-      const files = _rsp.files.split(' ');
-      this.items.replace(details);
-      this.files.replace(files);
-    } else if (_action === 'set') {
-      this.getDetails();
-    }
   }
 }
 export default Startup;

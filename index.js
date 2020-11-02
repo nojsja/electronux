@@ -18,9 +18,7 @@ global.consoleLog = require('./app/utils/console-log.js');
 const IpcMainClass = require('./app/services/main/');
 const IpcMaiWindowClass = require('./app/services/main/ipcMainWindow');
 const fsChmodShell = require('./app/utils/fs-chmod-shell.js');
-const ipcMainListener = require('./app/services/main/ipcMainListener');
 const ipcInstallListener = require('./app/services/main/ipcInstallListener');
-const ipcStartupListener = require('./app/services/main/ipcStartupListener');
 
 
 /* ------------------- Middleware ------------------- */
@@ -30,8 +28,6 @@ global.ipcMainWindow = new IpcMaiWindowClass();
 
 /* ------------------- Controller ------------------- */
 ipcInstallListener(ipcMain);
-ipcMainListener(ipcMain);
-ipcStartupListener(ipcMain);
 
 /* -------------- listener -------------- */
 

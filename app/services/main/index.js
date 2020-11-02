@@ -14,6 +14,7 @@ const ipcBridge = require(path.join(app.getAppPath(), 'app/utils/ipcBridge'));
 const SettingModel = require('../model/Setting');
 const InfoModel = require('../model/Info');
 const CleanModel = require('../model/Clean');
+const StartupModel = require('../model/Startup');
 
 class IpcMainProcess {
   constructor(ipc) {
@@ -21,6 +22,7 @@ class IpcMainProcess {
     this.settingModel = ipcBridge(this.ipc, 'setting',new SettingModel());
     this.infoModel = ipcBridge(this.ipc, 'info', new InfoModel());
     this.cleanModel = ipcBridge(this.ipc, 'clean', new CleanModel());
+    this.startupModel = ipcBridge(this.ipc, 'startup', new StartupModel());
     this.ipc.on('notify-send', (event, args) => {
       this.notifySend(args);
     });
