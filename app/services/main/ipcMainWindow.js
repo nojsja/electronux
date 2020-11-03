@@ -134,6 +134,7 @@ class WindowManagement {
       webPreferences: {
         nodeIntegration: true,
         enableRemoteModule: true,
+        webviewTag: true,
       },
     });
 

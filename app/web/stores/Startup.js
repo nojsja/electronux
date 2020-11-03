@@ -100,10 +100,6 @@ class Startup {
           body: `ERROR: " ${rsp.result.error.cmd || rsp.result.error.toString()} "`,
         });
       } else {
-        ipcRenderer.send('notify-send', {
-          title: 'startup',
-          body: 'set startup success!',
-        });
         this.getDetails();
       }
 

@@ -20,7 +20,7 @@ class Public {
     navActivate: true,
     settingPage: false,
     password: '',
-    total: ['install', 'startup', 'clean', 'info'],
+    total: ['install', 'startup', 'clean', 'info', 'blogs'],
   }
 
   @action setPassword = (passwd) => {
