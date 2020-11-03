@@ -9,7 +9,10 @@ import InfoState from './stores/Info';
 import StartupState from './stores/Startup';
 import PublicState from './stores/Public';
 
-import HomePage from './views/HomePage';
+// import HomePage from './views/HomePage';
+
+import routes from './router/index';
+import RouteWithSubRoutes from './router/RouteWithSubRoutes';
 
 /* ------------------- global history ------------------- */
 export const history = createHistory();
@@ -26,7 +29,8 @@ function App() {
   return (
     <Provider {...stores}>
       <Router history={history}>
-        <Route path="/" component={HomePage} />
+        {/* <Route path="/" component={HomePage} /> */}
+        <RouteWithSubRoutes route={routes} />
       </Router>
     </Provider>
   );

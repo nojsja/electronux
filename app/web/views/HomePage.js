@@ -6,6 +6,8 @@ import {
   Route, BrowserRouter as Router, Switch,
 } from 'react-router-dom';
 
+import RouteWithSubRoutes from '../router/RouteWithSubRoutes';
+
 import StartupPage from './startup/StartupPage';
 import InstallPage from './install/InstallPage';
 import CleanPage from './clean/CleanPage';
@@ -132,11 +134,12 @@ class HomePage extends Component {
   /* ------------------- page render ------------------- */
 
   render() {
-    const { pub, match } = this.props;
+    const { pub, match, routes } = this.props;
     const { checkPassword } = pub;
     const {
       activeItem, navActivate, total, settingPage, password,
     } = pub.state;
+    console.log(match)
     const {
       toggleIcon, toggleClass, rightToggleClass, leftToggleClass,
     } = this.getToggleState(navActivate);
@@ -176,13 +179,18 @@ class HomePage extends Component {
         </div>
 
         <div className={`container-router-right ${rightToggleClass}`}>
-
-          <Route path={`${match.path}install`} component={InstallPage} />
+          
+          {
+            routes && routes.map((route) => 
+              <RouteWithSubRoutes route={route} exact={match.exact}/>
+            )
+          }
+          {/* <Route path={`${match.path}install`} component={InstallPage} />
           <Route path={`${match.path}info`} component={InfoPage} />
           <Route path={`${match.path}startup`} component={StartupPage} />
           <Route path={`${match.path}clean/detail`} component={CleanDetail} />
           <Route exact path={`${match.path}clean`} component={CleanPage} />
-          <Route path={`${match.path}blogs`} component={BlogsPage} />
+          <Route path={`${match.path}blogs`} component={BlogsPage} /> */}
 
           <ScrollIndicator
             total={total}
