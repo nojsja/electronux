@@ -182,7 +182,7 @@ class HomePage extends Component {
           
           {
             routes && routes.map((route) => 
-              <RouteWithSubRoutes route={route} exact={match.exact}/>
+              <RouteWithSubRoutes route={route}/>
             )
           }
           {/* <Route path={`${match.path}install`} component={InstallPage} />
