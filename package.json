@@ -17,10 +17,10 @@
     "start-electron": "cross-env NODE_ENV=development nodemon --exec 'electron --inspect=5858 index'",
     "start-production": "cross-env NODE_ENV=production electron --inspect=5858 index",
     "dist": "npm run start-dll && cross-env NODE_ENV=production webpack --config webpack.prod.config.js",
-    "build-before": "mkdir build -p && rm build/* -rf && cp resources/*.* build",
+    "build-before": "mkdir build -p ; rm build/* -rf ; cp resources/* build/ -rf",
     "build-after": "unzip -qq -o build/electronux*.zip -d build/electronux-zip/",
-    "build": "npm run build-before && build -l && npm run build-after",
-    "build-all": "npm run dist && npm run build",
+    "build": "npm run build-before ; electron-builder -l ; npm run build-after",
+    "build-all": "npm run dist ; npm run build",
     "publish": "build -p onTag"
   },
   "keywords": [
@@ -55,8 +55,6 @@
     "delay": "1000"
   },
   "dependencies": {
-    "electron": "^8.2.0",
-    "electron-builder": "^22.4.1",
     "axios": "^0.19.2",
     "lowdb": "^1.0.0",
     "mobx": "^4.4.1",
@@ -73,6 +71,8 @@
     "history": "^4.7.2"
   },
   "devDependencies": {
+    "electron": "^8.2.0",
+    "electron-builder": "^22.4.1",
     "event-stream": "^4.0.1",
     "nodemon": "^1.18.4",
     "babel-core": "^6.26.3",

@@ -2,18 +2,8 @@ import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import { Menu, Icon } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
-import {
-  Route, BrowserRouter as Router, Switch,
-} from 'react-router-dom';
 
 import RouteWithSubRoutes from '../router/RouteWithSubRoutes';
-
-import StartupPage from './startup/StartupPage';
-import InstallPage from './install/InstallPage';
-import CleanPage from './clean/CleanPage';
-import InfoPage from './info/InfoPage';
-import CleanDetail from './clean/CleanDetail';
-import BlogsPage from './blogs/blogsdPage';
 
 import ScrollIndicator from './public/ScrollIndicator';
 import SettingPage from './public/SettingPage';
@@ -185,12 +175,6 @@ class HomePage extends Component {
               <RouteWithSubRoutes route={route}/>
             )
           }
-          {/* <Route path={`${match.path}install`} component={InstallPage} />
-          <Route path={`${match.path}info`} component={InfoPage} />
-          <Route path={`${match.path}startup`} component={StartupPage} />
-          <Route path={`${match.path}clean/detail`} component={CleanDetail} />
-          <Route exact path={`${match.path}clean`} component={CleanPage} />
-          <Route path={`${match.path}blogs`} component={BlogsPage} /> */}
 
           <ScrollIndicator
             total={total}

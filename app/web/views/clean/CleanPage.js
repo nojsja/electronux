@@ -5,7 +5,7 @@ import {
   Dimmer, Loader, Divider, Checkbox, Icon,
 } from 'semantic-ui-react';
 
-import './clean.css';
+import './clean.less';
 
 import { history } from '../../App';
 

@@ -65,7 +65,7 @@ class WindowManagement {
     } else if (env === 'electron-dev') {
       // electron develop tmp
       this.window.loadURL(url.format({
-        pathname: path.resolve(app.getAppPath(), 'app', 'index.html'),
+        pathname: path.resolve(app.getAppPath(), 'app/web', 'index.html'),
         protocol: 'file:',
         slashes: true,
       }));

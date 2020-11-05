@@ -20,7 +20,7 @@ const dllRefPlugin = new webpack.DllReferencePlugin({
 
 module.exports = {
   entry: [
-    './app/index',
+    './app/web/index',
   ],
   mode: 'production',
   output: {

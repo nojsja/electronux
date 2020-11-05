@@ -238,31 +238,34 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
 
+  i {
+    cursor: pointer;
+  }
 
-.detail-item-header .header-name {
-  color: #1f7dec;
-  font-weight: bold;
-}
+  .header-name {
+    color: #1f7dec;
+    font-weight: bold;
+  }
 
-.detail-item-header .header-size {
-  padding-right: 1rem;
-}
+  .header-size {
+    padding-right: 1rem;
+  }
 
-.detail-item-header > span {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-}
+  > span {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
 
-.detail-item-header > span > span {
-  margin: 0 .5rem;
-}
+    > span {
+      margin: 0 .5rem;
+    }
 
-.detail-item-header > span > svg {
-  margin-right: 5px;
-  color: #656566;
+    > svg {
+      margin-right: 5px;
+      color: #656566;
+    }
+  }
 }
 
 .detail-item-list {
@@ -270,35 +273,35 @@
   padding-right: 1rem;
   color: #606060;
   background-color: #fafafa;
-}
 
-.detail-item-list > .list-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: solid 1px #f0f0f0;
-  overflow: hidden;
-  height: 2rem;
-}
+  > .list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: solid 1px #f0f0f0;
+    overflow: hidden;
+    height: 2rem;
 
-.detail-item-list > .list-item:hover {
-  background-color: #f0f0f0;
-}
+    &:hover {
+      background-color: #f0f0f0;
+    }
 
-.detail-item-list > .list-item > span {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  margin: 2px 0;
-}
+    > span {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      margin: 2px 0;
 
-.detail-item-list > .list-item > span > span {
-  margin: 0 .5rem;
-}
+      > span {
+        margin: 0 .5rem;
+      }
+    }
 
-.detail-item-list > .list-item .list-content {
-  display: inline-block;
-  height: 1.5rem;
-  line-height: 1.5rem;
-  overflow: hidden;
+    .list-content {
+      display: inline-block;
+      height: 1.5rem;
+      line-height: 1.5rem;
+      overflow: hidden;
+    }
+  }
 }

@@ -3,7 +3,6 @@ import { render } from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 
 import 'semantic-ui-css/semantic.min.css';
-import './styles/public.css';
 import './styles/public.less';
 
 import App from './App';
