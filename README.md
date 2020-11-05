@@ -2,6 +2,17 @@
 --------------
 Build for Manjaro linux 17 desktop -- [ startup configure | software installer | system cleaner | check running state ]. Powered by Electron v3, React v16, Node v8, Mobx v4, Webpack v4, shell scripts.
 
+#### env prepare
+1. 环境安装  
+>切换镜像源让Electron安装更快
+```sh
+$: npm config set electron_mirror http://npm.taobao.org/mirrors/electron/
+$: npm config set electron_custom_dir "8.2.0"
+$: npm install
+$: npm install electron@8.2.0 -g
+$: npm install cross-env -g
+```
+
 #### commands
 * 【npm run start】 -- start webpack-dev-server and electron together(only show electron log info).
 * 【npm run start-dll】 -- dll the static library with webpack.
