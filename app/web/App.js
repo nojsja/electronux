@@ -13,9 +13,10 @@ import PublicState from './stores/Public';
 
 import routes from './router/index';
 import RouteWithSubRoutes from './router/RouteWithSubRoutes';
+import { createHashHistory } from 'history';
 
 /* ------------------- global history ------------------- */
-export const history = createHistory();
+export const history = createHashHistory();
 
 const stores = {
   install: new InstallState(),

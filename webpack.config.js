@@ -3,12 +3,12 @@ const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 // 拆分样式文件
-const extractLess = new ExtractTextPlugin({
-  filename: 'style.less.css',
-});
-const extractCss = new ExtractTextPlugin({
-  filename: 'style.css',
-});
+// const extractLess = new ExtractTextPlugin({
+//   filename: 'style.less.css',
+// });
+// const extractCss = new ExtractTextPlugin({
+//   filename: 'style.css',
+// });
 
 module.exports = {
   devtool: 'source-map',
@@ -38,23 +38,21 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: extractCss.extract({
-          fallback: 'style-loader',
-          use: 'css-loader',
-          publicPath: '/',
-        }),
+        use: ['style-loader', 'css-loader'],
       },
       {
         test: /\.less$/,
-        use: extractLess.extract({
-          use: [{
-            loader: 'css-loader',
-          }, {
-            loader: 'less-loader',
-          }],
-          fallback: 'style-loader', // 在开发环境使用 style-loader
-          publicPath: path.join(__dirname, 'dist/'),
-        }),
+        use: [
+          {
+            loader: 'style-loader', // 从 JS 中创建样式节点
+          },
+          {
+            loader: 'css-loader', // 转化 CSS 为 CommonJS
+          },
+          {
+            loader: 'less-loader', // 编译 Less 为 CSS
+          },
+        ],
       },
       {
         test: /\.html$/,
@@ -77,8 +75,8 @@ module.exports = {
   },
 
   plugins: [
-    extractCss,
-    extractLess,
+    // extractCss,
+    // extractLess,
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NamedModulesPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),

@@ -6,7 +6,7 @@ import {
   Dimmer, Loader, Divider, Checkbox,
 } from 'semantic-ui-react';
 
-import './install.css';
+import './install.less';
 
 import InstallItem from './InstallItem';
 import TerminalInfo from './TerminalInfo';

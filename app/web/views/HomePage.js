@@ -129,7 +129,6 @@ class HomePage extends Component {
     const {
       activeItem, navActivate, total, settingPage, password,
     } = pub.state;
-    console.log(match)
     const {
       toggleIcon, toggleClass, rightToggleClass, leftToggleClass,
     } = this.getToggleState(navActivate);

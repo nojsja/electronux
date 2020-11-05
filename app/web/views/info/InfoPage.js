@@ -2,7 +2,7 @@ import React from 'react';
 import { inject, observer } from 'mobx-react';
 import PropTypes from 'prop-types';
 
-import './info.css';
+import './info.less';
 
 import InfoBasic from './InfoBasic';
 import InfoMemory from './InfoMemory';
