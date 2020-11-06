@@ -11,7 +11,7 @@ class InfoMemory extends Component {
     memory: PropTypes.shape({
       freemem: PropTypes.string.isRequired,
       totalmem: PropTypes.string.isRequired,
-      ratio: PropTypes.number.isRequired,
+      ratio: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     }).isRequired,
   }
 

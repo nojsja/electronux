@@ -95,7 +95,7 @@ class StartupPage extends React.Component {
               <Icon
                 title="edit"
                 name="plus circle"
-                color="#5d89e9"
+                color="blue"
                 onClick={() => this.newDetail()}
               />
             </span>

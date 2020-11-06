@@ -2,14 +2,11 @@ import React from 'react';
 import { Route, Router } from 'react-router-dom';
 import { Provider } from 'mobx-react';
 
-import createHistory from 'history/createBrowserHistory';
 import InstallState from './stores/Install';
 import CleanState from './stores/Clean';
 import InfoState from './stores/Info';
 import StartupState from './stores/Startup';
 import PublicState from './stores/Public';
-
-// import HomePage from './views/HomePage';
 
 import routes from './router/index';
 import RouteWithSubRoutes from './router/RouteWithSubRoutes';

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
+import { toJS } from 'mobx';
 import { Menu, Icon } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
@@ -42,10 +43,6 @@ class HomePage extends Component {
       pathname: '/install',
       state: { animation },
     });
-  }
-
-  componentWillUnmount() {
-
   }
 
   /* ------------------- page event ------------------- */
@@ -170,13 +167,13 @@ class HomePage extends Component {
         <div className={`container-router-right ${rightToggleClass}`}>
           
           {
-            routes && routes.map((route) => 
-              <RouteWithSubRoutes route={route}/>
+            routes && routes.map((route, i) => 
+              <RouteWithSubRoutes key={`${route.path}_${i}`} route={route}/>
             )
           }
 
           <ScrollIndicator
-            total={total}
+            total={toJS(total)}
             activeItem={activeItem}
             handleItemClick={this.handleItemClick}
           />
