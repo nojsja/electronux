@@ -21,7 +21,7 @@
     "build-after": "unzip -qq -o build/electronux*.zip -d build/electronux-zip/",
     "build": "npm run build-before ; electron-builder -l ; npm run build-after",
     "build-all": "npm run dist ; npm run build",
-    "publish": "build -p onTag"
+    "publish": "electron-builder -p onTag"
   },
   "keywords": [
     "electron",
