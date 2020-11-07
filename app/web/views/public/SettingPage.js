@@ -42,8 +42,8 @@ class SettingPage extends Component {
   }
 
   render() {
-    const { open, closeSettingPage } = this.props;
-    const { password } = this.state;
+    const { open, closeSettingPage, password } = this.props;
+    console.log(password);
     return (
       <div>
         <Modal dimmer="inverted" open={open} size="mini">
