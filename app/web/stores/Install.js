@@ -60,16 +60,23 @@ class Install {
       this.loadingMain = false;
       if (rsp.error) {
         console.log(rsp.error);
-        ipcRenderer.send('notify-send', {
-          title: codeMessage('shell', rsp.error.code || 1),
-          body: `ERROR: " ${rsp.error.cmd || rsp.error.toString()} "`,
-        });
+        // ipcRenderer.send('notify-send', {
+        //   title: codeMessage('shell', rsp.error.code || 1),
+        //   body: `ERROR: " ${rsp.error.cmd || rsp.error.toString()} "`,
+        // });
+        this.Toast.error(rsp.error.toString());
       }
 
       rsp.result = jsonstr2Object(`${rsp.result}`);
-      const all = Object.keys(rsp.result);
-      const installed = all.filter(item => (rsp.result[item] === true) || (rsp.result[item] === 'true'));
-      const uninstalled = all.filter(item => (rsp.result[item] === false) || (rsp.result[item] === 'false'));
+      const installed = [];
+      const uninstalled = [];
+      Object.keys(rsp.result).forEach(item => {
+        if ((rsp.result[item] === true) || (rsp.result[item] === 'true')) {
+          installed.push(item);
+        } else {
+          uninstalled.push(item);
+        }
+      })
       that.update(installed, uninstalled);
     });
 
@@ -81,10 +88,11 @@ class Install {
       });
       if (rsp.error) {
         console.log(rsp.error);
-        ipcRenderer.send('notify-send', {
-          title: codeMessage('shell', rsp.error.code || 1),
-          body: `ERROR: " ${rsp.error.cmd || rsp.error.toString()} "`,
-        });
+        // ipcRenderer.send('notify-send', {
+        //   title: codeMessage('shell', rsp.error.code || 1),
+        //   body: `ERROR: " ${rsp.error.cmd || rsp.error.toString()} "`,
+        // });
+        this.Toast.error(rsp.error.toString());
       } else {
         consoleLog('install.do: ', rsp.result);
         rsp.params.forEach((name) => {
@@ -101,10 +109,11 @@ class Install {
       });
       if (rsp.error) {
         console.log(rsp.error);
-        ipcRenderer.send('notify-send', {
-          title: codeMessage('shell', rsp.error.code || 1),
-          body: `ERROR: " ${rsp.error.cmd || rsp.error.toString()} "`,
-        });
+        // ipcRenderer.send('notify-send', {
+        //   title: codeMessage('shell', rsp.error.code || 1),
+        //   body: `ERROR: " ${rsp.error.cmd || rsp.error.toString()} "`,
+        // });
+        this.Toast.error(rsp.error.toString());
       } else {
         consoleLog('install.undo: ', rsp.result);
         rsp.params.forEach((name) => {
@@ -121,6 +130,7 @@ class Install {
         //   title: codeMessage('shell', rsp.error.code || 1),
         //   body: `ERROR: " ${rsp.error.cmd || rsp.error.toString()} "`,
         // });
+        this.Toast.error(rsp.error.toString());
       }
       that.updateTerminal(rsp.params, rsp.result);
     });
@@ -129,10 +139,11 @@ class Install {
     ipcRenderer.on('install_source-check_reply.configure', (event, rsp) => {
       if (rsp.error) {
         console.log(rsp.error);
-        ipcRenderer.send('notify-send', {
-          title: codeMessage('shell', rsp.error.code || 1),
-          body: `ERROR: " ${rsp.error.cmd || rsp.error.toString()} "`,
-        });
+        // ipcRenderer.send('notify-send', {
+        //   title: codeMessage('shell', rsp.error.code || 1),
+        //   body: `ERROR: " ${rsp.error.cmd || rsp.error.toString()} "`,
+        // });
+        this.Toast.error(rsp.error.toString());
       } else {
         that.sourceChecked = rsp.result;
       }
@@ -142,10 +153,11 @@ class Install {
     ipcRenderer.on('install_source-config_reply.configure', (event, rsp) => {
       if (rsp.error) {
         console.log(rsp.error);
-        ipcRenderer.send('notify-send', {
-          title: codeMessage('shell', rsp.error.code || 1),
-          body: `ERROR: " ${rsp.error.cmd || rsp.error.toString()} "`,
-        });
+        // ipcRenderer.send('notify-send', {
+        //   title: codeMessage('shell', rsp.error.code || 1),
+        //   body: `ERROR: " ${rsp.error.cmd || rsp.error.toString()} "`,
+        // });
+        this.Toast.error(rsp.error.toString());
       } else {
         that.refresh();
       }
@@ -282,6 +294,10 @@ class Install {
     items.forEach((it, i) => {
       this.terminalInfo[it] = (`${this.terminalInfo[it]}\n${infos[i]}`);
     });
+  }
+
+  setToast = (toast) => {
+    this.Toast = toast;
   }
 }
 

@@ -16,7 +16,7 @@ import TerminalInfo from './TerminalInfo';
 const requireContext = require.context('resources/install', true, /.*/);
 requireContext.keys().map(requireContext);
 
-@inject('install') @observer
+@inject('install', 'pub') @observer
 class InstallPage extends React.Component {
   /* ------------------- propTypes ------------------- */
   static propTypes = {
@@ -33,8 +33,9 @@ class InstallPage extends React.Component {
   }
 
   componentDidMount() {
-    const { install } = this.props;
+    const { install, pub } = this.props;
     install.refresh();
+    install.setToast(pub.Toast);
   }
 
   /* ------------------- define func ------------------- */

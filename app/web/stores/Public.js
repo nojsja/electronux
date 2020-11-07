@@ -4,11 +4,14 @@ const { shell } = require('electron');
 const { ipcRenderer } = require('electron'); // 渲染进程
 
 class Public {
+
+  Toast = null
+
   constructor() {
     ipcRenderer.on('public_password-read_replay', (event, rsp) => {
       console.log(rsp);
       if (!rsp.result) {
-        this.state.settingPage = true;
+        // this.state.settingPage = true;
       } else {
         this.state.password = rsp.result;
       }
@@ -51,6 +54,10 @@ class Public {
 
   @action toggleNavActivate = () => {
     this.state.navActivate = !this.state.navActivate;
+  }
+
+  setToast = (toast) => {
+    this.Toast = toast;
   }
 }
 export default Public;

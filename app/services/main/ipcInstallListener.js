@@ -49,7 +49,7 @@ function ipcMain(ipc) {
       }
       const result = {
         result: (parseInt(rsp.result) === 0),
-        error: rsp.error,
+        error: 'Command Not Found: pacman' || rsp.error,
       };
       event.sender.send('install_source-check_reply.configure', result);
     });

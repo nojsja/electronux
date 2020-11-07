@@ -4,6 +4,9 @@ import { toJS } from 'mobx';
 import { Menu, Icon } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import RouteWithSubRoutes from '../router/RouteWithSubRoutes';
 
 import ScrollIndicator from './public/ScrollIndicator';
@@ -40,6 +43,7 @@ class HomePage extends Component {
     const { activeItem, total } = pub.state;
     const { animation } = this.getAnimation(activeItem, total);
     pub.checkPassword();
+    pub.setToast(toast);
     history.push({
       pathname: '/install',
       state: { animation },
@@ -132,14 +136,20 @@ class HomePage extends Component {
     } = this.getToggleState(navActivate);
     return (
       <div className="container-router">
+
         <div className={`container-router-left ${leftToggleClass}`}>
           <div className="router-left-mask router-left-background" />
           <div className="router-left-mask2" />
+
+          {/* menu */}
+
           <Menu pointing vertical className="text-white-shadow">
             {
               total.map((name, i) => this.buildSubItem(name, i, activeItem))
             }
           </Menu>
+
+          {/* setting model */}
 
           <SettingPage
             open={settingPage}
@@ -149,11 +159,15 @@ class HomePage extends Component {
             setPassword={pub.setPassword}
           />
 
+          {/* author */}
+
           <AuthorPane />
+
+          {/* left router */}
 
           <div className="router-left-menu">
             <span className="router-left-setting" onClick={() => {this.openSettingPage()}}>
-              <Icon name="key" />
+              <Icon name="key"/>
             </span>
             <span onClick={() => {this.openExternalLink('https://www.github.com/NoJsJa')}}>
               <Icon name="github" />
@@ -164,6 +178,8 @@ class HomePage extends Component {
 
           </div>
         </div>
+
+        {/* children */}
 
         <div className={`container-router-right ${rightToggleClass}`}>
           
@@ -179,6 +195,20 @@ class HomePage extends Component {
             handleItemClick={this.handleItemClick}
           />
         </div>
+
+        {/* toast component */}
+        <ToastContainer
+          position="top-right"
+          autoClose={5e3}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
+
       </div>
     );
   }
