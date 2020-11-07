@@ -2,7 +2,7 @@
 * @name: ipcStartupListener
 * @description: 主进程ipc信号监听器
 */
-const { app } = require('electron');
+const { app, nativeImage } = require('electron');
 const child = require('child_process');
 const path = require('path');
 const { resolve } = require('path');
@@ -12,7 +12,7 @@ const exec = require(path.join(app.getAppPath(), 'app/utils/exec'));
 class IpcStartup {
   /* ------------------- 修改文件属性 ------------------- */
   constructor() {
-
+    this.confDirPath = '~/.config/autostart/';
   }
 
   /* 获取启动项目配置文件 */
@@ -21,19 +21,34 @@ class IpcStartup {
     const lsPath = path.join(app.getAppPath(), 'app/services/scripts/startup-ls.sh');
     const catPath = path.join(app.getAppPath(), 'app/services/scripts/startup-cat.sh');
     const lsResult = (child.execSync(lsPath, params)).toString();
+    const files = lsResult.split(' ').filter(p => p).map((p) => path.join(this.confDirPath, p));
 
     return new Promise((resolve, reject) => {
-      execFile(catPath, params, ({ error, result }) => {
+      (files.length ? app.getFileIcon(files[0]) : Promise.resolve(''))
+      .then((iconPath) => {
+        execFile(catPath, params, ({ error, result }) => {
+          resolve({
+            code: 200,
+            result: {
+              error,
+              action: args.action,
+              files: lsResult,
+              details: result,
+              iconPath: iconPath ? iconPath.toDataURL() : ''
+            }
+          })
+        });
+      })
+      .catch(error => {
         resolve({
           code: 200,
           result: {
-            error,
+            error: error.toString(),
             action: args.action,
             files: lsResult,
-            details: result,
           }
         })
-      });
+      })
     })
 
   }

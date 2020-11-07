@@ -7,7 +7,7 @@ import { Divider, Icon } from 'semantic-ui-react';
 import DetailItem from './StartupItem';
 import StartupSetting from './StartupSetting';
 
-import './startup.css';
+import './startup.less';
 
 // 批量引入所有图片(可以指定所有图片类型)
 // const requireContext = require.context('resources/install', true, /^\.\/.*\.(jpg|png)$/);
@@ -74,7 +74,7 @@ class StartupPage extends React.Component {
   render() {
     const { startup, location } = this.props;
     const { isNew } = this.state;
-    const { modal } = startup;
+    const { modal, icon } = startup;
     const { animation } = location.state ? location.state : { animation: '' };
     const detailLength = startup.startupDetails.length || 0;
     const label = `Startup Applications(${detailLength})`;
@@ -94,7 +94,7 @@ class StartupPage extends React.Component {
             <span title="add a startup item">
               <Icon
                 title="edit"
-                name="plus circle"
+                name="plus"
                 color="blue"
                 onClick={() => this.newDetail()}
               />
@@ -106,10 +106,11 @@ class StartupPage extends React.Component {
           <div className="startup-detail-wrapper">
             {
               startup.startupDetails.map
-                && startup.startupDetails.map(detail => (
+                && startup.startupDetails.map((detail, i) => (
                   <DetailItem
                     key={`startup-detail-${detail.Name}`}
                     detail={detail}
+                    icon={icon}
                     toggleModal={this.toggleModal}
                     deleteDetail={startup.deleteDetail}
                     setDetails={startup.setDetails}

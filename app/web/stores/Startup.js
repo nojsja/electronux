@@ -18,6 +18,9 @@ class Startup {
     // "Exec_xxx.desktop": 'xxx',
   });
 
+  // 原生的启动文件图标地址 //
+  @observable icon = ''
+
   // 所有启动文件 //
   @observable files = observable.array([
   // 'xxx.desktop'
@@ -54,7 +57,6 @@ class Startup {
     })
     .then(rsp => {
       if (rsp.code !== 200) return;
-      console.log(rsp);
       if (rsp.result.error) {
         ipcRenderer.send('notify-send', {
           title: codeMessage('shell', rsp.result.error.code || 1),
@@ -63,6 +65,7 @@ class Startup {
       } else {
         const details = jsonstr2Object(rsp.result.details);
         const files = rsp.result.files.split(' ');
+        this.icon = rsp.result.iconPath;
         this.items.replace(details);
         this.files.replace(files);
       }

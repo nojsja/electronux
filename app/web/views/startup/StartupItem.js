@@ -20,12 +20,12 @@ class StartupItem extends React.Component {
 
   render() {
     const {
-      detail, toggleModal, deleteDetail, setDetails,
+      detail, toggleModal, deleteDetail, setDetails, icon
     } = this.props;
     return (
       <div className="detail-item-wrapper">
         <span>
-          <span><Icon name="th" /></span>
+          <span>{icon ? <img src={icon}></img> : <Icon name="th" />}</span>
           <span>{detail.Name}</span>
         </span>
         <span>
