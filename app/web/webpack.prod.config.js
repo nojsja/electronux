@@ -15,23 +15,22 @@ const extractCss = new ExtractTextPlugin({
 // 拆分静态库
 const dllRefPlugin = new webpack.DllReferencePlugin({
   context: __dirname,
-  manifest: require('./dist/vendor-manifest.json'),
+  manifest: require(path.resolve('../../', 'dist/vendor-manifest.json')),
 });
 
 module.exports = {
   entry: [
-    './app/web/index',
+    './index',
   ],
   mode: 'production',
   output: {
     filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, '../../dist'),
     publicPath: '/',
   },
   resolve: {
     alias: {
       resources: path.resolve(__dirname, 'resources'),
-      app: path.resolve(__dirname, 'app'),
     },
   },
   module: {
@@ -45,7 +44,7 @@ module.exports = {
         use: extractCss.extract({
           fallback: 'style-loader',
           use: 'css-loader',
-          publicPath: path.join(__dirname, 'dist/'),
+          publicPath: path.join(__dirname, '../../dist/'),
         }),
       },
       {
@@ -57,22 +56,9 @@ module.exports = {
             loader: 'less-loader',
           }],
           fallback: 'style-loader', // 在开发环境使用 style-loader
-          publicPath: path.join(__dirname, 'dist/'),
+          publicPath: path.join(__dirname, '../../dist/'),
         }),
       },
-      // { // parse error
-      //   test: /\.(png|jpg|gif|svg|ico|jpeg)$/,
-      //   use: [
-      //     {
-      //       loader: 'url-loader',
-      //       options: {
-      //         limit: 8192,
-      //         name: '[path][name].[ext]',
-      //         fallback: 'file-loader',
-      //       },
-      //     },
-      //   ],
-      // },
       {
         test: /\.html$/,
         use: {

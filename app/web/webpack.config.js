@@ -16,18 +16,17 @@ module.exports = {
     'react-hot-loader/patch',
     'webpack-dev-server/client?http://localhost:3000',
     'webpack/hot/only-dev-server',
-    './app/web/index.js',
+    './index.js',
   ],
   mode: 'development',
   output: {
     filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, '../../dist'),
     publicPath: '/',
   },
   resolve: {
     alias: {
       resources: path.resolve(__dirname, 'resources'),
-      app: path.resolve(__dirname, 'app'),
     },
   },
   module: {
