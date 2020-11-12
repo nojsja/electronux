@@ -40,6 +40,8 @@
       "app/services/main/*",
       "app/services/render/*",
       "app/services/model/*",
+      "app/services/child/*",
+      "app/libs/*",
       "app/web/*",
       "app/services/scripts/*",
       "app/configure/view.conf",

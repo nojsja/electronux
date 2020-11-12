@@ -52,15 +52,14 @@ class WindowManagement {
 
   // 根据运行环境加载窗口 //
   loadWindow(env) {
-    console.log(env);
     if (env === 'development') {
     // wait for webpack-dev-server start
-      setTimeout(() => {
-        this.window.loadURL(url.format({
-          pathname: '127.0.0.1:3000',
-          protocol: 'http:',
-          slashes: true,
-        }));
+    setTimeout(() => {
+      this.window.loadURL(url.format({
+        pathname: '127.0.0.1:3000',
+        protocol: 'http:',
+        slashes: true,
+      }));
       }, 1e3);
     } else if (env === 'electron-dev') {
       // electron develop tmp

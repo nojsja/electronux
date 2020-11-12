@@ -9,6 +9,9 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import RouteWithSubRoutes from '../router/RouteWithSubRoutes';
 
+import testService from './test-service';
+testService();
+
 import ScrollIndicator from './public/ScrollIndicator';
 import SettingPage from './public/SettingPage';
 import AuthorPane from './public/AuthorPane';
