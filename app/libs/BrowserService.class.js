@@ -5,6 +5,12 @@ const { isEnvDev } = require('./utils');
 const MessageChannel = require('../web/libs/MessageChannel.class');
 
 class BrowserService extends BrowserWindow {
+  /**
+    * constructor [构造函数]
+    * @param  {[String]} name [service name]
+    * @param  {[String]} _path [service 执行文件路径]
+    * @param  {[Object]} options [创建BrowserWindow可选参数]
+    */
   constructor(name, _path, options={}) {
     options.webPreferences = options.webPreferences || {};
     options.webPreferences.preload = path.join(__dirname, 'preload.js');
@@ -63,7 +69,7 @@ class BrowserService extends BrowserWindow {
   }
   
   /**
-    * connect [连接一个render子进程 ]
+    * connected [service加载完成后触发回调监听者]
     * @param  {[windowId]} param [desc]
     * @param  {[Function]} callback [回调]
     */

@@ -1,5 +1,5 @@
 /* depends */
-const { ipcRenderer, remote, ipcMain, BrowserWindow } = require('electron');
+const { ipcRenderer, remote, ipcMain, BrowserWindow, BrowserView } = require('electron');
 
 /* env set */
 const isMainProcess = process.env.isMainProcess = ipcRenderer ? false : true;
@@ -30,7 +30,7 @@ class MessageChannelRender extends MessageChannel {
   }
   
   /**
-    * invoke [在渲染进程中(service/window)向另外一个服务进程发送异步请求，并取得回调Promise]
+    * invoke [在渲染进程中(service/window)向另外一个服务进程或主进程(service/main)发送异步请求，并取得回调Promise]
     * @param  {[String]} name [服务名]
     * @param  {[String]} channel [服务监听的信号名]
     * @param  {[Any]} args [携带参数(会被序列化，不会传递对象Proptype信息)]
@@ -39,6 +39,8 @@ class MessageChannelRender extends MessageChannel {
   invoke (name, channel, args) {
     const pid = getRandomString();
     
+    if (name === 'main') return ipcRenderer.invoke(channel, args);
+
     return new Promise(resolve => {
       ipcRenderer.invoke('MessageChannel.getIdFromName', { name }).then(id => {
         if (!id) return reject(new Error(`MessageChannel: can not get the id of the window names ${name}`));
@@ -51,7 +53,7 @@ class MessageChannelRender extends MessageChannel {
   }
 
   /**
-    * handle [在service进程中监听来自其它进程(main/service/window)的请求，将promiseFunc执行的结果返回]
+    * handle [在渲染进程(service)中监听来自其它进程(main/service/window)的请求，将promiseFunc执行的结果返回]
     * @param  {[String]} channel [服务监听的信号名]
     * @param  {[Function]} promiseFunc [此函数执行的结果会被发送到消息发送者]
     * @return {[Promise]} [回调]
@@ -81,12 +83,13 @@ class MessageChannelRender extends MessageChannel {
   }
 
   /**
-    * send [在渲染进程中(service/window)向另外一个服务进程发送异步请求，不可立即取得值，请配合on监听信号使用]
+    * send [在渲染进程中(service/window)向另外一个服务进程或主进程(service/main)发送异步请求，不可立即取得值，请配合on监听信号使用]
     * @param  {[String]} name [服务名]
     * @param  {[String]} channel [服务监听的信号名]
     * @param  {[Any]} args [携带参数(会被序列化，不会传递对象Proptype信息)]
     */
   send(name, channel, args) {
+    if (name === 'main') return ipcRenderer.send(channel, args);
     ipcRenderer.invoke('MessageChannel.getIdFromName', { name }).then(id => {
       if (!id) return console.error(`MessageChannel: cant find a service named: ${name}!`)
       ipcRenderer.sendTo(id, channel, args);
@@ -104,7 +107,7 @@ class MessageChannelRender extends MessageChannel {
   }
 
   /**
-    * on [在渲染进程中(service/window)监听来自其它渲染进程(service/window)的请求]
+    * on [在渲染进程中(service/window)监听来自其它进程(service/window/main)的请求]
     * @param  {[String]} channel [服务监听的信号名]
     * @param  {[Function]} func [消息到达后，此函数会被触发，同于原生ipcRenderer.on]
     */
@@ -119,6 +122,7 @@ class MessageChannelRender extends MessageChannel {
      * @param  {[String]} id [window id]
      */
   registry(name, id) {
+    if (name === 'main') throw new Error(`MessageChannel: you can not registry a service named:${name}, it's reserved for the main process!`)
     return ipcRenderer.invoke('MessageChannel.registryService', { name, id });
   }
 
@@ -147,7 +151,7 @@ class MessageChannelMain extends MessageChannel {
   }
 
   /**
-    * invoke [在主进程中向另外一个服务进程发送异步请求，并取得回调Promise]
+    * invoke [在主进程(main)中向另外一个服务进程(service)发送异步请求，并取得回调Promise]
     * @param  {[String]} name [服务名]
     * @param  {[String]} channel [服务监听的信号名]
     * @param  {[Any]} args [携带参数(会被序列化，不会传递对象Proptype信息)]
@@ -156,8 +160,9 @@ class MessageChannelMain extends MessageChannel {
   invoke (name, channel, args) {
     const pid = getRandomString();
     const id = this.services[name];
-    
+
     return new Promise((resolve, reject) => {
+      if (name === 'main') reject(new Error(`MessageChannel: the main process can not send a message to itself!`))
       if (!id) reject(new Error(`MessageChannel: can not get the id of the window names ${name}`));
       let win = BrowserWindow.fromId(id);
       if (!win) reject(new Error(`MessageChannel: can not find a window with id: ${id}`));
@@ -171,7 +176,7 @@ class MessageChannelMain extends MessageChannel {
   }
 
   /**
-    * handle [在主进程中监听来自其它渲染进程(service/window)的请求，将promiseFunc执行的结果返回]
+    * handle [在主进程中(main)监听来自其它渲染进程(service/window)的请求，将promiseFunc执行的结果返回]
     * @param  {[String]} channel [服务监听的信号名]
     * @param  {[Function]} promiseFunc [此函数执行的结果会被发送到消息发送者]
     * @return {[Promise]} [回调]
@@ -182,7 +187,7 @@ class MessageChannelMain extends MessageChannel {
   }
 
   /**
-    * handle [在主进程中监听一次来自其它渲染进程(service/window)的请求，将promiseFunc执行的结果返回]
+    * handle [在主进程中(main)监听一次来自其它渲染进程(service/window)的请求，将promiseFunc执行的结果返回]
     * @param  {[String]} channel [服务监听的信号名]
     * @param  {[Function]} promiseFunc [此函数执行的结果会被发送到消息发送者]
     * @return {[Promise]} [回调]
@@ -193,13 +198,12 @@ class MessageChannelMain extends MessageChannel {
   }
 
   /**
-    * send [在主进程向另外一个服务进程发送异步请求，不可立即取得值，请配合on监听信号使用]
+    * send [在主进程(main)向另外一个服务进程(service)发送异步请求，不可立即取得值，请配合on监听信号使用]
     * @param  {[String]} name [服务名]
     * @param  {[String]} channel [服务监听的信号名]
     * @param  {[Any]} args [携带参数(会被序列化，不会传递对象Proptype信息)]
     */
   send(name, channel, args) {
-    const pid = getRandomString();
     const id = this.services[name];
     
     if (!id) throw new Error(`MessageChannel: can not get the id of the window names ${name}`);
@@ -210,7 +214,18 @@ class MessageChannelMain extends MessageChannel {
   }
 
   /**
-    * on [在渲染进程中(service/window)监听来自其它渲染进程(service/window)的请求]
+    * send [在主进程中(main)向指定某个id的渲染进程窗口(service/window)发送请求，不可立即取得值，请配合on监听信号使用]
+    * @param  {[String]} id [window id]
+    * @param  {[String]} channel [服务监听的信号名]
+    * @param  {[Any]} args [携带参数(会被序列化，不会传递对象Proptype信息)]
+    */
+   sendTo(id, channel, args) {
+     if (!BrowserWindow.fromId(id)) throw new Error(`MessageChannel: can not find a window with id:${id}!`);
+     BrowserWindow.fromId(id).webContents.send(channel, args);
+  }
+
+  /**
+    * on [在主进程中(main)监听来自其它渲染进程(service/window)的请求]
     * @param  {[String]} channel [服务监听的信号名]
     * @param  {[Function]} func [消息到达后，此函数会被触发，同于原生ipcRenderer.on]
     */
@@ -226,7 +241,8 @@ class MessageChannelMain extends MessageChannel {
      * @param  {[String]} id [window id]
      */
   registry(name, id) {
-    if (this.services[name]) console.warn(`Warning: the service - ${name} has been registeried!`)
+    if (name === 'main') throw new Error(`MessageChannel: you can not registry a service named:${name}, it's reserved for the main process!`)
+    if (this.services[name]) console.warn(`MessageChannel: the service - ${name} has been registeried!`)
     // if (!BrowserWindow.fromId(id)) throw new Error(`MessageChannelMain: can not find a window with id: ${id}`);
     this.services[name] = id;
   }
