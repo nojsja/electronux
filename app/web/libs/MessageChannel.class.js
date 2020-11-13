@@ -45,7 +45,7 @@ class MessageChannelRender extends MessageChannel {
       ipcRenderer.invoke('MessageChannel.getIdFromName', { name }).then(id => {
         if (!id) return reject(new Error(`MessageChannel: can not get the id of the window names ${name}`));
         ipcRenderer.sendTo(id, channel, Object.assign(args, { pid }));
-        ipcRenderer.once(pid, function(rsp) {
+        ipcRenderer.once(pid, function(event, rsp) {
           resolve(rsp);
         });
       });
@@ -64,8 +64,12 @@ class MessageChannelRender extends MessageChannel {
     ipcRenderer.on(channel, (event, params) => {
       const { pid, isFromMain } = params;
       delete params[pid];
+      const execResult = promiseFunc(event, params);
 
-      Promise.resolve().then(() => promiseFunc(params)).then((rsp) => {
+      (   execResult instanceof Promise ?
+          execResult :
+          Promise.resolve(execResult)
+      ).then((rsp) => {
         if (isFromMain) {
           ipcRenderer.send(pid, rsp);
         } else {

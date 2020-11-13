@@ -1,17 +1,16 @@
 <script>
   const { ipcRenderer, app } = require('electron');
   const path = require('path');
-  const { on, handle, send, sendTo } = require(path.join(app.getAppPath(), 'app/web/libs/MessageChannel.class'));
-
-  /* normal use */
-  // ipcRenderer.on('service-event', (event, args) => {
-  //   console.log(event, args);
-  //   ipcRenderer.sendTo(event.senderId, 'service-callback', args);
-  // });
+  const msgc = require(path.join(app.getAppPath(), 'app/web/libs/MessageChannel.class'));
 
   /* use MessageChannel */
-  on('service-event', (event, args) => {
-    console.log(args);
-    sendTo(event.senderId, 'service-callback', args);
+  msgc.on('service-event', (event, args) => {
+    console.log('on: ', args);
+    msgc.sendTo(event.senderId, 'service-callback', args);
+  });
+
+  msgc.handle('service-handle', (event, args) => {
+    console.log('handle: ', args);
+    return Promise.resolve('service-handle-value');
   });
 </script>

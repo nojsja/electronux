@@ -20,7 +20,8 @@
     "build-after": "unzip -qq -o build/electronux*.zip -d build/electronux-zip/",
     "build": "npm run build-before ; electron-builder -l ; npm run build-after",
     "build-all": "npm run dist ; npm run build",
-    "publish": "electron-builder -p onTag"
+    "publish": "electron-builder -p onTag",
+    "test": "./node_modules/mocha/bin/mocha"
   },
   "keywords": [
     "electron",
@@ -55,11 +56,13 @@
     "qs": "^6.9.3"
   },
   "devDependencies": {
+    "chai": "^4.2.0",
     "concurrently": "^3.6.1",
     "cross-env": "^5.2.0",
     "electron": "8.2.0",
     "electron-builder": "^22.4.1",
     "event-stream": "^4.0.1",
+    "mocha": "^8.2.1",
     "nodemon": "^1.18.4"
   }
 }
