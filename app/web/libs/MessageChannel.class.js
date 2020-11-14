@@ -64,7 +64,14 @@ class MessageChannelRender extends MessageChannel {
     ipcRenderer.on(channel, (event, params) => {
       const { pid, isFromMain } = params;
       delete params[pid];
-      const execResult = promiseFunc(event, params);
+      let execResult;
+
+      try {
+        execResult = promiseFunc(event, params);
+      } catch (error) {
+        console.log(error);
+        execResult = error;
+      }
 
       (   execResult instanceof Promise ?
           execResult :

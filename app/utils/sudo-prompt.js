@@ -7,17 +7,17 @@ const child = require('child_process');
 const fs = require('fs');
 const path = require('path');
 const inPath = require(path.join(__dirname, 'in-path'));
-const { ipcMain } = require('electron');
 
 class SudoPrompt {
-  constructor() {
+  constructor(myApp) {
     this.bins = [
       '/usr/bin/pkexec',
       '/usr/bin/gksu',
     ];
     this.bin = null;
     this.password = null;
-    this.passwordFile = path.join(global.pathRuntime, 'password.conf');
+    this.pathRuntime = path.join((myApp || app).getPath('appData'), 'electronux/runtime');
+    this.passwordFile = path.join(this.pathRuntime, 'password.conf');
   }
 
   // 识别系统权限弹窗获取程序 //

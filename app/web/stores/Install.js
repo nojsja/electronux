@@ -4,7 +4,9 @@ import consoleLog from '../utils/console-log';
 import { jsonstr2Object } from '../utils/utils';
 import codeMessage from '../utils/code-message';
 
-const { ipcRenderer } = require('electron'); // 渲染进程
+const msgc = require('../libs/MessageChannel.class');
+
+// const { ipcRenderer } = require('electron'); // 渲染进程
 
 class Install {
   @observable items = { // 所有安装项
@@ -56,14 +58,11 @@ class Install {
     /* ------------------- ipc render ------------------- */
 
     // 检查脚本文件事件 //
-    ipcRenderer.on('install_exec-file_reply.check', (event, rsp) => {
+    msgc.on('install_exec-file_reply.check', (event, rsp) => {
       this.loadingMain = false;
+      console.log(rsp);
       if (rsp.error) {
         console.log(rsp.error);
-        // ipcRenderer.send('notify-send', {
-        //   title: codeMessage('shell', rsp.error.code || 1),
-        //   body: `ERROR: " ${rsp.error.cmd || rsp.error.toString()} "`,
-        // });
         this.Toast.error(rsp.error.toString());
       }
 
@@ -81,17 +80,13 @@ class Install {
     });
 
     // 安装脚本文件事件 //
-    ipcRenderer.on('install_exec-file_reply.do', (event, rsp) => {
+    msgc.on('install_exec-file_reply.do', (event, rsp) => {
       // this.loadingMain = false;
       rsp.params.forEach((item) => {
         this.outqueue(item, 'install');
       });
       if (rsp.error) {
         console.log(rsp.error);
-        // ipcRenderer.send('notify-send', {
-        //   title: codeMessage('shell', rsp.error.code || 1),
-        //   body: `ERROR: " ${rsp.error.cmd || rsp.error.toString()} "`,
-        // });
         this.Toast.error(rsp.error.toString());
       } else {
         consoleLog('install.do: ', rsp.result);
@@ -102,17 +97,13 @@ class Install {
     });
 
     // 卸载脚本文件事件 //
-    ipcRenderer.on('install_exec-file_reply.undo', (event, rsp) => {
+    msgc.on('install_exec-file_reply.undo', (event, rsp) => {
       // this.loadingMain = false;
       rsp.params.forEach((item) => {
         this.outqueue(item, 'uninstall');
       });
       if (rsp.error) {
         console.log(rsp.error);
-        // ipcRenderer.send('notify-send', {
-        //   title: codeMessage('shell', rsp.error.code || 1),
-        //   body: `ERROR: " ${rsp.error.cmd || rsp.error.toString()} "`,
-        // });
         this.Toast.error(rsp.error.toString());
       } else {
         consoleLog('install.undo: ', rsp.result);
@@ -123,26 +114,18 @@ class Install {
     });
 
     // 更新terminal终端信息事件 //
-    ipcRenderer.on('install_terminal-info_reply', (event, rsp) => {
+    msgc.on('install_terminal-info_reply', (event, rsp) => {
       if (rsp.error) {
         console.log(rsp.error);
-        // ipcRenderer.send('notify-send', {
-        //   title: codeMessage('shell', rsp.error.code || 1),
-        //   body: `ERROR: " ${rsp.error.cmd || rsp.error.toString()} "`,
-        // });
         this.Toast.error(rsp.error.toString());
       }
       that.updateTerminal(rsp.params, rsp.result);
     });
 
     // source 源检查操作 //
-    ipcRenderer.on('install_source-check_reply.configure', (event, rsp) => {
+    msgc.on('install_source-check_reply.configure', (event, rsp) => {
       if (rsp.error) {
         console.log(rsp.error);
-        // ipcRenderer.send('notify-send', {
-        //   title: codeMessage('shell', rsp.error.code || 1),
-        //   body: `ERROR: " ${rsp.error.cmd || rsp.error.toString()} "`,
-        // });
         this.Toast.error(rsp.error.toString());
       } else {
         that.sourceChecked = rsp.result;
@@ -150,13 +133,9 @@ class Install {
     });
 
     // source 源添加操作 //
-    ipcRenderer.on('install_source-config_reply.configure', (event, rsp) => {
+    msgc.on('install_source-config_reply.configure', (event, rsp) => {
       if (rsp.error) {
         console.log(rsp.error);
-        // ipcRenderer.send('notify-send', {
-        //   title: codeMessage('shell', rsp.error.code || 1),
-        //   body: `ERROR: " ${rsp.error.cmd || rsp.error.toString()} "`,
-        // });
         this.Toast.error(rsp.error.toString());
       } else {
         that.refresh();
@@ -228,7 +207,7 @@ class Install {
       const signal = this.items[item] ? 'install_exec-file.undo' : 'install_exec-file.do';
 
       // this.loadingMain = true;
-      ipcRenderer.send(signal, {
+      msgc.send('app', signal, {
         target,
         params: [item],
       });
@@ -240,11 +219,11 @@ class Install {
   @action refresh = () => {
     // consoleLog('refresh');
     this.loadingMain = true;
-    ipcRenderer.send('install_exec-file.check', {
+    msgc.send('app', 'install_exec-file.check', {
       target: 'install-check-multi.sh',
       params: this.totalArray,
     });
-    ipcRenderer.send('install_source-check.configure', {
+    msgc.send('app', 'install_source-check.configure', {
       target: 'install-configure.sh',
       params: ['--check'],
     });
@@ -252,7 +231,7 @@ class Install {
 
   // 更新中国的软件源头 //
   @action setSourceCN = () => {
-    ipcRenderer.send('install_source-check.configure', {
+    msgc.send('app', 'install_source-check.configure', {
       target: 'install-configure.sh',
       params: ['--config'],
     });
