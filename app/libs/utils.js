@@ -57,3 +57,35 @@ exports.isEnvDev = (
   process.env.NODE_ENV === 'development' ||
   process.env.NODE_ENV === 'dev'
 );
+
+/**
+   * @param  {Function} fn         [回调函数]
+   * @param  {[Time]}   delayTime  [延迟时间(ms)]
+   * @param  {Boolean}  isImediate [是否需要立即调用]
+   * @param  {[type]}   args       [回调函数传入参数]
+  */
+ exports.fnDebounce = function() {
+  const fnObject = {};
+  let timer;
+
+  return (fn, delayTime, isImediate, args) => {
+    const setTimer = () => {
+      timer = setTimeout(() => {
+        fn(args);
+        clearTimeout(timer);
+        delete fnObject[fn];
+      }, delayTime);
+
+      fnObject[fn] = { delayTime, timer };
+    };
+
+    if (!delayTime || isImediate) return fn(args);
+
+    if (fnObject[fn]) {
+      clearTimeout(timer);
+      setTimer(fn, delayTime, args);
+    } else {
+      setTimer(fn, delayTime, args);
+    }
+  };
+}

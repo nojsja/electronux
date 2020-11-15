@@ -2,16 +2,17 @@ const { BrowserWindow } = require('electron');
 const path = require('path');
 const fs = require('fs');
 const url = require('url');
-const { isEnvDev, loadView } = require('./utils');
+const { isEnvDev, loadView, fnDebounce } = require('./utils');
 const MessageChannel = require('../web/libs/MessageChannel.class');
-const { util } = require('chai');
+
+const debouncer = fnDebounce();
 
 class BrowserService extends BrowserWindow {
   /**
-    * constructor [构造函数]
+    * constructor
     * @param  {[String]} name [service name]
-    * @param  {[String]} _path [service 执行文件路径]
-    * @param  {[Object]} options [创建BrowserWindow可选参数]
+    * @param  {[String]} _path [path to service file]
+    * @param  {[Object]} options [options to create BrowserWindow]
     */
   constructor(name, _path, options={}) {
     options.webPreferences = options.webPreferences || {};
@@ -20,8 +21,6 @@ class BrowserService extends BrowserWindow {
 
     super({...options, show: false });
 
-    if (isEnvDev) this.webContents.openDevTools();
-
     this.serviceReady = false;
     this.exec= _path;
     this.name = name;
@@ -29,15 +28,20 @@ class BrowserService extends BrowserWindow {
     this.callbacks = [];
     this.fails = [];
     MessageChannel.registry(name, this.id);
-    
+
     /* state change */
     this.webContents.on('did-finish-load', this.didFinishLoad);
     this.webContents.on('did-fail-load', this.didFailLoad);
-
+    
     /* load contents immediately */
     this.loadURL(this.exec, {
       webSecurity: !!options.webPreferences.webSecurity
     });
+
+    /* watch file change */
+    this.watchService(isEnvDev);
+    
+    if (isEnvDev) this.webContents.openDevTools();
   }
 
   /* state listeners */
@@ -121,6 +125,14 @@ class BrowserService extends BrowserWindow {
     });
   }
 
+  /* auto reload */
+  watchService(isEnvDev) {
+    if (isEnvDev) {
+      fs.watch(this.exec, (eventType, filename) => {
+        debouncer(this.webContents.reload.bind(this.webContents), 1e3, false, null);
+      });
+    }
+  }
 
   /**
     * connected [service加载完成后触发回调监听者]
