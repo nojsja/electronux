@@ -1,5 +1,4 @@
-<script>
-  const { ipcRenderer, app } = require('electron');
+  const { ipcRenderer, remote, app } = require('electron');
   const path = require('path');
   const msgc = require(path.join(app.getAppPath(), 'app/web/libs/MessageChannel.class'));
   
@@ -205,5 +204,3 @@
       _close: close,
     });
   });
-
-</script>

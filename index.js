@@ -35,7 +35,7 @@ app.on('ready', () => {
     require('source-map-support').install();
   }
   /* services */
-  this.appService = new BrowserService('app', path.join(app.getAppPath(), 'app/services/child/app.service.html'));
+  this.appService = new BrowserService('app', path.join(app.getAppPath(), 'app/services/child/app.service.js'));
   global.ipcMainWindow.createWindow();
 });
 
