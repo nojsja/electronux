@@ -973,6 +973,11 @@ electron-publish@22.9.1:
     lazy-val "^1.0.4"
     mime "^2.4.6"
 
+electron-re@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/electron-re/-/electron-re-1.0.0.tgz#2095bcd1ac20abd97b5d37bac3d8e57e7f822aac"
+  integrity sha512-n0KqmCJDwEO+0YEpGYN5txhLL5INRZqj21x72g9MAY32Qddt9u3YgxyQmFzB15JrZ25HruOjQYdk1ekXUaVh6A==
+
 electron@8.2.0:
   version "8.2.0"
   resolved "https://registry.npm.taobao.org/electron/download/electron-8.2.0.tgz#f3e3de23a6178b5ad7baa70f4814d6332a3212c2"

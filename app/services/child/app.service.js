@@ -1,6 +1,7 @@
 const { app } = require('electron');
 const path = require('path');
-const msgc = require(path.join(app.getAppPath(), 'app/web/libs/MessageChannel.class'));
+const { MessageChannel } = require('electron-re');
+const msgc = MessageChannel;
 
 const execFile = require(path.join(app.getAppPath(), 'app/utils/exec-file.js'));
 const SudoPrompt = require(path.join(app.getAppPath(), 'app/utils/sudo-prompt.js'));
@@ -8,17 +9,9 @@ const { notifySend } = require(path.join(app.getAppPath(), 'app/utils/utils'));
 
 const sudo = new SudoPrompt(app);
 
-/* use MessageChannel */
-msgc.on('service-event', (event, args) => {
-  console.log('on: ', args);
-  msgc.sendTo(event.senderId, 'service-callback', args);
+msgc.handle('test', (event, rsp) => {
+  return msgc.invoke('app2', 'test2', rsp);
 });
-
-msgc.handle('service-handle', (event, args) => {
-  console.log('handle: ', args);
-  return Promise.resolve('service-handle-value');
-});
-
 
 // 用户root密码 //
 msgc.on('public_password', (event, args) => {

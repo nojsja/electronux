@@ -53,6 +53,7 @@
     "concurrently": "^3.6.1",
     "cross-env": "^5.2.0",
     "css-loader": "^0.28.11",
+    "electron-re": "^1.0.0",
     "eslint": "^5.6.1",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-import": "^2.14.0",

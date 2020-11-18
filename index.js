@@ -4,8 +4,7 @@ const { ipcMain } = require('electron');
 
 const { readFileSync } = require('./app/utils/write-file');
 const { checkEnvFiles } = require('./app/utils/utils');
-const MessageChannel = require('./app/web/libs/MessageChannel.class');
-const BrowserService = require('./app/libs/BrowserService.class');
+const { MessageChannel, BrowserService } = require('electron-re');
 const requireLang = require('./app/lang');
 
 /* ------------------- Env ------------------- */

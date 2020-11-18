@@ -2,11 +2,10 @@ import { observable, action, computed } from 'mobx';
 
 import consoleLog from '../utils/console-log';
 import { jsonstr2Object } from '../utils/utils';
-import codeMessage from '../utils/code-message';
 
-const msgc = require('../libs/MessageChannel.class');
+const { MessageChannel } = require('electron-re');
+const msgc = MessageChannel;
 
-// const { ipcRenderer } = require('electron'); // 渲染进程
 
 class Install {
   @observable items = { // 所有安装项

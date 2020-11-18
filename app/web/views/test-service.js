@@ -1,4 +1,5 @@
-const msgc = require('../libs/MessageChannel.class');
+const { MessageChannel } = require('electron-re');
+const msgc = MessageChannel;
 
 module.exports = () => {
 
@@ -16,5 +17,4 @@ module.exports = () => {
     console.log('render-handle: ', result);
     return Promise.resolve('render-handle-value');
   });
-
 }
