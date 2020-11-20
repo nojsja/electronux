@@ -113,7 +113,6 @@ class WindowManagement {
     global.appTray.on('click', ()=>{    
       this.window.show();
     });
-    global.appTray.setToolTip('electron-react-template');
     global.appTray.setContextMenu(menu);
   }
 

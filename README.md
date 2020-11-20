@@ -1,6 +1,6 @@
 ### electronux
 --------------
-Build for Manjaro linux 17 desktop -- [ startup configure | software installer | system cleaner | check running state ]. Powered by Electron v3, React v16, Node v8, Mobx v4, Webpack v4, shell scripts.
+Build for Ubuntu20.04 desktop -- [ startup configure | software installer | system cleaner | check running state ]. Powered by Electron v3, React v16, Node v8, Mobx v4, Webpack v4, shell scripts.
 
 #### env prepare
 1. 环境安装  
@@ -44,4 +44,6 @@ $: npm install cross-env -g
 ![startup_list](resources/screenshots/startup_list.png)
 
 ![info_total](resources/screenshots/info_total.png)
+
+![blogs_page](resources/screenshots/blogs_page.png)
 

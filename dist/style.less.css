@@ -28,6 +28,18 @@ body {
 }
 /*  Keyframes
 ============================================================================= */
+/* 渐进动画 */
+@keyframes progressiveShow {
+  0% {
+    opacity: 0;
+    transform: translateY(3rem) scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    scale: 1;
+  }
+}
 /* 从左到右显示动画 */
 @keyframes leftRightShow {
   0% {
@@ -276,6 +288,12 @@ body > .ui.inverted.page.modals.dimmer.transition.visible.active > .ui.mini.moda
   margin: 1rem 0;
   color: black;
   text-shadow: 0 0 3px white;
+}
+/* -------------- ModalWrapper -------------- */
+.modal-nojsja {
+  animation: progressiveShow;
+  animation-duration: 0.3s;
+  animation-timing-function: ease-in-out;
 }
 /*  wrapper
 ============================================================================= */

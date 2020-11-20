@@ -1,7 +1,7 @@
 {
   "name": "electronux",
-  "description": "linux manager-software powered by electron & react & Mobx ",
-  "version": "v1.0.0",
+  "description": "A linux system tool powered by electron/react/Mobx",
+  "version": "v1.0.1",
   "repository": {
     "type": "git",
     "url": "https://github.com/NoJsJa/electronux.git"
@@ -52,6 +52,7 @@
   "dependencies": {
     "axios": "^0.19.2",
     "lowdb": "^1.0.0",
+    "electron-re": "^1.0.0",
     "qs": "^6.9.3"
   },
   "devDependencies": {
@@ -59,7 +60,6 @@
     "concurrently": "^3.6.1",
     "cross-env": "^5.2.0",
     "electron": "8.2.0",
-    "electron-re": "^1.0.0",
     "electron-builder": "^22.4.1",
     "event-stream": "^4.0.1",
     "mocha": "^8.2.1",
