@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { Button, Modal, Input } from 'semantic-ui-react';
+import { Button, Input } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
 const { ipcRenderer } = require('electron');
+
+import Modal from 'public/Modal.js';
 
 class StartupSetting extends Component {
   static propTypes = {
@@ -56,34 +58,22 @@ class StartupSetting extends Component {
 
   render() {
     const {
-      show, detail, toggleModal, isNew,
+      show, detail, toggleModal, isNew
     } = this.props;
     return (
-      <div>
-        <Modal dimmer="inverted" open={show} size="mini">
-          <Modal.Content>
+        <Modal
+          show={show}
+          onSubmit={isNew ? this.addDetail : this.setDetails}
+          onCancel={toggleModal}
+          title="New Startup App"
+          size="tiny"
+        >
             <div className="startup-setting-wrapper">
               <Input size="tiny" data-type="Name" placeholder={`Name：${detail.Name || ''}`} onChange={this.onChange} />
               <Input size="tiny" data-type="Comment" placeholder={`Comment：${detail.Comment || ''}`} onChange={this.onChange} />
               <Input size="tiny" data-type="Exec" placeholder={`Command：${detail.Exec || ''}`} onChange={this.onChange} />
             </div>
-          </Modal.Content>
-          <Modal.Actions>
-            <div className="startup-setting-action">
-              <Button size="tiny" onClick={toggleModal}>
-                Cancel
-              </Button>
-              <Button
-                color="blue"
-                size="tiny"
-                onClick={isNew ? this.addDetail : this.setDetails}
-              >
-                Confirm
-              </Button>
-            </div>
-          </Modal.Actions>
         </Modal>
-      </div>
     );
   }
 }

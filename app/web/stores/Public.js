@@ -2,6 +2,7 @@ import { observable, action } from 'mobx';
 
 const { shell } = require('electron');
 const { ipcRenderer } = require('electron'); // 渲染进程
+const { MessageChannel } = require('electron-re');
 
 class Public {
 
@@ -9,7 +10,6 @@ class Public {
 
   constructor() {
     ipcRenderer.on('public_password-read_replay', (event, rsp) => {
-      console.log(rsp);
       if (!rsp.result) {
         // this.state.settingPage = true;
       } else {
@@ -27,15 +27,15 @@ class Public {
   }
 
   @action setPassword = (passwd) => {
-    ipcRenderer.send('public_password', {
+    this.state.settingPage = false;
+    MessageChannel.send('app', 'public_password', {
       action: 'set',
       password: passwd,
     });
-    this.state.password = passwd;
   }
 
   @action checkPassword = () => {
-    ipcRenderer.send('public_password', {
+    MessageChannel.send('app', 'public_password', {
       action: 'read',
     });
   }

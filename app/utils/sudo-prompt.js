@@ -52,7 +52,7 @@ class SudoPrompt {
       password = password.toString().trim();
       this.password = password;
     }
-    return password;
+    return this.password;
   }
 
   // 检查用户用户密码是否已经设置 //

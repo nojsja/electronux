@@ -19,7 +19,7 @@ install() {
 
 # 安装初始化环境
 init_install() {
-  local all=(curl wget axel git aria2 gcc make patch yaourt)
+  local all=(curl wget axel git gcc make patch)
   local allStr=''
   for item in "${all[@]}"; do
     if [ -z "`which $item`" ]; then

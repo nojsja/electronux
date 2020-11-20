@@ -133,7 +133,7 @@ class Startup {
 
   // 添加启动项
   @action addDetail = ({ Name, Comment, Exec }) => {
-    ipcRenderer.invoke('startup_add-files', {
+    ipcRenderer.invoke('startup', {
       action: 'addStartupItem',
       params: {
         dir: this.targetDir,

@@ -33,6 +33,7 @@ module.exports = {
       resources: path.resolve(__dirname, 'resources'),
       libs: path.resolve(__dirname, 'libs'),
       utils: path.resolve(__dirname, 'utils'),
+      public: path.resolve(__dirname, 'views/public'),
     },
   },
   module: {

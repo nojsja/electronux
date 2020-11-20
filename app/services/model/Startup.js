@@ -101,7 +101,7 @@ class IpcStartup {
   }
 
   /* 添加启动项目 */
-  addStartupItem() {
+  addStartupItem(args) {
     const { dir, file, detail } = args;
     const { Name, Comment, Exec } = detail;
     const addPath = path.join(app.getAppPath(), 'app/services/scripts/startup-new.sh');

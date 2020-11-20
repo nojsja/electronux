@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Button, Modal, Input } from 'semantic-ui-react';
+import { Button, Input } from 'semantic-ui-react';
+import Modal from 'public/Modal.js';
 import PropTypes from 'prop-types';
 
 /**
@@ -24,7 +25,7 @@ class SettingPage extends Component {
 
   componentDidMount() {
     const { checkPassword } = this.props;
-    // checkPassword();
+    checkPassword();
   }
 
   onPasswdChange = (ev, { value }) => {
@@ -43,26 +44,19 @@ class SettingPage extends Component {
 
   render() {
     const { open, closeSettingPage, password } = this.props;
-    console.log(password);
     return (
-      <div>
-        <Modal dimmer="inverted" open={open} size="mini">
-          <Modal.Content>
+      <Modal
+        show={open}
+        size="mini"
+        onSubmit={this.setPassword}
+        onCancel={closeSettingPage}
+      >
             <div className="setting-page-wrapper">
               <p>Password：</p>
-              <Input size="tiny" value={password} type="password" onChange={this.onPasswdChange} />
+              <Input size="tiny" value={this.state.password || password} type="password" onChange={this.onPasswdChange} />
             </div>
-          </Modal.Content>
-          <Modal.Actions>
-            <div className="setting-page-action">
-              <Button size="tiny" onClick={closeSettingPage}>
-                Cancel
-              </Button>
-              <Button color="blue" size="tiny" onClick={this.setPassword}>Confirm</Button>
-            </div>
-          </Modal.Actions>
-        </Modal>
-      </div>
+        
+      </Modal>
     )
   }
 }

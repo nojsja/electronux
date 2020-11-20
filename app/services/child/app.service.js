@@ -5,7 +5,6 @@ const msgc = MessageChannel;
 
 const execFile = require(path.join(app.getAppPath(), 'app/utils/exec-file.js'));
 const SudoPrompt = require(path.join(app.getAppPath(), 'app/utils/sudo-prompt.js'));
-const { notifySend } = require(path.join(app.getAppPath(), 'app/utils/utils'));
 
 const sudo = new SudoPrompt(app);
 
@@ -17,11 +16,10 @@ msgc.handle('test', (event, rsp) => {
 msgc.on('public_password', (event, args) => {
   if (args.action === 'set') {
     sudo.setPassword(args.password);
-    notifySend({
-      delay: 0,
-      title: 'electron-tips',
-      body: `New Password: [ ${args.password} ]`,
-      icon: path.join(app.getAppPath(), 'resources/public/settings.png'),
+    msgc.send('main', 'notify-send', {
+        title: 'electron-tips',
+        body: `New Password: [ ${args.password} ]`,
+        icon: path.join(app.getAppPath(), 'resources/public/settings.png'),
     });
   } else if (args.action === 'read') {
     const passwd = sudo.readPassword();
