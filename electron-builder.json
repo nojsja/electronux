@@ -2,7 +2,7 @@
   "appId": "com.nojsja.electronux",
   "copyright": "nojsja",
   "productName": "electronux",
-  "asar": true,
+  "asar": false,
   "directories": {
     "buildResources": "resources/",
     "output": "build/"
@@ -11,7 +11,7 @@
   "linux": {
     "icon": "build/",
     "category": "System",
-    "description": "A linux system tool powered by electron/react/Mobx",
+    "description": "A linux system tool powered by electron/react/mobx",
     "synopsis": "electronux",
     "target": ["zip", "deb"],
     "publish": {

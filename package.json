@@ -1,6 +1,6 @@
 {
   "name": "electronux",
-  "description": "A linux system tool powered by electron/react/Mobx",
+  "description": "A linux system tool powered by electron/react/mobx",
   "version": "v1.0.1",
   "repository": {
     "type": "git",
