@@ -30,7 +30,7 @@
     "react-router",
     "webpack4"
   ],
-  "license": "",
+  "license": "MIT",
   "nodemonConfig": {
     "ignore": [
       "resources/*",
@@ -52,7 +52,7 @@
   "dependencies": {
     "axios": "^0.19.2",
     "lowdb": "^1.0.0",
-    "electron-re": "^1.0.0",
+    "electron-re": "^1.0.2",
     "qs": "^6.9.3"
   },
   "devDependencies": {
