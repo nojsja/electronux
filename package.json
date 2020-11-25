@@ -19,8 +19,7 @@
     "build-before": "mkdir build -p ; rm build/* -rf ; cp resources/* build/ -rf",
     "build-after": "unzip -qq -o build/electronux*.zip -d build/electronux-zip/",
     "build": "npm run build-before ; electron-builder -l ; npm run build-after",
-    "build-all": "npm run dist ; npm run build",
-    "publish": "electron-builder -p onTag"
+    "build-all": "npm run dist ; npm run build"
   },
   "keywords": [
     "electron",
@@ -52,14 +51,14 @@
   "dependencies": {
     "axios": "^0.19.2",
     "lowdb": "^1.0.0",
-    "electron-re": "^1.0.2",
+    "electron-re": "^1.0.4",
     "qs": "^6.9.3"
   },
   "devDependencies": {
     "chai": "^4.2.0",
     "concurrently": "^3.6.1",
     "cross-env": "^5.2.0",
-    "electron": "8.2.0",
+    "electron": "9.3.5",
     "electron-builder": "^22.4.1",
     "event-stream": "^4.0.1",
     "mocha": "^8.2.1",
