@@ -4,7 +4,12 @@ const { ipcMain } = require('electron');
 
 const { readFileSync } = require('./app/utils/write-file');
 const { checkEnvFiles } = require('./app/utils/utils');
-const { MessageChannel, BrowserService } = require('electron-re');
+const { 
+  MessageChannel,
+  BrowserService,
+  ProcessManager,
+  ChildProcessPool
+} = require('electron-re');
 const requireLang = require('./app/lang');
 
 /* ------------------- Env ------------------- */
@@ -29,16 +34,29 @@ global.ipcMainWindow = new IpcMaiWindowClass();
 
 /* -------------- listener -------------- */
 
+if (global.nodeEnv === 'development') {
+  ProcessManager.openWindow();
+}
+
 app.on('ready', () => {
   if (global.nodeEnv === 'development') {
     require('source-map-support').install();
   }
   /* services */
-  this.appService = new BrowserService('app', path.join(app.getAppPath(), 'app/services/child/app.service.js'), {
+  global.appService = new BrowserService('app', path.join(app.getAppPath(), 'app/services/render/app.service.js'), {
     webContents: {
       webSecurity: false,
     },
   });
+  global.processPool = new ChildProcessPool({
+    path: path.join(__dirname, 'app/services/child/child.js'),
+    max: 3,
+  });
+
+  global.processPool.send('test1', { value: 'test1' });
+  global.processPool.send('test2', { value: 'test2' });
+  global.processPool.send('test2', { value: 'test3' });
+
   global.ipcMainWindow.createWindow();
 });
 

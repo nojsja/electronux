@@ -50,8 +50,8 @@
   },
   "dependencies": {
     "axios": "^0.19.2",
+    "electron-re": "^1.0.8",
     "lowdb": "^1.0.0",
-    "electron-re": "^1.0.4",
     "qs": "^6.9.3"
   },
   "devDependencies": {
