@@ -19,7 +19,7 @@
     "build-before": "mkdir build -p ; rm build/* -rf ; cp resources/* build/ -rf",
     "build-after": "unzip -qq -o build/electronux*.zip -d build/electronux-zip/",
     "build": "npm run build-before ; electron-builder -l ; npm run build-after",
-    "build-all": "npm run dist ; npm run build"
+    "build-all": "npm run start-dist ; npm run build"
   },
   "keywords": [
     "electron",
