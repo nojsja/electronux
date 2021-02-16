@@ -5,3 +5,4 @@ build
 .ftpconfig
 .vscode
 yarn-error.log
+dist

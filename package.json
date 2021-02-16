@@ -15,7 +15,7 @@
     "start-web": "cd ./app/web; yarn start;",
     "start-electron": "cross-env NODE_ENV=development nodemon --exec 'electron --inspect=5858 index'",
     "start-production": "cross-env NODE_ENV=production electron --inspect=5858 index",
-    "start-dist": "cd ./app/web; yarn run dist;",
+    "start-dist": "cd ./app/web; yarn run build;",
     "build-before": "mkdir build -p ; rm build/* -rf ; cp resources/* build/ -rf",
     "build-after": "unzip -qq -o build/electronux*.zip -d build/electronux-zip/",
     "build": "npm run build-before ; electron-builder -l ; npm run build-after",
@@ -50,7 +50,7 @@
   },
   "dependencies": {
     "axios": "^0.19.2",
-    "electron-re": "^1.0.8",
+    "electron-re": "^1.0.9",
     "lowdb": "^1.0.0",
     "qs": "^6.9.3"
   },

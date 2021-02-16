@@ -38,7 +38,7 @@ if (global.nodeEnv === 'development') {
   ProcessManager.openWindow();
 }
 
-app.on('ready', () => {
+app.on('ready', async () => {
   if (global.nodeEnv === 'development') {
     require('source-map-support').install();
   }
@@ -48,6 +48,9 @@ app.on('ready', () => {
       webSecurity: false,
     },
   });
+
+  await global.appService.connected();
+
   global.processPool = new ChildProcessPool({
     path: path.join(__dirname, 'app/services/child/child.js'),
     max: 3,

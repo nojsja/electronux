@@ -1,20 +1,16 @@
+
 {
   "presets": [
-    "es2015",
-    "stage-0",
-    "react"
+    "@babel/preset-env",
+    "@babel/preset-react"
   ],
-  "env": {
-    "production": {
-      "plugins": [
-        "transform-decorators-legacy"
-      ]
-    },
-    "development": {
-      "plugins": [
-        "transform-decorators-legacy",
-        "react-hot-loader/babel"
-      ]
-    }
-  }
+  "plugins": [
+    ["@babel/plugin-proposal-decorators", { "legacy": true }],
+    ["@babel/plugin-proposal-class-properties", {"loose": true}],
+    "@babel/plugin-proposal-function-sent",
+    "@babel/plugin-proposal-export-namespace-from",
+    "@babel/plugin-proposal-numeric-separator",
+    "@babel/plugin-proposal-throw-expressions",
+    "dynamic-import-webpack"
+  ]
 }

@@ -130,7 +130,7 @@ class Clean {
   }
 
   @computed get total() {
-    const dir = 'resources/clean';
+    const dir = 'resources/images';
 
     return Object.keys(this.items).map(item => ({
       label: item,

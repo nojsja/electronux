@@ -1,60 +1,47 @@
 const path = require('path');
 const webpack = require('webpack');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-
-// 拆分样式文件
-// const extractLess = new ExtractTextPlugin({
-//   filename: 'style.less.css',
-// });
-// const extractCss = new ExtractTextPlugin({
-//   filename: 'style.css',
-// });
+const os = require('os');
+const HappyPack = require('happypack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length });
 
 module.exports = {
-  devtool: 'source-map',
+  devtool: 'cheap-module-eval-source-map',
   entry: [
-    'react-hot-loader/patch',
-    'webpack-dev-server/client?http://localhost:3000',
-    'webpack/hot/only-dev-server',
     './index.js',
   ],
   mode: 'development',
   output: {
     filename: 'bundle.js',
-    path: path.resolve(__dirname, '../../dist'),
+    path: path.resolve(__dirname, 'dist'),
     publicPath: '/',
   },
   resolve: {
+    modules: [path.resolve(__dirname, 'node_modules')],
     alias: {
-      resources: path.resolve(__dirname, 'resources'),
-      libs: path.resolve(__dirname, 'libs'),
+      // dir
+      libs: path.resolve(__dirname, '../libs'),
       utils: path.resolve(__dirname, 'utils'),
+      resources: path.resolve(__dirname, 'resources'),
       public: path.resolve(__dirname, 'views/public'),
     },
+    extensions: ['.js', '.jsx'],
   },
   module: {
+    noParse:[/jquery/],
     rules: [
       {
-        test: /\.js$/,
-        use: ['babel-loader?cacheDirectory=true'],
+        test: /\.m?js|\.jsx$/,
+        exclude: /(node_modules|bower_components)/,
+        use: ['happypack/loader?id=babel']
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader'],
+        use: ['happypack/loader?id=css'],
       },
       {
         test: /\.less$/,
-        use: [
-          {
-            loader: 'style-loader', // 从 JS 中创建样式节点
-          },
-          {
-            loader: 'css-loader', // 转化 CSS 为 CommonJS
-          },
-          {
-            loader: 'less-loader', // 编译 Less 为 CSS
-          },
-        ],
+        use: ['happypack/loader?id=less'],
       },
       {
         test: /\.html$/,
@@ -63,32 +50,75 @@ module.exports = {
         },
       },
       {
-        test: /\.(png|jpg|gif|svg|ico|woff|eot|ttf|woff2|icns)$/,
+        test: /\.(ico|woff|eot|ttf|woff2|icns)$/,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 500, // 小于500B的文件直接写入bunndle
+              name: '[name]_[hash:8].[ext]',
+              outputPath: 'resources/assets',
+            },
+          },
+        ]
+      },
+      {
+        test: /\.(png|jpg|gif|svg|jpeg)$/i,
         use: [
           {
             loader: 'file-loader',
             options: {
-              name: '[path][name].[ext]',
+              name: '[name].[ext]',
+              outputPath: 'resources/images',
             },
-          },
+          }
         ],
       },
     ],
   },
 
   plugins: [
-    // extractCss,
-    // extractLess,
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify('development'),
+      },
+    }),
+    new HappyPack({
+      id: 'babel',
+      threadPool: happyThreadPool,
+      loaders: ["babel-loader?cacheDirectory"],
+    }),
+    new HappyPack({
+      id: 'css',
+      threadPool: happyThreadPool,
+      loaders: ['style-loader', 'css-loader'],
+    }),
+    new HappyPack({
+      id: 'less',
+      threadPool: happyThreadPool,
+      loaders: ['style-loader', 'css-loader', 'less-loader'],
+    }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NamedModulesPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
+    new HtmlWebpackPlugin({
+      filename: 'index.html',
+      template: 'index.html',
+      inject: 'body',
+      minify: true
+    }),
   ],
 
   devServer: {
     host: 'localhost',
     port: 3000,
+    compress: true,
+    contentBase: '.',
     historyApiFallback: true,
     hot: true,
+    inline: true,
+    liveReload: false
   },
+
   target: 'electron-renderer',
 };

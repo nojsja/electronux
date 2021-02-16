@@ -18,11 +18,8 @@ import AuthorPane from './public/AuthorPane';
 
 import { history } from '../App';
 
-// 批量引入所有图片(可以指定所有图片类型)
-// const requireContext = require.context('resources/install', true, /^\.\/.*\.(jpg|png)$/);
-const requireContext = require.context('resources/public', true, /.*/);
+const requireContext = require.context('resources/images', true, /.*/);
 requireContext.keys().map(requireContext);
-
 @inject('pub') @observer
 class HomePage extends Component {
   static propTypes = {

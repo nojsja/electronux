@@ -31,7 +31,7 @@ class InfoCpus extends Component {
             const key = `cpu-item-${i}`;
             return (
               <div className="cpu-item-wrapper" key={key}>
-                <img alt="error" src="resources/info/cpu.png" />
+                <img alt="error" src="resources/images/cpu.png" />
                 <div className="cpu-item-text">{cpu.name}</div>
               </div>
             );

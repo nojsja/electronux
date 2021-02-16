@@ -152,7 +152,7 @@ class Install {
   // 获取所有安装项 //
   get total() {
     const { items } = this;
-    const dir = 'resources/install';
+    const dir = 'resources/images';
 
     return Object.keys(items).map(item => ({
       label: item,
