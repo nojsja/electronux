@@ -3025,10 +3025,10 @@ ee-first@1.1.1:
   resolved "https://registry.npm.taobao.org/ee-first/download/ee-first-1.1.1.tgz#590c61156b0ae2f4f0255732a158b266bc56b21d"
   integrity sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=
 
-electron-re@^1.0.0:
-  version "1.0.9"
-  resolved "https://registry.npm.taobao.org/electron-re/download/electron-re-1.0.9.tgz#f0a298cc18c3b40958e48704b6f87d990ac8b056"
-  integrity sha1-8KKYzBjDtAlY5IcEtvh9mQrIsFY=
+electron-re@^1.0.11:
+  version "1.0.11"
+  resolved "https://registry.nlark.com/electron-re/download/electron-re-1.0.11.tgz#a9e14cdf0f7a2d19505dfcc16380f39d0f293657"
+  integrity sha1-qeFM3w96LRlQXfzBY4DznQ8pNlc=
   dependencies:
     "@babel/runtime" "^7.12.5"
     pidusage "^2.0.21"
@@ -8778,8 +8778,10 @@ watchpack@^1.7.4:
   resolved "https://registry.npm.taobao.org/watchpack/download/watchpack-1.7.5.tgz?cache=0&sync_timestamp=1612715822561&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fwatchpack%2Fdownload%2Fwatchpack-1.7.5.tgz#1267e6c55e0b9b5be44c2023aed5437a2c26c453"
   integrity sha1-EmfmxV4Lm1vkTCAjrtVDeiwmxFM=
   dependencies:
+    chokidar "^3.4.1"
     graceful-fs "^4.1.2"
     neo-async "^2.5.0"
+    watchpack-chokidar2 "^2.0.1"
   optionalDependencies:
     chokidar "^3.4.1"
     watchpack-chokidar2 "^2.0.1"

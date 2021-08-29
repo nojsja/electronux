@@ -34,9 +34,9 @@ global.ipcMainWindow = new IpcMaiWindowClass();
 
 /* -------------- listener -------------- */
 
-if (global.nodeEnv === 'development') {
-  ProcessManager.openWindow();
-}
+// if (global.nodeEnv === 'development') {
+// }
+ProcessManager.openWindow();
 
 app.on('ready', async () => {
   if (global.nodeEnv === 'development') {
@@ -56,7 +56,7 @@ app.on('ready', async () => {
     max: 3,
   });
 
-  global.processPool.send('test1', { value: 'test1' });
+  global.processPool.send('test1', { value: 'test1' }).catch(err => console.log(err));
   global.processPool.send('test2', { value: 'test2' });
   global.processPool.send('test2', { value: 'test3' });
 
