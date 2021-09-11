@@ -11,15 +11,14 @@
     "email": "yangwei020154@gmail.com"
   },
   "scripts": {
-    "start": "yarn run start-web && yarn run start-electron",
-    "start-web": "cd ./app/web; yarn start;",
-    "start-electron": "cross-env NODE_ENV=development nodemon --exec 'electron --inspect=5858 index'",
-    "start-production": "cross-env NODE_ENV=production electron --inspect=5858 index",
-    "start-dist": "cd ./app/web; yarn run build;",
-    "build-before": "mkdir build -p ; rm build/* -rf ; cp resources/* build/ -rf",
-    "build-after": "unzip -qq -o build/electronux*.zip -d build/electronux-zip/",
-    "build": "npm run build-before ; electron-builder -l ; npm run build-after",
-    "build-all": "npm run start-dist ; npm run build"
+    "start": "cross-env NODE_ENV=production electron --inspect=5858 index",
+    "start:renderer": "cd ./app/web && npm start",
+    "start:main": "cross-env NODE_ENV=development nodemon --exec 'electron --inspect=5858 index'",
+    "start:dev": "npm run start:renderer && npm run start:main",
+    "build:web": "node ./build.js build:web",
+    "build:before": "node ./build.js build:before",
+    "build:linux": "node ./build.js build -l",
+    "build:windows": "node ./build.js build -w"
   },
   "keywords": [
     "electron",
@@ -62,6 +61,7 @@
     "electron-builder": "^22.4.1",
     "event-stream": "^4.0.1",
     "mocha": "^8.2.1",
-    "nodemon": "^1.18.4"
+    "nodemon": "^1.18.4",
+    "shx": "^0.3.3"
   }
 }

@@ -26,5 +26,31 @@
       "releaseType": "release",
       "publishAutoUpdate": true
     }
+  },
+  "win": {
+    "icon": "build/icon.ico",
+    "target": [
+      {
+        "target": "zip"
+      },
+      {
+        "target": "nsis",
+        "arch": [
+          "x64"
+        ]
+      }
+    ]
+  },
+  "nsis": {
+    "oneClick": false,
+    "allowElevation": true,
+    "allowToChangeInstallationDirectory": true,
+    "installerIcon": "./build/icon.ico",
+    "uninstallerIcon": "./build/icon.ico",
+    "installerHeaderIcon": "./build/icon.ico",
+    "createDesktopShortcut": true,
+    "createStartMenuShortcut": true,
+    "deleteAppDataOnUninstall": true,
+    "shortcutName": "electronux"
   }
 }
