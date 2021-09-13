@@ -97,15 +97,17 @@ class WindowManagement {
                 });
               });
             };
+
+            quitApp();
             
-            const buttonId = dialog.showMessageBoxSync(this.windowoptions, {
-              defaultId: 0,
-              buttons: ['No', 'Yes'],
-              type: 'info',
-              title: global.lang.public.tips,
-              message: global.lang.upload.app_quit_tips
-            });
-            if (buttonId === 1) quitApp();
+            // const buttonId = dialog.showMessageBoxSync(this.windowoptions, {
+            //   defaultId: 0,
+            //   buttons: ['No', 'Yes'],
+            //   type: 'info',
+            //   title: global.lang.public.tips,
+            //   message: global.lang.upload.app_quit_tips
+            // });
+            // if (buttonId === 1) quitApp();
           }
         }
     ]);
@@ -175,9 +177,6 @@ class WindowManagement {
       console.log('closed');
       this.window = null;
     });
-    if(os.type() !== 'Darwin') {
-      this.contextMenu();
-    }
 
     if(os.type() !== 'Darwin') {
       this.contextMenu();
