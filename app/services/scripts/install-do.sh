@@ -10,11 +10,7 @@ release=`cat /etc/issue | awk -F ' ' '{print $1}'`
 # -------- env install ---------- #
 
 install() {
-  if [ "$release" == "Ubuntu" ]; then
-    sudo apt install "$@" -y
-  else
-    sudo pacman -S --noconfirm "$@"
-  fi
+  sudo apt install "$@" -y
 }
 
 # 安装初始化环境
@@ -45,11 +41,7 @@ do_install() {
 # 安装oh-my-zsh
 i_oh-my-zsh() {
   echo ">>> install on-my-zsh ... "
-  if [ "$release" == "Ubuntu" ]; then
-    sudo apt install zsh -y
-  else
-    sudo pacman -S --noconfirm zsh
-  fi
+  sudo apt install zsh -y
   sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
   chsh -s /bin/zsh
 }
@@ -138,57 +130,37 @@ i_deepin-capture() {
 # 安装深度终端
 i_deepin-terminal() {
   echo ">>> install deepin-terminal ... "
-    if [ "$release" == "Ubuntu" ]; then
-      sudo apt install deepin-terminal -y
-    else
-      yaourt -S --noconfirm deepin-terminal
-    fi
+  sudo apt install deepin-terminal -y
 }
 
 # 安装ieaseMusic
 i_easeMusic() {
   echo ">>> install ieaseMusic ... "
-  if [ "$release" == "Ubuntu" ]; then
-    echo "Ubuntu -- iease-music"
-  else
-    yaourt -S --noconfirm iease-music
-  fi
+  echo "Ubuntu -- iease-music"
 }
 
 # 安装QQ
 i_QQ() {
   echo ">>> install deepin-qq ... "
-  if [ "$release" == "Ubuntu" ]; then
-    echo "Ubuntu -- QQ"
-  else
-    yaourt -S --noconfirm deepin.com.qq.im
-  fi
+  echo "Ubuntu -- QQ"
 }
 
 # 安装albert
 i_albert() {
   echo ">>> install albert ... "
-  if [ "$release" == "Ubuntu" ]; then
-    sudo add-apt-repository -r ppa:noobslab/macbuntu -y
-    sudo add-apt-repository ppa:noobslab/macbuntu -y
-    sudo apt update
-    sudo apt install albert -y
-  else
-    sudo pacman -S --noconfirm albert
-  fi
+  sudo add-apt-repository -r ppa:noobslab/macbuntu -y
+  sudo add-apt-repository ppa:noobslab/macbuntu -y
+  sudo apt update
+  sudo apt install albert -y
 }
 
 # 安装stacer
 i_stacer() {
   echo ">>> install stacer ... "
-  if [ "$release" == "Ubuntu" ]; then
-    sudo add-apt-repository -r ppa:oguzhaninan/stacer -y
-    sudo add-apt-repository ppa:oguzhaninan/stacer -y
-    sudo apt update
-    sudo apt install stacer -y
-  else
-    yaourt -S --noconfirm stacer
-  fi
+  sudo add-apt-repository -r ppa:oguzhaninan/stacer -y
+  sudo add-apt-repository ppa:oguzhaninan/stacer -y
+  sudo apt update
+  sudo apt install stacer -y
 }
 
 # --------- MAIN -------- #

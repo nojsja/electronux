@@ -1,27 +1,37 @@
 #!/bin/bash
 
-pacmanSource="/etc/pacman.conf"
+pacmanSource="/etc/apt/sources.list"
 
-# config
+# # 配置国内软件源
 config() {
-  # # 配置软件源
-  echo ">>> import archlinuxcn source ... "
-  sudo sed -i "/archlinuxcn/, /mirrors.ustc.edu.cn\/archlinuxcn/d" $pacmanSource
-  echo "[archlinuxcn]" >> $pacmanSource
-  echo "SigLevel = Optional TrustedOnly" >> $pacmanSource
-  echo 'Server = https://mirrors.ustc.edu.cn/archlinuxcn/$arch' >> $pacmanSource
-
-  # # 导入GPG Key
-  echo ">>> import GPG Key ... "
-  sudo pacman -Syy
-  sudo pacman -S archlinuxcn-keyring
+  # 备份
+  if [ ! -e /etc/apt/sources.list-bak ]; then
+    echo ">> backup sources.list..."
+    sudo cp $pacmanSource /etc/apt/sources.list-bak
+  fi
+  sudo rm /etc/apt/sources.list
+  sudo echo '
+    # for china users
+    deb http://mirrors.aliyun.com/ubuntu/ focal main restricted universe multiverse
+    deb-src http://mirrors.aliyun.com/ubuntu/ focal main restricted universe multiverse
+    deb http://mirrors.aliyun.com/ubuntu/ focal-security main restricted universe multiverse
+    deb-src http://mirrors.aliyun.com/ubuntu/ focal-security main restricted universe multiverse
+    deb http://mirrors.aliyun.com/ubuntu/ focal-updates main restricted universe multiverse
+    deb-src http://mirrors.aliyun.com/ubuntu/ focal-updates main restricted universe multiverse
+    deb http://mirrors.aliyun.com/ubuntu/ focal-proposed main restricted universe multiverse
+    deb-src http://mirrors.aliyun.com/ubuntu/ focal-proposed main restricted universe multiverse
+    deb http://mirrors.aliyun.com/ubuntu/ focal-backports main restricted universe multiverse
+    deb-src http://mirrors.aliyun.com/ubuntu/ focal-backports main restricted universe multiverse
+  ' >> $pacmanSource
+  sudo apt update;
+  echo ">> done."
 }
 
 # check
 check() {
   local isConfigured=1
 
-  [ -n "`sed '/mirrors.ustc.edu.cn\/archlinuxcn/p' $pacmanSource`" ] && isConfigured=0
+  [ -n "`sed '/# for china users/p' -n $pacmanSource`" ] && isConfigured=0
 
   return $isConfigured
 }
