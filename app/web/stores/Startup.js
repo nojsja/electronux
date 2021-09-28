@@ -80,6 +80,17 @@ class Startup {
   @action setDetails = ({
     file, Comment, Name, Exec, Hidden,
   }) => {
+    console.log({
+      dir: this.targetDir,
+      detail: {
+        dir: this.targetDir,
+        file,
+        Comment,
+        Name,
+        Exec,
+        Hidden: Hidden || false,
+      },
+    });
     ipcRenderer.invoke('startup', {
       action: 'modifyStartupConfig',
       params: {

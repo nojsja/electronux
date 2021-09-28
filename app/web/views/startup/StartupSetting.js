@@ -18,35 +18,58 @@ class StartupSetting extends Component {
 
   constructor() {
     super();
-    this.Name = '';
-    this.Comment = '';
-    this.Exec = '';
+    this.state = {
+      Name: null,
+      Comment: null,
+      Exec: null
+    }
   }
 
   componentDidMount() {}
 
   onChange = (event, props) => {
-    this[props['data-type']] = props.value;
+    this.setState({
+      [props['data-type']]: props.value
+    });
+  }
+
+  closeModal = () => {
+    const { toggleModal } = this.props;
+    this.setState({
+      Name: null,
+      Comment: null,
+      Exec: null
+    });
+    toggleModal();
   }
 
   setDetails = () => {
     const { setDetails, detail } = this.props;
+    this.closeModal();
+    console.log({
+      file: detail.file,
+      Comment: this.state.Comment,
+      Name: this.state.Name,
+      Exec: this.state.Exec,
+    }, setDetails);
     setDetails({
       file: detail.file,
-      Comment: this.Comment,
-      Name: this.Name,
-      Exec: this.Exec,
+      Comment: this.state.Comment,
+      Name: this.state.Name,
+      Exec: this.state.Exec,
     });
   }
 
   addDetail = () => {
     const { addDetail } = this.props;
+    console.log(1);
 
-    if (this.Name && this.Exec) {
+    if (this.state.Name && this.Exec) {
+      this.closeModal();
       addDetail({
-        Name: this.Name,
-        Comment: this.Comment,
-        Exec: this.Exec,
+        Name: this.state.Name,
+        Comment: this.state.Comment,
+        Exec: this.state.Exec,
       });
     } else {
       ipcRenderer.send('notify-send', {
@@ -58,20 +81,21 @@ class StartupSetting extends Component {
 
   render() {
     const {
-      show, detail, toggleModal, isNew
+      show, detail, isNew
     } = this.props;
+    const { Name, Comment, Exec } = this.state;
     return (
         <Modal
           show={show}
           onSubmit={isNew ? this.addDetail : this.setDetails}
-          onCancel={toggleModal}
+          onCancel={this.closeModal}
           title="New Startup App"
           size="tiny"
         >
             <div className="startup-setting-wrapper">
-              <Input size="tiny" data-type="Name" placeholder={`Name：${detail.Name || ''}`} onChange={this.onChange} />
-              <Input size="tiny" data-type="Comment" placeholder={`Comment：${detail.Comment || ''}`} onChange={this.onChange} />
-              <Input size="tiny" data-type="Exec" placeholder={`Command：${detail.Exec || ''}`} onChange={this.onChange} />
+              <Input size="tiny" data-type="Name" value={Name === null ? detail.Name : Name} placeholder={`Name：${detail.Name || ''}`} onChange={this.onChange} />
+              <Input size="tiny" data-type="Comment" value={Comment === null ? detail.Comment : Comment} placeholder={`Comment：${detail.Comment || ''}`} onChange={this.onChange} />
+              <Input size="tiny" data-type="Exec" value={Exec === null ? detail.Exec : Exec} placeholder={`Command：${detail.Exec || ''}`} onChange={this.onChange} />
             </div>
         </Modal>
     );
