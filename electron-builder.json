@@ -21,7 +21,7 @@
       "vPrefixedTagName": true,
       "host": "github.com",
       "protocol": "https",
-      "token": "650eb5ae88fc8993e8c9b8030b811f734023e57a",
+      "token": "",
       "private": true,
       "releaseType": "release",
       "publishAutoUpdate": true
