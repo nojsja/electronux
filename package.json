@@ -61,7 +61,7 @@
     "electron": "9.4.0",
     "electron-builder": "^22.4.1",
     "event-stream": "^4.0.1",
-    "mocha": "^8.2.1",
+    "mocha": "^10.1.0",
     "nodemon": "^1.18.4"
   }
 }
