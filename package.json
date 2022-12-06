@@ -52,7 +52,7 @@
     "axios": "^0.21.1",
     "lowdb": "^1.0.0",
     "electron-re": "^1.0.4",
-    "qs": "^6.9.3"
+    "qs": "^6.9.7"
   },
   "devDependencies": {
     "chai": "^4.2.0",
